@@ -24,6 +24,6 @@
   },
   "include": [
     "src"
-  ],
+, "public/media"  ],
   "exclude": ["**/__tests__/**", "**/node_modules/**"]
 }
