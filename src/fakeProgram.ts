@@ -6,12 +6,21 @@ export const program: programType = {
     {
       id: 1,
       title: 'screen1',
-      videoSrc: '/media/102.mp4',
-    },
-    {
-      id: 2,
-      title: 'screen2',
-      videoSrc: '/media/103.mp4',
+      sequences: [
+        {
+          id: 1,
+          name: 'the intro',
+          videoSrc: '/media/102.mp4',
+        },
+        {
+          id: 2,
+          name: 'what now',
+          options: [
+            { videoSrc: '/media/102.mp4' },
+            { videoSrc: '/media/103.mp4', isDefault: true },
+          ],
+        },
+      ],
     },
   ],
 }

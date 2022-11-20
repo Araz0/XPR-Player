@@ -6,6 +6,17 @@ export type programType = {
 export type screenType = {
   id: number
   title: string
+  sequences: sequenceType[]
+  config?: Record<string, unknown> // WIP
+}
+
+export type sequenceType = {
+  id: number
+  name: string
+  videoSrc?: string
+  options?: sequenceOptionsType[]
+}
+export type sequenceOptionsType = {
   videoSrc: string
-  config?: Record<string, unknown>
+  isDefault?: boolean
 }
