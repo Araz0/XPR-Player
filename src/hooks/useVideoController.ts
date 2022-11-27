@@ -24,5 +24,8 @@ export const useVideoController = () => {
   const toggleMute = useCallback(() => {
     screenPlayer.toggleMute()
   }, [])
-  return { init, playScreen, pauseScreen, setSource, toggleMute }
+  const getDuration = useCallback(() => {
+    screenPlayer.getDuration()
+  }, [])
+  return { init, playScreen, pauseScreen, setSource, toggleMute, getDuration }
 }

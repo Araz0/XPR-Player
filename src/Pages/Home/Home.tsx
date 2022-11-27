@@ -6,7 +6,7 @@ import { VideoPlayer } from '../../components/VideoPlayer'
 import { useVideoController } from '../../hooks'
 
 export const HomeRaw = () => {
-  const { init, setSource, playScreen, pauseScreen, toggleMute } =
+  const { init, setSource, playScreen, pauseScreen, toggleMute, getDuration } =
     useVideoController()
   const { screenId } = useParams()
   const useVideoRef = useRef<any>()
@@ -33,6 +33,7 @@ export const HomeRaw = () => {
         <button onClick={handleClick}>init</button>
         <button onClick={handlePlayPause}>PlayPause</button>
         <button onClick={toggleMute}>toggleMute</button>
+        <button onClick={getDuration}>getDuration</button>
         <VideoPlayer ref={useVideoRef} />
       </header>
     </div>
