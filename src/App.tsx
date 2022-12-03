@@ -7,8 +7,9 @@ function App() {
   useEffect(() => {
     const eventSource = new EventSource('http://localhost:8000')
     eventSource.onmessage = function (event) {
+      const data = JSON.parse(event.data)
       // eslint-disable-next-line no-console
-      console.log(event.data)
+      console.log('recevied: ', data)
     }
 
     eventSource.onerror = function () {
