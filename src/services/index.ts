@@ -1,2 +1,2 @@
-export * from './ScreenPlayer'
+export * from './ScreenController'
 export * from './VideoController'

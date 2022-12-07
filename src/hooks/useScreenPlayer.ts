@@ -1,16 +1,14 @@
 import { useCallback } from 'react'
 
-import { ScreenPlayer } from '../services'
+import { VideoController } from '../services'
+import { VideoRefElement } from '../types'
 
-const screenPlayer = new ScreenPlayer()
+const screenPlayer = new VideoController('C')
 
 export const useScreenPlayer = () => {
-  const init = useCallback(
-    (videoElement: React.MutableRefObject<any> | null) => {
-      screenPlayer.videoElement = videoElement
-    },
-    []
-  )
+  const init = useCallback((videoElement: VideoRefElement) => {
+    screenPlayer.videoElement = videoElement
+  }, [])
   const playScreen = useCallback(() => {
     screenPlayer.play()
   }, [])
@@ -22,5 +20,12 @@ export const useScreenPlayer = () => {
   const setSource = useCallback((src: string) => {
     screenPlayer.setSource(src)
   }, [])
-  return { init, playScreen, pauseScreen, setSource }
+
+  const toggleMute = useCallback(() => {
+    screenPlayer.toggleMute()
+  }, [])
+  const getDuration = useCallback(() => {
+    screenPlayer.getDuration()
+  }, [])
+  return { init, playScreen, pauseScreen, setSource, toggleMute, getDuration }
 }
