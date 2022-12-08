@@ -4,30 +4,111 @@ import { VideoController } from '../VideoController'
 export class ScreenController {
   private _player1: VideoController
   private _player2: VideoController
-  private _selectedPlayer: VideoController
+  // private _selectedPlayer: VideoController
+  private _selectedPID: string
 
   constructor(ref1?: VideoRefElement, ref2?: VideoRefElement) {
     this._player1 = new VideoController('A', ref1 || undefined)
     this._player2 = new VideoController('B', ref2 || undefined)
-    this._selectedPlayer = this._player1
+    this._selectedPID = this._player1.id
   }
   public setRefs = (ref1: VideoRefElement, ref2: VideoRefElement) => {
     this._player1.videoElement = ref1
     this._player2.videoElement = ref2
+    this.setListners(this._player1)
+    this.setListners(this._player2)
   }
-  public play = () => {
-    this._selectedPlayer.play()
+  public destroyScreen = () => {
+    this.removeListners(this._player1)
+    this.removeListners(this._player2)
+  }
+  private currentPlayer = () => {
+    // todo: set return type as :VideoController
+    return this._selectedPID === this._player1.id
+      ? this._player1
+      : this._player2
+  }
+  private nextPlayer = () => {
+    // todo: set return type as :VideoController
+    return this._selectedPID === this._player1.id
+      ? this._player2
+      : this._player1
+  }
+  public setCurrentAsNextPlayer = () => {
+    this._selectedPID = this.nextPlayer().id
+  }
+  private play = () => {
+    this.currentPlayer().play()
   }
 
-  public pause = () => {
-    this._selectedPlayer.pause()
+  private pause = () => {
+    this.currentPlayer().pause()
   }
-  public setSource = (src: string) => {
-    this._selectedPlayer.setSource(src)
+  public playPause = () => {
+    if (this.currentPlayer().videoElement?.current?.paused) {
+      this.play()
+    } else {
+      this.pause()
+    }
+  }
+  public setCurrentSource = (src: string) => {
+    this.currentPlayer().setSource(src)
   }
   public setNextSource = (src: string) => {
-    this._selectedPlayer.id === this._player1.id
-      ? this._player2.setSource(src)
-      : this._player1.setSource(src)
+    this.nextPlayer().setSource(src)
+  }
+  private onPlayerEnded = (player: VideoController) => {
+    if (player.id !== this.currentPlayer().id) return
+
+    // eslint-disable-next-line no-console
+    console.log('🛑 ended - ', player.id)
+    // this.setSource('https://media.w3.org/2010/05/sintel/trailer.mp4')
+    this.currentPlayer().pause()
+    this.nextPlayer().play()
+    // todo:
+    // show next player
+    // hide current player
+    // unmute next player
+    // play next player
+
+    // toggle current and next players
+    this.setCurrentAsNextPlayer()
+  }
+  private onPlayerUpdate = (player: VideoController) => {
+    if (player.id !== this.currentPlayer().id) return
+
+    if (player.getDuration() - 2 <= player.getCurrentTime()) {
+      //last two seconds
+      // todo:
+      // mute next player
+      // set next source to next player
+      // pause next player
+
+      // eslint-disable-next-line no-console
+      console.log('📈 timeupdate - ', player.id)
+    }
+  }
+
+  private setListners = (player: VideoController) => {
+    if (!player.videoElement?.current) return
+    // eslint-disable-next-line no-console
+    console.log('🪄 setListners')
+    player.videoElement.current.addEventListener('ended', (e) => {
+      this.onPlayerEnded(player)
+    })
+
+    player.videoElement.current.addEventListener('timeupdate', (e) => {
+      this.onPlayerUpdate(player)
+    })
+  }
+
+  private removeListners = (player: VideoController) => {
+    if (!player.videoElement?.current) return
+    player.videoElement.current.removeEventListener('ended', (e) => {
+      this.onPlayerEnded(player)
+    })
+    player.videoElement.current.removeEventListener('timeupdate', (e) => {
+      this.onPlayerUpdate(player)
+    })
   }
 }

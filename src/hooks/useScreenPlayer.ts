@@ -1,31 +1,34 @@
 import { useCallback } from 'react'
 
-import { VideoController } from '../services'
+import { ScreenController } from '../services'
 import { VideoRefElement } from '../types'
 
-const screenPlayer = new VideoController('C')
+const screenPlayer = new ScreenController()
 
 export const useScreenPlayer = () => {
-  const init = useCallback((videoElement: VideoRefElement) => {
-    screenPlayer.videoElement = videoElement
-  }, [])
-  const playScreen = useCallback(() => {
-    screenPlayer.play()
-  }, [])
-
-  const pauseScreen = useCallback(() => {
-    screenPlayer.pause()
-  }, [])
-
-  const setSource = useCallback((src: string) => {
-    screenPlayer.setSource(src)
+  const init = useCallback(
+    (videoRef1: VideoRefElement, videoRef2: VideoRefElement) => {
+      screenPlayer.setRefs(videoRef1, videoRef2)
+      // eslint-disable-next-line no-console
+      console.log('📺 useScreenPlayer init')
+    },
+    []
+  )
+  const playPauseScreen = useCallback(() => {
+    screenPlayer.playPause()
   }, [])
 
-  const toggleMute = useCallback(() => {
-    screenPlayer.toggleMute()
+  const setCurrentSource = useCallback((src: string) => {
+    screenPlayer.setCurrentSource(src)
   }, [])
-  const getDuration = useCallback(() => {
-    screenPlayer.getDuration()
+  const setNextSource = useCallback((src: string) => {
+    screenPlayer.setNextSource(src)
   }, [])
-  return { init, playScreen, pauseScreen, setSource, toggleMute, getDuration }
+
+  return {
+    init,
+    playPauseScreen,
+    setCurrentSource,
+    setNextSource,
+  }
 }

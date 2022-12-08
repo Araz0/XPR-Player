@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 
 import { Routes, Route } from 'react-router-dom'
 
-import { Home } from './Pages'
+import { Home, ScreenPage } from './Pages'
 function App() {
   useEffect(() => {
     const eventSource = new EventSource('http://localhost:8000')
@@ -21,6 +21,7 @@ function App() {
   return (
     <Routes>
       <Route path="app/:screenId/*" element={<Home />} />
+      <Route path="screen" element={<ScreenPage />} />
     </Routes>
   )
 }
