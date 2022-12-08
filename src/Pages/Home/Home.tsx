@@ -3,11 +3,11 @@ import React, { memo, useCallback, useRef } from 'react'
 import { useParams } from 'react-router-dom'
 
 import { VideoPlayer } from '../../components/VideoPlayer'
-import { useScreenPlayer } from '../../hooks'
+import { useVideoPlayer } from '../../hooks'
 
 export const HomeRaw = () => {
-  const { init, setSource, playScreen, pauseScreen, toggleMute, getDuration } =
-    useScreenPlayer()
+  const { init, playVideo, pauseVideo, setSource, toggleMute, getDuration } =
+    useVideoPlayer()
   const { screenId } = useParams()
   const useVideoRef = useRef<any>()
 
@@ -18,11 +18,11 @@ export const HomeRaw = () => {
 
   const handlePlayPause = useCallback(() => {
     if (useVideoRef.current.paused) {
-      playScreen()
+      playVideo()
     } else {
-      pauseScreen()
+      pauseVideo()
     }
-  }, [pauseScreen, playScreen])
+  }, [pauseVideo, playVideo])
 
   return (
     <div>
