@@ -40,57 +40,23 @@ export class VideoController {
     this._videoElement.current.muted = !this._videoElement.current.muted
   }
   public getDuration = () => {
-    if (!this._videoElement?.current) return
-    // eslint-disable-next-line no-console
-    console.log(
-      this._videoElement.current.duration,
-      this._videoElement.current.currentTime,
-      (this._videoElement.current.currentTime /
-        this._videoElement.current.duration) *
-        100
-    )
+    if (!this._videoElement?.current) return -1
     return this._videoElement.current.duration
   }
-  private setListners = () => {
-    if (!this._videoElement?.current) return
-    this._videoElement?.current.addEventListener('ended', (e) => {
-      // eslint-disable-next-line no-console
-      console.log('ended', e)
-      this.setSource('https://media.w3.org/2010/05/sintel/trailer.mp4')
-      this.play()
-    })
-    this._videoElement?.current.addEventListener('timeupdate', (e) => {
-      if (!this._videoElement?.current) return
-      if (
-        this._videoElement.current.duration - 2 <=
-        this._videoElement.current.currentTime
-      ) {
-        //last two seconds
-
-        // eslint-disable-next-line no-console
-        console.log('timeupdate', e)
-      }
-    })
+  public getCurrentTime = () => {
+    if (!this._videoElement?.current) return -1
+    return this._videoElement.current.currentTime
   }
-  private removeListners = () => {
-    if (!this._videoElement?.current) return
-    this._videoElement?.current.removeEventListener('ended', (e) => {
-      // eslint-disable-next-line no-console
-      console.log('ended', e)
-    })
-    this._videoElement?.current.removeEventListener('timeupdate', (e) => {
-      if (!this._videoElement?.current) return
-      if (
-        this._videoElement.current.duration - 2 <=
-        this._videoElement.current.currentTime
-      ) {
-        //last two seconds
+  public getProgressInPercentage = () => {
+    if (!this._videoElement?.current) return -1
 
-        // eslint-disable-next-line no-console
-        console.log('timeupdate', e)
-      }
-    })
+    return (
+      (this._videoElement.current.currentTime /
+        this._videoElement.current.duration) *
+      100
+    )
   }
+
   /**
    * https://html.spec.whatwg.org/multipage/media.html#mediaevents
     function addListenerMulti(el, s, fn) {
