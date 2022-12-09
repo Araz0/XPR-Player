@@ -9,7 +9,7 @@ export const useScreenPlayer = () => {
   const init = useCallback(
     (videoRef1: VideoRefElement, videoRef2: VideoRefElement) => {
       screenPlayer.setRefs(videoRef1, videoRef2)
-      // eslint-disable-next-line no-console
+
       console.log('📺 useScreenPlayer init')
     },
     []

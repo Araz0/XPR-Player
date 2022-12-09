@@ -59,9 +59,8 @@ export class ScreenController {
   }
   private onPlayerEnded = (player: VideoController) => {
     if (player.id !== this.currentPlayer().id) return
-
-    // eslint-disable-next-line no-console
     console.log('🛑 ended - ', player.id)
+
     // this.setSource('https://media.w3.org/2010/05/sintel/trailer.mp4')
     this.currentPlayer().pause()
     this.nextPlayer().play()
@@ -84,15 +83,14 @@ export class ScreenController {
       // set next source to next player
       // pause next player
 
-      // eslint-disable-next-line no-console
       console.log('📈 timeupdate - ', player.id)
     }
   }
 
   private setListners = (player: VideoController) => {
     if (!player.videoElement?.current) return
-    // eslint-disable-next-line no-console
     console.log('🪄 setListners')
+
     player.videoElement.current.addEventListener('ended', (e) => {
       this.onPlayerEnded(player)
     })

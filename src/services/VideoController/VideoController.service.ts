@@ -5,8 +5,8 @@ export class VideoController {
   private _id: string
 
   constructor(id: string, videoElement?: VideoRefElement) {
-    // eslint-disable-next-line no-console
     console.log('VideoController is created')
+
     this._videoElement = videoElement
     this._id = id
   }
