@@ -1,20 +1,22 @@
-# Getting Started with Create React App
-
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Experience-Room Player
+## Links:
+ - [More about the project](https://portfolio.fh-salzburg.ac.at/projects/2023-experience-room)
 
 ## Plan
 This project should be able to:
 - have a video player.
 - able to fully control the video player.
-- change the video source on demand with zero delay.
+- ~~change the video source on demand with zero delay~~.
 - read the status of the video player at all times.
 
 ### technologies
-- Server-Sent Events or web sockets to exchange data and events between the server and the client.
+- Server-Sent Events ~~or web sockets~~ to exchange data and events ~~between~~ from the server ~~and~~ to the client.
   - Server-Sent Events is one-way stream and is only string.
-  - web socket can send and receive in both directions and is binary.
+  - ~~web socket can send and receive in both directions and is binary.~~
 - video player with full control.
-- zustand and eventEmitter3 to simplify communication of data updates.
+- zustand and eventEmitter3 CAN be used to simplify communication of data updates.
+
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
 
