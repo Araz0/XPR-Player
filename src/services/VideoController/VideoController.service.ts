@@ -57,6 +57,22 @@ export class VideoController {
     )
   }
 
+  public setDisplayHide = () => {
+    if (!this._videoElement?.current) return
+    // this._videoElement.current.style.display = 'none'
+    this._videoElement.current.style.zIndex = '-1'
+  }
+  public setDisplayBlock = () => {
+    if (!this._videoElement?.current) return
+    // this._videoElement.current.style.display = 'block'
+    this._videoElement.current.style.zIndex = '+1'
+  }
+
+  public resetPlayer = () => {
+    if (!this._videoElement?.current) return
+    this._videoElement.current.currentTime = 0
+  }
+
   /**
    * https://html.spec.whatwg.org/multipage/media.html#mediaevents
     function addListenerMulti(el, s, fn) {

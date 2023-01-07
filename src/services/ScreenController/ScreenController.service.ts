@@ -15,6 +15,7 @@ export class ScreenController {
   public setRefs = (ref1: VideoRefElement, ref2: VideoRefElement) => {
     this._player1.videoElement = ref1
     this._player2.videoElement = ref2
+    this.nextPlayer().setDisplayHide()
     this.setListners(this._player1)
     this.setListners(this._player2)
   }
@@ -34,6 +35,7 @@ export class ScreenController {
       ? this._player2
       : this._player1
   }
+
   public setCurrentAsNextPlayer = () => {
     this._selectedPID = this.nextPlayer().id
   }
@@ -51,6 +53,17 @@ export class ScreenController {
       this.pause()
     }
   }
+  public playNext = () => {
+    // pause current player
+    this.currentPlayer().pause()
+    // show next player
+    this.nextPlayer().setDisplayBlock()
+    // hide & reset current player
+    this.currentPlayer().setDisplayHide()
+    this.currentPlayer().resetPlayer()
+    // play next player
+    this.nextPlayer().play()
+  }
   public setCurrentSource = (src: string) => {
     this.currentPlayer().setSource(src)
   }
@@ -61,14 +74,7 @@ export class ScreenController {
     if (player.id !== this.currentPlayer().id) return
     console.log('🛑 ended - ', player.id)
 
-    // this.setSource('https://media.w3.org/2010/05/sintel/trailer.mp4')
-    this.currentPlayer().pause()
-    this.nextPlayer().play()
-    // todo:
-    // show next player
-    // hide current player
-    // unmute next player
-    // play next player
+    this.playNext()
 
     // toggle current and next players
     this.setCurrentAsNextPlayer()
@@ -79,9 +85,7 @@ export class ScreenController {
     if (player.getDuration() - 2 <= player.getCurrentTime()) {
       //last two seconds
       // todo:
-      // mute next player
       // set next source to next player
-      // pause next player
 
       console.log('📈 timeupdate - ', player.id)
     }

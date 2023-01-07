@@ -1,11 +1,21 @@
 import { memo, useCallback, useEffect, useRef } from 'react'
 
+import styled from 'styled-components'
+
 import { VideoPlayer } from '../../components'
 import { useScreenPlayer } from '../../hooks'
+
+const StyledScreenPlayerContainer = styled.div`
+  position: relative;
+  video {
+    position: absolute;
+  }
+`
 
 export const ScreenPageRaw = () => {
   const videoRef1 = useRef<any>()
   const videoRef2 = useRef<any>()
+  const newUrlInputRef = useRef<any>()
 
   const { init, setCurrentSource, setNextSource, playPauseScreen } =
     useScreenPlayer()
@@ -19,11 +29,15 @@ export const ScreenPageRaw = () => {
   }, [playPauseScreen])
 
   const handleSetCurrentSource = useCallback(() => {
-    setCurrentSource('https://media.w3.org/2010/05/video/movie_300.mp4')
+    newUrlInputRef.current.value.length > 0
+      ? setCurrentSource(newUrlInputRef.current.value)
+      : setCurrentSource('/Audio_Video_Sync.mp4')
   }, [setCurrentSource])
 
   const handleSetNextSource = useCallback(() => {
-    setNextSource('https://media.w3.org/2010/05/video/movie_300.mp4')
+    newUrlInputRef.current.value.length > 0
+      ? setNextSource(newUrlInputRef.current.value)
+      : setNextSource('/60fps_Tester.mp4')
   }, [setNextSource])
 
   return (
@@ -31,8 +45,11 @@ export const ScreenPageRaw = () => {
       <button onClick={handlePlayPause}>PlayPause</button>
       <button onClick={handleSetCurrentSource}>set current</button>
       <button onClick={handleSetNextSource}>set next</button>
-      <VideoPlayer ref={videoRef1} />
-      <VideoPlayer ref={videoRef2} />
+      <input type="text" name="" id="newUrlInput" ref={newUrlInputRef} />
+      <StyledScreenPlayerContainer>
+        <VideoPlayer ref={videoRef1} />
+        <VideoPlayer ref={videoRef2} />
+      </StyledScreenPlayerContainer>
     </>
   )
 }
