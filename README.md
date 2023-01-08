@@ -2,6 +2,9 @@
 ## Links:
  - [More about the project](https://portfolio.fh-salzburg.ac.at/projects/2023-experience-room)
 
+## Bookmark:
+### How-Tos
+- [Use Morgen for logging](https://dev.to/devland/how-to-use-morgan-in-your-nodejs-project-21im)
 ## Plan
 This project should be able to:
 - have a video player.
