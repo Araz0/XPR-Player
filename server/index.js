@@ -32,7 +32,22 @@ app.get('/', (req, res) => {
     res.end()
   })
 })
+//listener
+app.post('/api', function (req, res) {
+  var body = ''
+  req.on('data', function (data) {
+    body += data
+  })
+  req.on('end', function () {
+    console.log('/api')
+    console.log(JSON.parse(body))
+  })
 
+  res.writeHead(200)
+  res.end()
+})
 app.listen(port, () => {
   console.log(`Server running on port ${port}`)
 })
+
+//curl --header "Content-Type: application/json" --request POST --data '{"username":"xyz","password":"xyz"}' http://localhost:8000/api
