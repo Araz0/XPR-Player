@@ -3,7 +3,7 @@ import { memo, useCallback, useEffect, useRef } from 'react'
 import styled from 'styled-components'
 
 import { VideoPlayer } from '../../components'
-import { useScreenPlayer } from '../../hooks'
+import { useScreenService } from '../../services'
 
 const StyledScreenPlayerContainer = styled.div`
   position: relative;
@@ -18,7 +18,7 @@ export const ScreenPageRaw = () => {
   const newUrlInputRef = useRef<any>()
 
   const { init, setCurrentSource, setNextSource, playPauseScreen } =
-    useScreenPlayer()
+    useScreenService()
 
   useEffect(() => {
     init(videoRef1, videoRef2)

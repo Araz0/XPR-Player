@@ -3,11 +3,11 @@ import React, { memo, useCallback, useRef } from 'react'
 import { useParams } from 'react-router-dom'
 
 import { VideoPlayer } from '../../components/VideoPlayer'
-import { useVideoPlayer } from '../../hooks'
+import { useVideoService } from '../../services'
 
 export const HomeRaw = () => {
   const { init, playVideo, pauseVideo, setSource, toggleMute, getDuration } =
-    useVideoPlayer()
+    useVideoService()
   const { screenId } = useParams()
   const useVideoRef = useRef<any>()
 

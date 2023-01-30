@@ -1,16 +1,16 @@
 import { useCallback } from 'react'
 
-import { ScreenController } from '../services'
-import { VideoRefElement } from '../types'
+import { VideoRefElement } from '../../types'
+import { ScreenController } from './ScreenController.service'
 
 const screenPlayer = new ScreenController()
 
-export const useScreenPlayer = () => {
+export const useScreenService = () => {
   const init = useCallback(
     (videoRef1: VideoRefElement, videoRef2: VideoRefElement) => {
       screenPlayer.setRefs(videoRef1, videoRef2)
 
-      console.log('📺 useScreenPlayer init')
+      console.log('📺 useScreenService init')
     },
     []
   )
