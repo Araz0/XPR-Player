@@ -1,26 +1,30 @@
 import { useEffect } from 'react'
 
 import { Routes, Route } from 'react-router-dom'
+import { io } from 'socket.io-client'
 
-import { Home, ScreenPage } from './Pages'
+import { Admin, Home, ScreenPage } from './Pages'
 function App() {
   useEffect(() => {
-    const eventSource = new EventSource('http://localhost:8000')
-    eventSource.onmessage = function (event) {
-      const data = JSON.parse(event.data)
+    console.log('araz, ja i bin da')
+    const socket = io('http://localhost:8000')
 
-      console.log('recevied: ', data)
-    }
+    socket.on('clientCommand', (command: any) => {
+      const currentDate = new Date()
+      console.log(`Received command: ${command}`, currentDate.getMilliseconds())
+    })
 
-    eventSource.onerror = function () {
-      eventSource.close()
-    }
+    socket.on('hello', (args) => {
+      console.log(args)
+    })
+    socket.emit('howdy', 'stranger')
   }, [])
 
   return (
     <Routes>
       <Route path="app/:screenId/*" element={<ScreenPage />} />
       <Route path="home" element={<Home />} />
+      <Route path="admin" element={<Admin />} />
       <Route index element={<ScreenPage />} />
     </Routes>
   )

@@ -1,5 +1,4 @@
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const express = require('express')
+import express from 'express'
 const app = express()
 const port = 8000
 
