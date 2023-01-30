@@ -1,9 +1,9 @@
 import { useCallback } from 'react'
 
 import { VideoRefElement } from '../../types'
-import { ScreenController } from './ScreenController.service'
+import { ScreenService } from './Screen.service'
 
-const screenPlayer = new ScreenController()
+const screenPlayer = new ScreenService()
 
 export const useScreenService = () => {
   const init = useCallback(
