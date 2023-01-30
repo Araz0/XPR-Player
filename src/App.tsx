@@ -19,8 +19,9 @@ function App() {
 
   return (
     <Routes>
-      <Route path="app/:screenId/*" element={<Home />} />
-      <Route path="screen" element={<ScreenPage />} />
+      <Route path="app/:screenId/*" element={<ScreenPage />} />
+      <Route path="home" element={<Home />} />
+      <Route index element={<ScreenPage />} />
     </Routes>
   )
 }
