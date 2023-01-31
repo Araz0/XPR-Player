@@ -55,7 +55,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "server": "node server/socketServer.js",
+    "server": "nodemon server/socketServer.js",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
