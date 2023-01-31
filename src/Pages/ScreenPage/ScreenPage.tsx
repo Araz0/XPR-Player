@@ -31,13 +31,13 @@ export const ScreenPageRaw = () => {
   const handleSetCurrentSource = useCallback(() => {
     newUrlInputRef.current.value.length > 0
       ? setCurrentSource(newUrlInputRef.current.value)
-      : setCurrentSource('/Audio_Video_Sync.mp4')
+      : setCurrentSource('https://www.w3schools.com/html/mov_bbb.mp4')
   }, [setCurrentSource])
 
   const handleSetNextSource = useCallback(() => {
     newUrlInputRef.current.value.length > 0
       ? setNextSource(newUrlInputRef.current.value)
-      : setNextSource('/60fps_Tester.mp4')
+      : setNextSource('https://media.w3.org/2010/05/sintel/trailer.mp4')
   }, [setNextSource])
 
   return (

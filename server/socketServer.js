@@ -1,5 +1,3 @@
-// import express from 'express'
-
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const http = require('http')
 
@@ -24,25 +22,22 @@ app.get('/', (req, res) => {
 })
 
 server.listen(port, () => {
+  // eslint-disable-next-line no-console
   console.log('listening on *:' + port)
 })
 
 io.on('connection', (socket) => {
   if (!clients.find((c) => c.id === socket.id)) {
     clients.push(socket)
-    console.log('Client connected.', `Total clients: ${clients.length}`)
-    socket.emit('hello', 'new client connected')
+    // eslint-disable-next-line no-console
+    console.log(`✅ - Client connected. Total clients: ${clients.length}`)
   }
   socket.on('disconnect', () => {
     clients = clients.filter((c) => c !== socket)
-    console.log(`Client disconnected. Total clients: ${clients.length}`)
+    // eslint-disable-next-line no-console
+    console.log(`🛑 - Client disconnected. Total clients: ${clients.length}`)
   })
-  socket.on('howdy', (args) => {
-    console.log(args)
-  })
-
-  socket.on('command', (args) => {
-    console.log(args)
-    socket.broadcast.emit('clientCommand', args)
+  socket.on('admin-Brodcast-start', (args) => {
+    socket.broadcast.emit('start-program', args)
   })
 })
