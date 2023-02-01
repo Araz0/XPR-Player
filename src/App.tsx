@@ -5,10 +5,10 @@ import { Admin, Home, ScreenPage } from './Pages'
 function App() {
   return (
     <Routes>
-      <Route path="app/:screenId/*" element={<ScreenPage />} />
-      <Route path="home" element={<Home />} />
+      <Route path="screen" element={<ScreenPage />} />
+      <Route index element={<Home />} />
       <Route path="admin" element={<Admin />} />
-      <Route index element={<ScreenPage />} />
+      <Route element={<ScreenPage />} />
     </Routes>
   )
 }

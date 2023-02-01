@@ -3,7 +3,9 @@ import React, { memo, useCallback, useRef } from 'react'
 import { useParams } from 'react-router-dom'
 
 import { VideoPlayer } from '../../components/VideoPlayer'
-import { useVideoService } from '../../services'
+import { MediaSourceService, useVideoService } from '../../services'
+
+const bloby = new MediaSourceService()
 
 export const HomeRaw = () => {
   const { init, playVideo, pauseVideo, setSource, toggleMute, getDuration } =
@@ -26,6 +28,9 @@ export const HomeRaw = () => {
 
   return (
     <div>
+      <video controls id="myvideo"></video>
+      <button onClick={() => bloby.createblob('myvideo')}>create blob</button>
+      <button onClick={() => bloby.pushFile()}>add file</button>
       <header>
         <p>
           Edit <code>src/App.tsx/{screenId}</code> and save to reload.
