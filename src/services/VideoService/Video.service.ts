@@ -1,6 +1,6 @@
 import { VideoRefElement } from '../../types'
 
-export class VideoController {
+export class VideoService {
   private _videoElement: VideoRefElement
   private _id: string
 

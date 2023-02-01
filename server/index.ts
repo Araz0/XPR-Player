@@ -1,5 +1,4 @@
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const express = require('express')
+import express from 'express'
 const app = express()
 const port = 8000
 
@@ -34,7 +33,7 @@ app.get('/', (req, res) => {
 })
 //listener
 app.post('/api', function (req, res) {
-  var body = ''
+  let body = ''
   req.on('data', function (data) {
     body += data
   })

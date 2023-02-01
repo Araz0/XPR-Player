@@ -1,15 +1,15 @@
 import { VideoRefElement } from '../../types'
-import { VideoController } from '../VideoController'
+import { VideoService } from '../VideoService'
 
-export class ScreenController {
-  private _player1: VideoController
-  private _player2: VideoController
-  // private _selectedPlayer: VideoController
+export class ScreenService {
+  private _player1: VideoService
+  private _player2: VideoService
+  // private _selectedPlayer: VideoService
   private _selectedPID: string
 
   constructor(ref1?: VideoRefElement, ref2?: VideoRefElement) {
-    this._player1 = new VideoController('A', ref1 || undefined)
-    this._player2 = new VideoController('B', ref2 || undefined)
+    this._player1 = new VideoService('A', ref1 || undefined)
+    this._player2 = new VideoService('B', ref2 || undefined)
     this._selectedPID = this._player1.id
   }
   public setRefs = (ref1: VideoRefElement, ref2: VideoRefElement) => {
@@ -24,13 +24,13 @@ export class ScreenController {
     this.removeListners(this._player2)
   }
   private currentPlayer = () => {
-    // todo: set return type as :VideoController
+    // todo: set return type as :VideoService
     return this._selectedPID === this._player1.id
       ? this._player1
       : this._player2
   }
   private nextPlayer = () => {
-    // todo: set return type as :VideoController
+    // todo: set return type as :VideoService
     return this._selectedPID === this._player1.id
       ? this._player2
       : this._player1
@@ -70,7 +70,7 @@ export class ScreenController {
   public setNextSource = (src: string) => {
     this.nextPlayer().setSource(src)
   }
-  private onPlayerEnded = (player: VideoController) => {
+  private onPlayerEnded = (player: VideoService) => {
     if (player.id !== this.currentPlayer().id) return
     console.log('🛑 ended - ', player.id)
 
@@ -79,7 +79,7 @@ export class ScreenController {
     // toggle current and next players
     this.setCurrentAsNextPlayer()
   }
-  private onPlayerUpdate = (player: VideoController) => {
+  private onPlayerUpdate = (player: VideoService) => {
     if (player.id !== this.currentPlayer().id) return
 
     if (player.getDuration() - 2 <= player.getCurrentTime()) {
@@ -91,7 +91,7 @@ export class ScreenController {
     }
   }
 
-  private setListners = (player: VideoController) => {
+  private setListners = (player: VideoService) => {
     if (!player.videoElement?.current) return
     console.log('🪄 setListners')
 
@@ -104,7 +104,7 @@ export class ScreenController {
     })
   }
 
-  private removeListners = (player: VideoController) => {
+  private removeListners = (player: VideoService) => {
     if (!player.videoElement?.current) return
     player.videoElement.current.removeEventListener('ended', (e) => {
       this.onPlayerEnded(player)
