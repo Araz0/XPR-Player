@@ -3,6 +3,7 @@ import { memo, useCallback, useEffect, useRef } from 'react'
 import styled from 'styled-components'
 
 import { VideoPlayer } from '../../components'
+import { useDoubleKeyPress } from '../../hooks'
 import { useScreenService } from '../../services'
 
 const StyledScreenPlayerContainer = styled.div`
@@ -13,20 +14,31 @@ const StyledScreenPlayerContainer = styled.div`
 `
 
 export const ScreenPageRaw = () => {
+  const playerContainerRef = useRef<any>()
   const videoRef1 = useRef<any>()
   const videoRef2 = useRef<any>()
   const newUrlInputRef = useRef<any>()
 
-  const { init, setCurrentSource, setNextSource, playPauseScreen } =
-    useScreenService()
+  const {
+    init,
+    setCurrentSource,
+    setNextSource,
+    playPauseScreen,
+    requestFullScreen,
+  } = useScreenService()
+
+  useDoubleKeyPress('f', () => requestFullScreen())
 
   useEffect(() => {
-    init(videoRef1, videoRef2)
+    init(playerContainerRef, videoRef1, videoRef2)
   }, [init])
 
   const handlePlayPause = useCallback(() => {
     playPauseScreen()
   }, [playPauseScreen])
+  const handleRequestFullscreen = useCallback(() => {
+    requestFullScreen()
+  }, [requestFullScreen])
 
   const handleSetCurrentSource = useCallback(() => {
     newUrlInputRef.current.value.length > 0
@@ -45,8 +57,9 @@ export const ScreenPageRaw = () => {
       <button onClick={handlePlayPause}>PlayPause</button>
       <button onClick={handleSetCurrentSource}>set current</button>
       <button onClick={handleSetNextSource}>set next</button>
+      <button onClick={handleRequestFullscreen}>fullscreen</button>
       <input type="text" name="" id="newUrlInput" ref={newUrlInputRef} />
-      <StyledScreenPlayerContainer>
+      <StyledScreenPlayerContainer ref={playerContainerRef}>
         <VideoPlayer ref={videoRef1} />
         <VideoPlayer ref={videoRef2} />
       </StyledScreenPlayerContainer>

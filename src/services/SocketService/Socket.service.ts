@@ -1,20 +1,37 @@
-import { io } from 'socket.io-client'
+import { io, Socket } from 'socket.io-client'
+
+import { EventNames } from './eventNames'
 
 export class SocketService {
-  private _socket: any // todo: add type
+  private _socket: Socket
+
   constructor(port = 8000) {
-    if (!this._socket) {
-      this._socket = io('http://localhost:' + port)
-      this._socket.emit('client-connected', 'A new client connected')
-    }
+    this._socket = io('http://localhost:' + port)
+    this._socket.emit(EventNames.CLIENT_CONNECTED, 'A new client connected')
   }
   public start = () => {
-    this._socket.emit('start-program', { payload: 'pls', headerId: 1 })
+    this._socket.emit(EventNames.START_PROGRAM, { payload: '1', headerId: 1 })
   }
   public onStart = (exicute: () => void) => {
-    this._socket.on('start-program', (command: any) => {
+    this._socket.on(EventNames.START_PROGRAM, (command: any) => {
       // eslint-disable-next-line no-console
-      console.log(`Received command: ${command}`, new Date().getMilliseconds())
+      console.log(
+        `Received command (start-program): ${command}`,
+        new Date().getMilliseconds()
+      )
+      exicute()
+    })
+  }
+  public requestFullscreen = () => {
+    this._socket.emit(EventNames.REQUEST_FULLSCREEN, '')
+  }
+  public onRequestFullScreen = (exicute: () => void) => {
+    this._socket.on(EventNames.REQUEST_FULLSCREEN, (command: any) => {
+      // eslint-disable-next-line no-console
+      console.log(
+        `Received command (request-full-screen): ${command}`,
+        new Date().getMilliseconds()
+      )
       exicute()
     })
   }

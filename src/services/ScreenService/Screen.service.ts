@@ -1,18 +1,29 @@
-import { VideoRefElement } from '../../types'
+import { VideoRefElementType, PlayerContainerType } from '../../types'
 import { VideoService } from '../VideoService'
 
 export class ScreenService {
   private _player1: VideoService
   private _player2: VideoService
+  private _containerRef: PlayerContainerType
   // private _selectedPlayer: VideoService
   private _selectedPID: string
 
-  constructor(ref1?: VideoRefElement, ref2?: VideoRefElement) {
+  constructor(
+    container?: PlayerContainerType,
+    ref1?: VideoRefElementType,
+    ref2?: VideoRefElementType
+  ) {
+    this._containerRef = container || undefined
     this._player1 = new VideoService('A', ref1 || undefined)
     this._player2 = new VideoService('B', ref2 || undefined)
     this._selectedPID = this._player1.id
   }
-  public setRefs = (ref1: VideoRefElement, ref2: VideoRefElement) => {
+  public setRefs = (
+    container: PlayerContainerType,
+    ref1: VideoRefElementType,
+    ref2: VideoRefElementType
+  ) => {
+    this._containerRef = container
     this._player1.videoElement = ref1
     this._player2.videoElement = ref2
     this.nextPlayer().setDisplayHide()
@@ -52,6 +63,10 @@ export class ScreenService {
     } else {
       this.pause()
     }
+  }
+  public requestFullScreen = () => {
+    if (!this._containerRef?.current) return
+    this._containerRef?.current.requestFullscreen()
   }
   public playNext = () => {
     // pause current player
@@ -95,21 +110,21 @@ export class ScreenService {
     if (!player.videoElement?.current) return
     console.log('🪄 setListners')
 
-    player.videoElement.current.addEventListener('ended', (e) => {
+    player.videoElement.current.addEventListener('ended', (e: any) => {
       this.onPlayerEnded(player)
     })
 
-    player.videoElement.current.addEventListener('timeupdate', (e) => {
+    player.videoElement.current.addEventListener('timeupdate', (e: any) => {
       this.onPlayerUpdate(player)
     })
   }
 
   private removeListners = (player: VideoService) => {
     if (!player.videoElement?.current) return
-    player.videoElement.current.removeEventListener('ended', (e) => {
+    player.videoElement.current.removeEventListener('ended', (e: any) => {
       this.onPlayerEnded(player)
     })
-    player.videoElement.current.removeEventListener('timeupdate', (e) => {
+    player.videoElement.current.removeEventListener('timeupdate', (e: any) => {
       this.onPlayerUpdate(player)
     })
   }
