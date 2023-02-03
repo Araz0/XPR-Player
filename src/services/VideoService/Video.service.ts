@@ -1,10 +1,10 @@
-import { VideoRefElement } from '../../types'
+import { VideoRefElementType } from '../../types'
 
 export class VideoService {
-  private _videoElement: VideoRefElement
+  private _videoElement: VideoRefElementType
   private _id: string
 
-  constructor(id: string, videoElement?: VideoRefElement) {
+  constructor(id: string, videoElement?: VideoRefElementType) {
     console.log('VideoController is created')
 
     this._videoElement = videoElement
@@ -14,7 +14,7 @@ export class VideoService {
   get videoElement() {
     return this._videoElement
   }
-  set videoElement(videoElement: VideoRefElement) {
+  set videoElement(videoElement: VideoRefElementType) {
     this._videoElement = videoElement
   }
 

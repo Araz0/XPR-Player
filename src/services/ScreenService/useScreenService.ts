@@ -2,7 +2,7 @@ import { useCallback } from 'react'
 
 // import { io } from 'socket.io-client'
 
-import { VideoRefElement } from '../../types'
+import { PlayerContainerType, VideoRefElementType } from '../../types'
 import { SocketService } from '../SocketService'
 import { ScreenService } from './Screen.service'
 
@@ -20,14 +20,21 @@ export const useScreenService = () => {
   const setNextSource = useCallback((src: string) => {
     screenPlayer.setNextSource(src)
   }, [])
+  const requestFullScreen = useCallback(() => {
+    screenPlayer.requestFullScreen()
+  }, [])
 
   const initSocket = useCallback(() => {
     clientSocket.onStart(playPauseScreen)
   }, [playPauseScreen])
 
   const init = useCallback(
-    (videoRef1: VideoRefElement, videoRef2: VideoRefElement) => {
-      screenPlayer.setRefs(videoRef1, videoRef2)
+    (
+      container: PlayerContainerType,
+      videoRef1: VideoRefElementType,
+      videoRef2: VideoRefElementType
+    ) => {
+      screenPlayer.setRefs(container, videoRef1, videoRef2)
 
       // eslint-disable-next-line no-console
       console.log('📺 useScreenService init')
@@ -41,5 +48,6 @@ export const useScreenService = () => {
     playPauseScreen,
     setCurrentSource,
     setNextSource,
+    requestFullScreen,
   }
 }

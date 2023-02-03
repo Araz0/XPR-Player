@@ -20,4 +20,5 @@ export type sequenceOptionsType = {
   videoSrc: string
   isDefault?: boolean
 }
-export type VideoRefElement = React.RefObject<HTMLVideoElement> | undefined
+export type VideoRefElementType = React.RefObject<HTMLVideoElement> | undefined
+export type PlayerContainerType = React.RefObject<HTMLDivElement> | undefined

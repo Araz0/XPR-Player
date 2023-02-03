@@ -1,12 +1,12 @@
 import { useCallback } from 'react'
 
-import { VideoRefElement } from '../../types'
+import { VideoRefElementType } from '../../types'
 import { VideoService } from './Video.service'
 
 const videoPlayer = new VideoService('C')
 
 export const useVideoService = () => {
-  const init = useCallback((videoElement: VideoRefElement) => {
+  const init = useCallback((videoElement: VideoRefElementType) => {
     videoPlayer.videoElement = videoElement
   }, [])
   const playVideo = useCallback(() => {
