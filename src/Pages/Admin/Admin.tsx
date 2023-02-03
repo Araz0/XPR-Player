@@ -2,14 +2,27 @@ import { memo } from 'react'
 
 import { io } from 'socket.io-client'
 
+import { EventNames } from '../../services'
+
 export const AdminRaw = () => {
-  const handleSendCommand = () => {
+  const handleStartProgram = () => {
     const socket = io('http://localhost:8000')
-    socket.emit('admin-Brodcast-start', 'new command sent from admin')
+    socket.emit(
+      EventNames.ADMIN_BRODCAST_START,
+      'admin requested program start'
+    )
+  }
+  const handelRequestFullscreen = () => {
+    const socket = io('http://localhost:8000')
+    socket.emit(
+      EventNames.ADMIN_BRODCAST_FULLSCREEN,
+      'admin requested fullscreen'
+    )
   }
   return (
     <>
-      <button onClick={handleSendCommand}>send command</button>
+      <button onClick={handleStartProgram}>start program</button>
+      <button onClick={handelRequestFullscreen}>request Fullscreen</button>
     </>
   )
 }

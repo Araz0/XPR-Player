@@ -40,4 +40,9 @@ io.on('connection', (socket) => {
   socket.on('admin-Brodcast-start', (args) => {
     socket.broadcast.emit('start-program', args)
   })
+  socket.on('admin-Brodcast-fullscreen', (args) => {
+    socket.broadcast.emit('request-fullscreen', args)
+    // eslint-disable-next-line no-console
+    console.log(`📺 - admin requested fullscreen`)
+  })
 })

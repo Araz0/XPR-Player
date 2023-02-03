@@ -3,6 +3,7 @@ import { memo, useCallback, useEffect, useRef } from 'react'
 import styled from 'styled-components'
 
 import { VideoPlayer } from '../../components'
+import { useDoubleKeyPress } from '../../hooks'
 import { useScreenService } from '../../services'
 
 const StyledScreenPlayerContainer = styled.div`
@@ -25,6 +26,8 @@ export const ScreenPageRaw = () => {
     playPauseScreen,
     requestFullScreen,
   } = useScreenService()
+
+  useDoubleKeyPress('f', () => requestFullScreen())
 
   useEffect(() => {
     init(playerContainerRef, videoRef1, videoRef2)

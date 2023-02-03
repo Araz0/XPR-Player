@@ -26,7 +26,8 @@ export const useScreenService = () => {
 
   const initSocket = useCallback(() => {
     clientSocket.onStart(playPauseScreen)
-  }, [playPauseScreen])
+    clientSocket.onRequestFullScreen(requestFullScreen)
+  }, [playPauseScreen, requestFullScreen])
 
   const init = useCallback(
     (
