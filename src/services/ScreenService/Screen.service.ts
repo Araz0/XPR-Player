@@ -5,7 +5,6 @@ export class ScreenService {
   private _player1: VideoService
   private _player2: VideoService
   private _containerRef: PlayerContainerType
-  // private _selectedPlayer: VideoService
   private _selectedPID: string
 
   constructor(
@@ -34,14 +33,12 @@ export class ScreenService {
     this.removeListners(this._player1)
     this.removeListners(this._player2)
   }
-  private currentPlayer = () => {
-    // todo: set return type as :VideoService
+  private currentPlayer() {
     return this._selectedPID === this._player1.id
       ? this._player1
       : this._player2
   }
-  private nextPlayer = () => {
-    // todo: set return type as :VideoService
+  private nextPlayer() {
     return this._selectedPID === this._player1.id
       ? this._player2
       : this._player1
@@ -69,15 +66,12 @@ export class ScreenService {
     this._containerRef?.current.requestFullscreen()
   }
   public playNext = () => {
-    // pause current player
     this.currentPlayer().pause()
-    // show next player
     this.nextPlayer().show()
-    // hide & reset current player
+    this.nextPlayer().play()
     this.currentPlayer().hide()
     this.currentPlayer().resetPlayer()
-    // play next player
-    this.nextPlayer().play()
+    this.setCurrentAsNextPlayer()
   }
   public setCurrentSource = (src: string) => {
     this.currentPlayer().setSource(src)
@@ -90,25 +84,23 @@ export class ScreenService {
     console.log('🛑 ended - ', player.id)
 
     this.playNext()
-
-    // toggle current and next players
-    this.setCurrentAsNextPlayer()
   }
   private onPlayerUpdate = (player: VideoService) => {
     if (player.id !== this.currentPlayer().id) return
 
     if (player.getDuration() - 2 <= player.getCurrentTime()) {
-      //last two seconds
+      // in the last two seconds
       // todo:
+      // maybe set external service to handle reading the program and feed it to here:
       // set next source to next player
 
-      console.log('📈 timeupdate - ', player.id)
+      console.log('📈 timeupdate - player Id:', player.id)
     }
   }
 
   private setListners = (player: VideoService) => {
     if (!player.videoElement?.current) return
-    console.log('🪄 setListners')
+    console.log('🪄 setListners on video player')
 
     player.videoElement.current.addEventListener('ended', (e: any) => {
       this.onPlayerEnded(player)
