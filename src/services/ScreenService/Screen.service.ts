@@ -26,7 +26,7 @@ export class ScreenService {
     this._containerRef = container
     this._player1.videoElement = ref1
     this._player2.videoElement = ref2
-    this.nextPlayer().setDisplayHide()
+    this.nextPlayer().hide()
     this.setListners(this._player1)
     this.setListners(this._player2)
   }
@@ -72,9 +72,9 @@ export class ScreenService {
     // pause current player
     this.currentPlayer().pause()
     // show next player
-    this.nextPlayer().setDisplayBlock()
+    this.nextPlayer().show()
     // hide & reset current player
-    this.currentPlayer().setDisplayHide()
+    this.currentPlayer().hide()
     this.currentPlayer().resetPlayer()
     // play next player
     this.nextPlayer().play()

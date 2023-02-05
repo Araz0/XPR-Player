@@ -57,15 +57,13 @@ export class VideoService {
     )
   }
 
-  public setDisplayHide = () => {
+  public hide = () => {
     if (!this._videoElement?.current) return
-    // this._videoElement.current.style.display = 'none'
-    this._videoElement.current.style.zIndex = '-1'
+    this._videoElement.current.style.display = 'none'
   }
-  public setDisplayBlock = () => {
+  public show = () => {
     if (!this._videoElement?.current) return
-    // this._videoElement.current.style.display = 'block'
-    this._videoElement.current.style.zIndex = '+1'
+    this._videoElement.current.style.display = 'block'
   }
 
   public resetPlayer = () => {
