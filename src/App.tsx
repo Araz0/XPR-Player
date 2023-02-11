@@ -1,14 +1,15 @@
 import { Routes, Route } from 'react-router-dom'
 
-import { Admin, Home, ScreenPage } from './Pages'
+import { AdminPage, Home, ScreenPage } from './Pages'
 
 function App() {
   return (
     <Routes>
-      <Route path="app/:screenId/*" element={<ScreenPage />} />
-      <Route path="home" element={<Home />} />
-      <Route path="admin" element={<Admin />} />
       <Route index element={<ScreenPage />} />
+      <Route path="home" element={<Home />} />
+      <Route path="app/:screenId/*" element={<ScreenPage />} />
+      <Route path="admin" element={<AdminPage />} />
+      <Route path="admin/create" element={<AdminPage />} />
     </Routes>
   )
 }
