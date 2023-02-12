@@ -2,6 +2,7 @@ import { memo } from 'react'
 
 import styled from 'styled-components'
 
+import { program } from '../../fakeProgram'
 import { TreeListItem } from '../TreeListItem'
 import './style.css'
 
@@ -14,10 +15,13 @@ export const TreeListRaw = () => {
     <>
       <div className="familyTree">
         <StyledUl>
-          <TreeListItem title={'Program Start'} />
+          <TreeListItem title={'Intro'}>
+            {program.sequences.map((seq) => {
+              return <TreeListItem title={seq.title} />
+            })}
+          </TreeListItem>
         </StyledUl>
       </div>
-      <div id="graphy"></div>
     </>
   )
 }

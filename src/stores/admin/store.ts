@@ -6,7 +6,7 @@ export type AdminState = {
 }
 
 export const useAdminStore = create<AdminState>((set) => ({
-  canEditTreeMap: false,
+  canEditTreeMap: true,
   setCanEditTreeMap: (canEditTreeMap: boolean) =>
     set(() => ({ canEditTreeMap })),
 }))

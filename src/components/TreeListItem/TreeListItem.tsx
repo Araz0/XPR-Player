@@ -3,27 +3,36 @@ import { memo, useCallback, useState } from 'react'
 import { useAdminStore } from '../../stores'
 export type TreeListItemProps = {
   title?: string
+  body?: string
+  children?: JSX.Element[]
 }
-export const TreeListItemRaw = ({ title }: TreeListItemProps) => {
-  const [children, setChildren] = useState<JSX.Element[]>([])
+export const TreeListItemRaw = ({
+  title,
+  body,
+  children,
+}: TreeListItemProps) => {
+  const [childrenE, setChildrenE] = useState<JSX.Element[]>(children || [])
   const canEditTreeMap = useAdminStore((s) => s.canEditTreeMap)
 
   const handleAddChild = useCallback(() => {
-    setChildren([...children, <TreeListItem key={children.length} />])
-  }, [children])
+    setChildrenE([
+      ...childrenE,
+      <TreeListItem key={childrenE.length} title={'some item'} />,
+    ])
+  }, [childrenE])
 
   return (
     <li>
       <article>
         {title && <span>{title}</span>}
-        <p>Lorem ipsum dolor</p>
+        {body && <p>{body}</p>}
         <div>
           {canEditTreeMap && (
             <button onClick={handleAddChild}>add child</button>
           )}
         </div>
       </article>
-      {children.length > 0 && <ul>{children}</ul>}
+      {childrenE.length > 0 && <ul>{childrenE}</ul>}
     </li>
   )
 }
