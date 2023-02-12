@@ -1,23 +1,37 @@
 /*Now the CSS*/
-* {margin: 0; padding: 0;}
+.familyTree {
+  --itemTextColor: #eee;
+  --borderColor: #afafaf;
+  --treansitionSpeed: 0.3s;
 
+  display: flex;
+  justify-content: center;
+}
+.familyTree, .familyTree * {
+  margin: 0;
+  padding: 0;
+}
 .familyTree ul {
 	padding-top: 20px; position: relative;
-	
-	transition: all 0.5s;
-	-webkit-transition: all 0.5s;
-	-moz-transition: all 0.5s;
+
+  overflow: auto;
+  white-space: nowrap;
+
+	transition: all var(--treansitionSpeed);
+	-webkit-transition: all var(--treansitionSpeed);
+	-moz-transition: all var(--treansitionSpeed);
 }
 
 .familyTree li {
-	float: left; text-align: center;
+  display: inline-table;
+  text-align: center;
 	list-style-type: none;
 	position: relative;
 	padding: 20px 5px 0 5px;
 	
-	transition: all 0.5s;
-	-webkit-transition: all 0.5s;
-	-moz-transition: all 0.5s;
+	transition: all var(--treansitionSpeed);
+	-webkit-transition: all var(--treansitionSpeed);
+	-moz-transition: all var(--treansitionSpeed);
 }
 
 /*We will use ::before and ::after to draw the connectors*/
@@ -25,12 +39,12 @@
 .familyTree li::before, .familyTree li::after{
 	content: '';
 	position: absolute; top: 0; right: 50%;
-	border-top: 1px solid #ccc;
+	border-top: 1px solid var(--borderColor);
 	width: 50%; height: 20px;
 }
 .familyTree li::after{
 	right: auto; left: 50%;
-	border-left: 1px solid #ccc;
+	border-left: 1px solid var(--borderColor);
 }
 
 /*We need to remove left-right connectors from elements without 
@@ -49,7 +63,7 @@ right connector from last child*/
 }
 /*Adding back the vertical connector to the last nodes*/
 .familyTree li:last-child::before{
-	border-right: 1px solid #ccc;
+	border-right: 1px solid var(--borderColor);
 	border-radius: 0 5px 0 0;
 	-webkit-border-radius: 0 5px 0 0;
 	-moz-border-radius: 0 5px 0 0;
@@ -64,15 +78,15 @@ right connector from last child*/
 .familyTree ul ul::before{
 	content: '';
 	position: absolute; top: 0; left: 50%;
-	border-left: 1px solid #ccc;
+	border-left: 1px solid var(--borderColor);
 	width: 0; height: 20px;
 }
 
-.familyTree li a{
-	border: 1px solid #ccc;
+.familyTree li article{
+	border: 1px solid var(--borderColor);
 	padding: 5px 10px;
-	text-decoration: none;
-	color: #666;
+	/* text-decoration: none; */
+	color: var(--itemTextColor);
 	font-family: arial, verdana, tahoma;
 	font-size: 11px;
 	display: inline-block;
@@ -81,9 +95,9 @@ right connector from last child*/
 	-webkit-border-radius: 5px;
 	-moz-border-radius: 5px;
 	
-	transition: all 0.5s;
-	-webkit-transition: all 0.5s;
-	-moz-transition: all 0.5s;
+	transition: all var(--treansitionSpeed);
+	-webkit-transition: all var(--treansitionSpeed);
+	-moz-transition: all var(--treansitionSpeed);
 }
 
 /*Time for some hover effects*/

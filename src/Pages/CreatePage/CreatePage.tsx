@@ -1,15 +1,18 @@
-import { memo, useState } from 'react'
+import { memo } from 'react'
 
 import { TreeList } from '../../components'
+import { useAdminStore } from '../../stores'
 
 export const CreatePageRaw = () => {
-  const [treeIsEditable, setTreeIsEditable] = useState<boolean>(true)
+  const setCanEditTreeMap = useAdminStore((s) => s.setCanEditTreeMap)
+  const canEditTreeMap = useAdminStore((s) => s.canEditTreeMap)
+
   return (
     <>
-      <button onClick={() => setTreeIsEditable(!treeIsEditable)}>
+      <button onClick={() => setCanEditTreeMap(!canEditTreeMap)}>
         toggle edit
       </button>
-      <TreeList editable={treeIsEditable} />
+      <TreeList />
     </>
   )
 }
