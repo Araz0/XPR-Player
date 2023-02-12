@@ -1,24 +1,31 @@
-import { programType } from './types'
+import { ProgramType } from './types'
 
-export const program: programType = {
+export const program: ProgramType = {
   title: 'Program Title',
-  screens: [
+  sequences: [
     {
-      id: 1,
-      title: 'screen1',
-      sequences: [
+      title: '#1 sequence',
+      screens: [
         {
-          id: 1,
-          name: 'the intro',
-          videoSrc: '/media/102.mp4',
+          title: 'screen1',
+          mediaSrc: '/60fps_Tester.mp4',
         },
         {
-          id: 2,
-          name: 'what now',
-          options: [
-            { videoSrc: '/media/102.mp4' },
-            { videoSrc: '/media/103.mp4', isDefault: true },
-          ],
+          title: 'screen2',
+          mediaSrc: '/videocodec.mp4',
+        },
+      ],
+    },
+    {
+      title: '#2 sequence',
+      screens: [
+        {
+          title: 'screen2',
+          mediaSrc: '/videocodec.mp4',
+        },
+        {
+          title: 'screen1',
+          mediaSrc: '/60fps_Tester.mp4',
         },
       ],
     },

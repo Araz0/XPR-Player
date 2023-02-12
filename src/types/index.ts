@@ -1,24 +1,18 @@
-export type programType = {
+export type ProgramType = {
   title: string
-  screens: screenType[]
-  audio?: string
+  sequences: SequenceType[]
 }
-export type screenType = {
-  id: number
+export type SequenceType = {
+  screens: ScreenType[]
+  id?: number
+  title?: string
+  next?: SequenceType[]
+  globalAudio?: string
+}
+export type ScreenType = {
   title: string
-  sequences: sequenceType[]
-  config?: Record<string, unknown> // WIP
+  mediaSrc: string
 }
 
-export type sequenceType = {
-  id: number
-  name: string
-  videoSrc?: string
-  options?: sequenceOptionsType[]
-}
-export type sequenceOptionsType = {
-  videoSrc: string
-  isDefault?: boolean
-}
 export type VideoRefElementType = React.RefObject<HTMLVideoElement> | undefined
 export type PlayerContainerType = React.RefObject<HTMLDivElement> | undefined
