@@ -4,6 +4,22 @@ export const program: ProgramType = {
   title: 'Program Title',
   segments: [
     {
+      id: 'ajssa4s65f3',
+      title: 'Intro',
+      isIntro: true,
+      screens: [
+        {
+          title: 'screen1',
+          mediaSrc: '/60fps_Tester.mp4',
+        },
+        {
+          title: 'screen2',
+          mediaSrc: '/videocodec.mp4',
+        },
+      ],
+    },
+    {
+      id: 'ajssa654s65f3',
       title: '#1 sequence',
       screens: [
         {
@@ -17,6 +33,7 @@ export const program: ProgramType = {
       ],
     },
     {
+      id: 'ds65dsa654dsadsa654dsa',
       title: '#2 sequence',
       screens: [
         {

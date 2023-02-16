@@ -3,7 +3,9 @@ import { memo } from 'react'
 import styled from 'styled-components'
 
 import { program } from '../../fakeProgram'
-import { TreeListItem } from '../TreeListItem'
+import { getIntroSegment } from '../../utils'
+import { TreeItem } from '../TreeItem'
+
 import './style.css'
 
 const StyledUl = styled.ul`
@@ -11,15 +13,17 @@ const StyledUl = styled.ul`
 `
 
 export const TreeListRaw = () => {
+  const intro = getIntroSegment(program.segments)
+  if (!intro) return null
   return (
     <>
       <div className="familyTree">
         <StyledUl>
-          <TreeListItem title={'Intro'}>
-            {program.segments.map((seg) => {
-              return <TreeListItem title={seg.title} />
+          <TreeItem title={intro.title}>
+            {program.segments.map((seg, idx) => {
+              return <TreeItem key={idx} title={seg.title} />
             })}
-          </TreeListItem>
+          </TreeItem>
         </StyledUl>
       </div>
     </>
