@@ -3,10 +3,12 @@ export type ProgramType = {
   segments: SegmentType[]
 }
 export type SegmentType = {
+  id: string
+  title: string
+  description?: string
   screens: ScreenType[]
-  id?: number
-  title?: string
-  next?: SegmentType[]
+  isIntro?: boolean
+  nextSegmentIds?: string[]
   globalAudio?: string
 }
 export type ScreenType = {
