@@ -1,8 +1,9 @@
-import { memo } from 'react'
+import { memo, useEffect, useState } from 'react'
 
 import styled from 'styled-components'
 
-import { program } from '../../fakeProgram'
+import { useAdminStore } from '../../stores'
+import { SegmentType } from '../../types'
 import { getIntroSegment } from '../../utils'
 import { TreeItem } from '../TreeItem'
 
@@ -13,17 +14,25 @@ const StyledUl = styled.ul`
 `
 
 export const TreeListRaw = () => {
-  const intro = getIntroSegment(program.segments)
-  if (!intro) return null
+  const program = useAdminStore((s) => s.program)
+  console.log('🚀 ~ file: TreeList.tsx:18 ~ TreeListRaw ~ program', program)
+  const [introSegment, setIntroSegment] = useState<SegmentType | undefined>(
+    undefined
+  )
+
+  useEffect(() => {
+    if (!program) return
+    const intro = getIntroSegment(program.segments)
+    if (!intro) return
+    setIntroSegment(intro)
+  }, [program])
+
+  if (!introSegment) return null
   return (
     <>
       <div className="familyTree">
         <StyledUl>
-          <TreeItem title={intro.title}>
-            {program.segments.map((seg, idx) => {
-              return <TreeItem key={idx} title={seg.title} />
-            })}
-          </TreeItem>
+          <TreeItem segmentId={introSegment.id}></TreeItem>
         </StyledUl>
       </div>
     </>

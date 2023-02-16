@@ -1,12 +1,20 @@
-import { memo, useCallback, useState } from 'react'
+import { memo, useCallback, useEffect, useState } from 'react'
 
 import styled from 'styled-components'
 
-import { AddToQueue, Add, ExpandMore, ExpandLess } from '@mui/icons-material'
+import {
+  AddToQueue,
+  Add,
+  ExpandMore,
+  ExpandLess,
+  CopyAll,
+} from '@mui/icons-material'
 import { Box, IconButton, InputBase, Typography } from '@mui/material'
 
+import { useProgram } from '../../hooks'
 import { useAdminStore } from '../../stores'
 import { ScreenType, SegmentType } from '../../types'
+import { getSegmentById } from '../../utils'
 
 const StyledInputBase = styled(InputBase)`
   font-size: 14px;
@@ -27,40 +35,40 @@ const StyledScreenVideo = styled.video`
   width: 150px;
 `
 export type TreeItemProps = {
-  title?: string
-  body?: string
-  children?: JSX.Element[]
-  segment?: SegmentType
+  segmentId: string
 }
-export const TreeItemRaw = ({ title, body, children }: TreeItemProps) => {
-  const [childrenE, setChildrenE] = useState<JSX.Element[]>(children || [])
-  const canEditTreeMap = useAdminStore((s) => s.canEditTreeMap)
+export const TreeItemRaw = ({ segmentId }: TreeItemProps) => {
+  const { addNextSegment } = useProgram()
+  const program = useAdminStore((s) => s.program)
+  const [segment, setSegment] = useState<SegmentType | undefined>(undefined)
   const [showMore, setShowMore] = useState<boolean>(false)
+  const canEditTreeMap = useAdminStore((s) => s.canEditTreeMap)
   const [screenSources, setScreenSources] = useState<ScreenType[]>([])
 
-  const handleAddChild = useCallback(() => {
-    setChildrenE([
-      ...childrenE,
-      <TreeItem key={childrenE.length} title={'some item'} />,
-    ])
-  }, [childrenE])
+  useEffect(() => {
+    if (!program) return
+    const foundSegment = getSegmentById(program, segmentId)
+    if (!foundSegment) return
+    setSegment(foundSegment)
+  }, [program, segmentId])
 
   const handleImportScreen = useCallback((e: any) => {
     const screen = {
       title: 'screen title',
       mediaSrc: e.target.files[0].name,
     }
-    console.log(
-      '🚀 ~ file: TreeItem.tsx:47 ~ handleImportScreen ~ e.target.files[0]',
-      e.target.files[0]
-    )
     setScreenSources((prev) => [...prev, screen])
   }, [])
+
+  const handleAddChild = useCallback(() => {
+    addNextSegment(segmentId, 'new cool segment')
+  }, [addNextSegment, segmentId])
 
   const handleShowMore = useCallback(() => {
     setShowMore(!showMore)
   }, [showMore])
 
+  if (!segment) return null
   return (
     <li>
       <article>
@@ -69,28 +77,26 @@ export const TreeItemRaw = ({ title, body, children }: TreeItemProps) => {
             <>
               <StyledInputBase
                 placeholder={'segment title'}
-                defaultValue={title && title}
+                defaultValue={segment.title}
               />
               <StyledInputBase
                 placeholder={'segment description'}
-                defaultValue={body && body}
+                defaultValue={segment.description && segment.description}
               />
             </>
           ) : (
             <>
-              {title && (
-                <Typography
-                  variant="overline"
-                  display="block"
-                  gutterBottom
-                  lineHeight={1}
-                >
-                  {title}
-                </Typography>
-              )}
-              {body && (
+              <Typography
+                variant="overline"
+                display="block"
+                gutterBottom
+                lineHeight={1}
+              >
+                {segment.title}
+              </Typography>
+              {segment.description && (
                 <Typography variant="overline" display="block" gutterBottom>
-                  {body}
+                  {segment.description || 'no description'}
                 </Typography>
               )}
             </>
@@ -126,10 +132,37 @@ export const TreeItemRaw = ({ title, body, children }: TreeItemProps) => {
             <IconButton onClick={handleShowMore}>
               {showMore ? <ExpandLess /> : <ExpandMore />}
             </IconButton>
+            <IconButton
+              onClick={() => navigator.clipboard.writeText(segment.id)}
+            >
+              <CopyAll />
+            </IconButton>
           </StyledBox>
         )}
+        <Typography
+          variant="overline"
+          display="block"
+          gutterBottom
+          lineHeight={1}
+        >
+          {segment.id}
+        </Typography>
+        <Typography
+          variant="overline"
+          display="block"
+          gutterBottom
+          lineHeight={1}
+        >
+          {segment.nextSegmentIds?.join(', ')}
+        </Typography>
       </article>
-      {childrenE.length > 0 && <ul>{childrenE}</ul>}
+      {segment.nextSegmentIds && (
+        <ul>
+          {segment.nextSegmentIds?.map((id, idx) => {
+            return <TreeItem key={idx} segmentId={id} />
+          })}
+        </ul>
+      )}
     </li>
   )
 }
