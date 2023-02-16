@@ -4,7 +4,7 @@ export const program: ProgramType = {
   title: 'Program Title',
   segments: [
     {
-      id: 'ajssa4s65f3',
+      id: '87897156',
       title: 'Intro',
       isIntro: true,
       screens: [
@@ -17,9 +17,10 @@ export const program: ProgramType = {
           mediaSrc: '/videocodec.mp4',
         },
       ],
+      nextSegmentIds: ['65465465', '65465465465', '654654'],
     },
     {
-      id: 'ajssa654s65f3',
+      id: '65465465',
       title: '#1 sequence',
       screens: [
         {
@@ -33,7 +34,7 @@ export const program: ProgramType = {
       ],
     },
     {
-      id: 'ds65dsa654dsadsa654dsa',
+      id: '65465465465',
       title: '#2 sequence',
       screens: [
         {
@@ -45,6 +46,21 @@ export const program: ProgramType = {
           mediaSrc: '/60fps_Tester.mp4',
         },
       ],
+    },
+    {
+      id: '654654',
+      title: 'doubled',
+      screens: [
+        {
+          title: 'screen1',
+          mediaSrc: '/60fps_Tester.mp4',
+        },
+        {
+          title: 'screen2',
+          mediaSrc: '/videocodec.mp4',
+        },
+      ],
+      nextSegmentIds: ['65465465', '65465465465'],
     },
   ],
 }
