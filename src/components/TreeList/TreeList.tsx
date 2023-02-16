@@ -16,8 +16,8 @@ export const TreeListRaw = () => {
       <div className="familyTree">
         <StyledUl>
           <TreeListItem title={'Intro'}>
-            {program.sequences.map((seq) => {
-              return <TreeListItem title={seq.title} />
+            {program.segments.map((seg) => {
+              return <TreeListItem title={seg.title} />
             })}
           </TreeListItem>
         </StyledUl>

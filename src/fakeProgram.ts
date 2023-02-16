@@ -2,7 +2,7 @@ import { ProgramType } from './types'
 
 export const program: ProgramType = {
   title: 'Program Title',
-  sequences: [
+  segments: [
     {
       title: '#1 sequence',
       screens: [

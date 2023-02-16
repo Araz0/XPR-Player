@@ -1,12 +1,12 @@
 export type ProgramType = {
   title: string
-  sequences: SequenceType[]
+  segments: SegmentType[]
 }
-export type SequenceType = {
+export type SegmentType = {
   screens: ScreenType[]
   id?: number
   title?: string
-  next?: SequenceType[]
+  next?: SegmentType[]
   globalAudio?: string
 }
 export type ScreenType = {

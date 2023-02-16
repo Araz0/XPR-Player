@@ -1,10 +1,12 @@
 import { memo, useCallback, useState } from 'react'
 
 import { useAdminStore } from '../../stores'
+import { SegmentType } from '../../types'
 export type TreeListItemProps = {
   title?: string
   body?: string
   children?: JSX.Element[]
+  segment?: SegmentType
 }
 export const TreeListItemRaw = ({
   title,
