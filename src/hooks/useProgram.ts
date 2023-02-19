@@ -76,11 +76,40 @@ export const useProgram = () => {
     [program, setProgram]
   )
 
+  // custom hook to get segment and remove it from the segments array of program
+  const removeSegment = useCallback(
+    (segmentId: string) => {
+      if (!program) return
+      const updatedSegments = program.segments.map((segment) => {
+        if (
+          segment.id !== segmentId &&
+          segment.nextSegmentIds &&
+          segment.nextSegmentIds.includes(segmentId)
+        ) {
+          return {
+            ...segment,
+            nextSegmentIds: segment.nextSegmentIds.filter(
+              (id) => id !== segmentId
+            ),
+          }
+        }
+        return segment
+      })
+
+      setProgram({
+        ...program,
+        segments: [...updatedSegments],
+      })
+    },
+    [program, setProgram]
+  )
+
   return {
     getSegmentById,
     addNextSegment,
     addSegment,
     addScreenToSegment,
     updateSegment,
+    removeSegment,
   }
 }

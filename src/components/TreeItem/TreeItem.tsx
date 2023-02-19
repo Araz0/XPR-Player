@@ -10,6 +10,7 @@ import {
   CopyAll,
   Edit,
   Save,
+  Delete,
 } from '@mui/icons-material'
 import { Box, IconButton, InputBase, Typography } from '@mui/material'
 
@@ -45,8 +46,13 @@ export const TreeItemRaw = ({ segmentId }: TreeItemProps) => {
   const [canEdit, setCanEdit] = useState<boolean>(false)
   const [showMore, setShowMore] = useState<boolean>(false)
   const [segment, setSegment] = useState<SegmentType | undefined>(undefined)
-  const { addNextSegment, getSegmentById, addScreenToSegment, updateSegment } =
-    useProgram()
+  const {
+    addNextSegment,
+    getSegmentById,
+    addScreenToSegment,
+    updateSegment,
+    removeSegment,
+  } = useProgram()
 
   useEffect(() => {
     const foundSegment = getSegmentById(segmentId)
@@ -88,6 +94,10 @@ export const TreeItemRaw = ({ segmentId }: TreeItemProps) => {
     }
     updateSegment(updatedSeg)
   }, [segment, updateSegment])
+
+  const handleDelete = useCallback(() => {
+    removeSegment(segmentId)
+  }, [removeSegment, segmentId])
 
   if (!segment) return null
   return (
@@ -165,6 +175,9 @@ export const TreeItemRaw = ({ segmentId }: TreeItemProps) => {
           )}
           {canEdit && (
             <>
+              <IconButton onClick={handleDelete}>
+                <Delete />
+              </IconButton>
               <IconButton onClick={handleAddChild}>
                 <Add />
               </IconButton>
