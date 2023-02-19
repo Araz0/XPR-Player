@@ -19,6 +19,22 @@ export type EditableLabelProps = {
   text?: string
   placeHolder?: string
   lineHeight?: number
+  typographyVariant?:
+    | 'button'
+    | 'caption'
+    | 'h1'
+    | 'h2'
+    | 'h3'
+    | 'h4'
+    | 'h5'
+    | 'h6'
+    | 'subtitle1'
+    | 'subtitle2'
+    | 'body1'
+    | 'body2'
+    | 'overline'
+    | 'inherit'
+    | undefined
 }
 export const EditableLabelRaw = ({
   inputRef,
@@ -26,6 +42,7 @@ export const EditableLabelRaw = ({
   text,
   placeHolder,
   lineHeight,
+  typographyVariant,
 }: EditableLabelProps) => {
   return (
     <StyledFlexedContainer>
@@ -37,7 +54,7 @@ export const EditableLabelRaw = ({
         />
       ) : (
         <Typography
-          variant="overline"
+          variant={typographyVariant ? typographyVariant : 'overline'}
           display="block"
           lineHeight={lineHeight ? lineHeight : undefined}
           gutterBottom

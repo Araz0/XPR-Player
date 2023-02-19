@@ -2,6 +2,8 @@ import { memo, useCallback } from 'react'
 
 import styled from 'styled-components'
 
+import { Typography } from '@mui/material'
+
 import { useProgram } from '../../hooks'
 import { SegmentType } from '../../types'
 import { iconTypes, SmallIconButton } from '../SmallIconButton'
@@ -40,23 +42,32 @@ export const SegmentScreensRaw = ({
     [removeSegmentScreen, segment]
   )
   return (
-    <StyledContainer>
-      {segment.screens.map((screen, idx) => {
-        return (
-          <StyledVideoContainer key={idx}>
-            {canEdit && (
-              <StyledActionsContainer>
-                <SmallIconButton
-                  onClick={() => handleDeleteScreen(screen.id)}
-                  icon={iconTypes.DELETE}
-                />
-              </StyledActionsContainer>
-            )}
-            <StyledScreenVideo src={screen.mediaSrc} controls />
-          </StyledVideoContainer>
-        )
-      })}
-    </StyledContainer>
+    <>
+      <Typography variant="overline" lineHeight={1} gutterBottom>
+        screens:
+      </Typography>
+      <StyledContainer>
+        {segment.screens.map((screen, idx) => {
+          return (
+            <StyledVideoContainer key={idx}>
+              {canEdit && (
+                <StyledActionsContainer>
+                  <SmallIconButton
+                    onClick={() => alert(screen.title)}
+                    icon={iconTypes.INFO}
+                  />
+                  <SmallIconButton
+                    onClick={() => handleDeleteScreen(screen.id)}
+                    icon={iconTypes.DELETE}
+                  />
+                </StyledActionsContainer>
+              )}
+              <StyledScreenVideo src={screen.mediaSrc} controls />
+            </StyledVideoContainer>
+          )
+        })}
+      </StyledContainer>
+    </>
   )
 }
 export const SegmentScreens = memo(SegmentScreensRaw)
