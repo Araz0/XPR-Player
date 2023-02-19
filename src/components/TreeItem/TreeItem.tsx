@@ -14,7 +14,6 @@ import { Box, IconButton, InputBase, Typography } from '@mui/material'
 import { useProgram } from '../../hooks'
 import { useAdminStore } from '../../stores'
 import { ScreenType, SegmentType } from '../../types'
-import { getSegmentById } from '../../utils'
 
 const StyledInputBase = styled(InputBase)`
   font-size: 14px;
@@ -38,19 +37,17 @@ export type TreeItemProps = {
   segmentId: string
 }
 export const TreeItemRaw = ({ segmentId }: TreeItemProps) => {
-  const { addNextSegment } = useProgram()
-  const program = useAdminStore((s) => s.program)
+  const { addNextSegment, getSegmentById } = useProgram()
   const [segment, setSegment] = useState<SegmentType | undefined>(undefined)
   const [showMore, setShowMore] = useState<boolean>(false)
   const canEditTreeMap = useAdminStore((s) => s.canEditTreeMap)
   const [screenSources, setScreenSources] = useState<ScreenType[]>([])
 
   useEffect(() => {
-    if (!program) return
-    const foundSegment = getSegmentById(program, segmentId)
+    const foundSegment = getSegmentById(segmentId)
     if (!foundSegment) return
     setSegment(foundSegment)
-  }, [program, segmentId])
+  }, [getSegmentById, segmentId])
 
   const handleImportScreen = useCallback((e: any) => {
     const screen = {
@@ -153,7 +150,7 @@ export const TreeItemRaw = ({ segmentId }: TreeItemProps) => {
           gutterBottom
           lineHeight={1}
         >
-          {segment.nextSegmentIds?.join(', ')}
+          {segment.nextSegmentIds ? segment.nextSegmentIds.join(', ') : ' - '}
         </Typography>
       </article>
       {segment.nextSegmentIds && (
