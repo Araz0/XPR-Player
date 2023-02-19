@@ -1,4 +1,4 @@
-import { memo, useCallback, useEffect, useState } from 'react'
+import { memo, useCallback, useEffect, useRef, useState } from 'react'
 
 import styled from 'styled-components'
 
@@ -8,12 +8,14 @@ import {
   ExpandMore,
   ExpandLess,
   CopyAll,
+  Edit,
+  Save,
 } from '@mui/icons-material'
 import { Box, IconButton, InputBase, Typography } from '@mui/material'
 
 import { useProgram } from '../../hooks'
 import { useAdminStore } from '../../stores'
-import { ScreenType, SegmentType } from '../../types'
+import { SegmentType } from '../../types'
 
 const StyledInputBase = styled(InputBase)`
   font-size: 14px;
@@ -37,11 +39,14 @@ export type TreeItemProps = {
   segmentId: string
 }
 export const TreeItemRaw = ({ segmentId }: TreeItemProps) => {
-  const { addNextSegment, getSegmentById } = useProgram()
-  const [segment, setSegment] = useState<SegmentType | undefined>(undefined)
-  const [showMore, setShowMore] = useState<boolean>(false)
+  const titleRef = useRef<HTMLInputElement>()
+  const descriptionRef = useRef<HTMLInputElement>()
   const canEditTreeMap = useAdminStore((s) => s.canEditTreeMap)
-  const [screenSources, setScreenSources] = useState<ScreenType[]>([])
+  const [canEdit, setCanEdit] = useState<boolean>(false)
+  const [showMore, setShowMore] = useState<boolean>(false)
+  const [segment, setSegment] = useState<SegmentType | undefined>(undefined)
+  const { addNextSegment, getSegmentById, addScreenToSegment, updateSegment } =
+    useProgram()
 
   useEffect(() => {
     const foundSegment = getSegmentById(segmentId)
@@ -49,34 +54,55 @@ export const TreeItemRaw = ({ segmentId }: TreeItemProps) => {
     setSegment(foundSegment)
   }, [getSegmentById, segmentId])
 
-  const handleImportScreen = useCallback((e: any) => {
-    const screen = {
-      title: 'screen title',
-      mediaSrc: e.target.files[0].name,
-    }
-    setScreenSources((prev) => [...prev, screen])
-  }, [])
+  const handleImportScreen = useCallback(
+    (e: any) => {
+      const screen = {
+        title: 'screen title',
+        mediaSrc: e.target.files[0].name,
+      }
+      addScreenToSegment(segmentId, screen)
+    },
+    [addScreenToSegment, segmentId]
+  )
 
   const handleAddChild = useCallback(() => {
     addNextSegment(segmentId, 'new cool segment')
   }, [addNextSegment, segmentId])
 
-  const handleShowMore = useCallback(() => {
+  const handleToggleShowMore = useCallback(() => {
     setShowMore(!showMore)
   }, [showMore])
+
+  const handleToggleEdit = useCallback(() => {
+    setCanEdit(!canEdit)
+  }, [canEdit])
+
+  const handleSave = useCallback(() => {
+    const title = titleRef.current?.value
+    const description = descriptionRef.current?.value
+    if (!segment || !title) return
+    const updatedSeg = {
+      ...segment,
+      title: title,
+      description: description,
+    }
+    updateSegment(updatedSeg)
+  }, [segment, updateSegment])
 
   if (!segment) return null
   return (
     <li>
       <article>
         <StyledVerticalBox>
-          {canEditTreeMap ? (
+          {canEdit ? (
             <>
               <StyledInputBase
+                inputRef={titleRef}
                 placeholder={'segment title'}
                 defaultValue={segment.title}
               />
               <StyledInputBase
+                inputRef={descriptionRef}
                 placeholder={'segment description'}
                 defaultValue={segment.description && segment.description}
               />
@@ -100,7 +126,7 @@ export const TreeItemRaw = ({ segmentId }: TreeItemProps) => {
           )}
           {showMore && (
             <Box>
-              {screenSources.map((screen, idx) => {
+              {segment.screens.map((screen, idx) => {
                 return (
                   <StyledScreenVideo
                     key={idx}
@@ -109,49 +135,60 @@ export const TreeItemRaw = ({ segmentId }: TreeItemProps) => {
                   />
                 )
               })}
+              <Typography
+                variant="overline"
+                display="block"
+                gutterBottom
+                lineHeight={1}
+              >
+                {segment.id}
+              </Typography>
+              <Typography
+                variant="overline"
+                display="block"
+                gutterBottom
+                lineHeight={1}
+              >
+                {segment.nextSegmentIds
+                  ? segment.nextSegmentIds.join(', ')
+                  : ' - '}
+              </Typography>
             </Box>
           )}
         </StyledVerticalBox>
-        {canEditTreeMap && (
-          <StyledBox>
-            <IconButton onClick={handleAddChild}>
-              <Add />
+
+        <StyledBox>
+          {canEditTreeMap && (
+            <IconButton onClick={handleToggleEdit}>
+              <Edit />
             </IconButton>
-            <IconButton color="primary" component="label">
-              <input
-                hidden
-                accept="video/mp4"
-                type="file"
-                onChange={handleImportScreen}
-              />
-              <AddToQueue />
-            </IconButton>
-            <IconButton onClick={handleShowMore}>
-              {showMore ? <ExpandLess /> : <ExpandMore />}
-            </IconButton>
-            <IconButton
-              onClick={() => navigator.clipboard.writeText(segment.id)}
-            >
-              <CopyAll />
-            </IconButton>
-          </StyledBox>
-        )}
-        <Typography
-          variant="overline"
-          display="block"
-          gutterBottom
-          lineHeight={1}
-        >
-          {segment.id}
-        </Typography>
-        <Typography
-          variant="overline"
-          display="block"
-          gutterBottom
-          lineHeight={1}
-        >
-          {segment.nextSegmentIds ? segment.nextSegmentIds.join(', ') : ' - '}
-        </Typography>
+          )}
+          {canEdit && (
+            <>
+              <IconButton onClick={handleAddChild}>
+                <Add />
+              </IconButton>
+              <IconButton color="primary" component="label">
+                <input
+                  hidden
+                  accept="video/mp4"
+                  type="file"
+                  onChange={handleImportScreen}
+                />
+                <AddToQueue />
+              </IconButton>
+              <IconButton onClick={handleSave}>
+                <Save />
+              </IconButton>
+            </>
+          )}
+          <IconButton onClick={handleToggleShowMore}>
+            {showMore ? <ExpandLess /> : <ExpandMore />}
+          </IconButton>
+          <IconButton onClick={() => navigator.clipboard.writeText(segment.id)}>
+            <CopyAll />
+          </IconButton>
+        </StyledBox>
       </article>
       {segment.nextSegmentIds && (
         <ul>

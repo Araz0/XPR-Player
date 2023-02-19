@@ -1,7 +1,7 @@
 import { useCallback } from 'react'
 
 import { useAdminStore } from '../stores'
-import { SegmentType } from '../types'
+import { ScreenType, SegmentType } from '../types'
 
 export const useProgram = () => {
   const program = useAdminStore((s) => s.program)
@@ -26,6 +26,7 @@ export const useProgram = () => {
   )
   const addNextSegment = useCallback(
     (parentSegmentId: string, newSegmentTitle: string) => {
+      if (!program) return
       const parentSegment = getSegmentById(parentSegmentId)
       if (!parentSegment) return
       const newSegment = {
@@ -37,11 +38,49 @@ export const useProgram = () => {
         ? parentSegment.nextSegmentIds.push(newSegment.id)
         : (parentSegment.nextSegmentIds = [newSegment.id])
 
-      addSegment(parentSegment)
-      addSegment(newSegment)
+      const parentSegmentIndex = program.segments.findIndex(
+        (s) => s.id === parentSegment.id
+      )
+      const updatedSegments = [...program.segments]
+      updatedSegments[parentSegmentIndex] = parentSegment
+
+      setProgram({
+        ...program,
+        segments: [...updatedSegments, newSegment],
+      })
     },
-    [addSegment, getSegmentById]
+    [getSegmentById, program, setProgram]
+  )
+  const addScreenToSegment = useCallback(
+    (segmentId: string, screen: ScreenType) => {
+      const segment = getSegmentById(segmentId)
+      if (!segment) return
+      segment.screens.push(screen)
+    },
+    [getSegmentById]
+  )
+  const updateSegment = useCallback(
+    (segment: SegmentType) => {
+      if (!program) return
+      const segmentIndex = program.segments.findIndex(
+        (s) => s.id === segment.id
+      )
+      const updatedSegments = [...program.segments]
+      updatedSegments[segmentIndex] = segment
+
+      setProgram({
+        ...program,
+        segments: [...updatedSegments],
+      })
+    },
+    [program, setProgram]
   )
 
-  return { getSegmentById, addNextSegment, addSegment }
+  return {
+    getSegmentById,
+    addNextSegment,
+    addSegment,
+    addScreenToSegment,
+    updateSegment,
+  }
 }

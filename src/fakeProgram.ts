@@ -6,15 +6,17 @@ export const program: ProgramType = {
     {
       id: '87897156',
       title: 'Intro',
+      description:
+        'In the example, we use the useState hook to create a state variable',
       isIntro: true,
       screens: [
         {
           title: 'screen1',
-          mediaSrc: '/60fps_Tester.mp4',
+          mediaSrc: '60fps_Tester.mp4',
         },
         {
           title: 'screen2',
-          mediaSrc: '/videocodec.mp4',
+          mediaSrc: 'Audio Video Sync Test 60 FPS.mp4',
         },
       ],
       nextSegmentIds: ['65465465', '65465465465', '654654'],
@@ -25,11 +27,11 @@ export const program: ProgramType = {
       screens: [
         {
           title: 'screen1',
-          mediaSrc: '/60fps_Tester.mp4',
+          mediaSrc: '60fps_Tester.mp4',
         },
         {
           title: 'screen2',
-          mediaSrc: '/videocodec.mp4',
+          mediaSrc: 'Audio Video Sync Test 60 FPS.mp4',
         },
       ],
     },
@@ -39,11 +41,11 @@ export const program: ProgramType = {
       screens: [
         {
           title: 'screen2',
-          mediaSrc: '/videocodec.mp4',
+          mediaSrc: 'Audio Video Sync Test 60 FPS.mp4',
         },
         {
           title: 'screen1',
-          mediaSrc: '/60fps_Tester.mp4',
+          mediaSrc: '60fps_Tester.mp4',
         },
       ],
     },
@@ -53,11 +55,11 @@ export const program: ProgramType = {
       screens: [
         {
           title: 'screen1',
-          mediaSrc: '/60fps_Tester.mp4',
+          mediaSrc: '60fps_Tester.mp4',
         },
         {
           title: 'screen2',
-          mediaSrc: '/videocodec.mp4',
+          mediaSrc: 'Audio Video Sync Test 60 FPS.mp4',
         },
       ],
       nextSegmentIds: ['65465465', '65465465465'],
