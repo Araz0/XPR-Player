@@ -3,7 +3,7 @@ import { memo, useCallback, useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 
 import {
-  AddToQueue,
+  QueuePlayNext,
   Add,
   ExpandMore,
   ExpandLess,
@@ -12,19 +12,13 @@ import {
   Save,
   Delete,
 } from '@mui/icons-material'
-import { Box, IconButton, InputBase, Typography } from '@mui/material'
+import { Box, IconButton, Portal } from '@mui/material'
 
 import { useProgram } from '../../hooks'
 import { useAdminStore } from '../../stores'
 import { SegmentType } from '../../types'
+import { EditableLabel } from '../EditableLabel'
 
-const StyledInputBase = styled(InputBase)`
-  font-size: 14px;
-  border: 1px solid #666;
-  border-radius: 4px;
-  padding: 0 3px;
-  color: #eee;
-`
 const StyledVerticalBox = styled(Box)`
   display: flex;
   flex-direction: column;
@@ -37,7 +31,7 @@ const StyledScreenVideo = styled.video`
   width: 150px;
 `
 export type TreeItemProps = {
-  segmentId: string
+  segmentId: number
 }
 export const TreeItemRaw = ({ segmentId }: TreeItemProps) => {
   const titleRef = useRef<HTMLInputElement>()
@@ -63,6 +57,7 @@ export const TreeItemRaw = ({ segmentId }: TreeItemProps) => {
   const handleImportScreen = useCallback(
     (e: any) => {
       const screen = {
+        id: new Date().getTime(),
         title: 'screen title',
         mediaSrc: e.target.files[0].name,
       }
@@ -72,7 +67,7 @@ export const TreeItemRaw = ({ segmentId }: TreeItemProps) => {
   )
 
   const handleAddChild = useCallback(() => {
-    addNextSegment(segmentId, 'new cool segment')
+    addNextSegment(segmentId, 'new cool segment', 'custom description')
   }, [addNextSegment, segmentId])
 
   const handleToggleShowMore = useCallback(() => {
@@ -84,13 +79,11 @@ export const TreeItemRaw = ({ segmentId }: TreeItemProps) => {
   }, [canEdit])
 
   const handleSave = useCallback(() => {
-    const title = titleRef.current?.value
-    const description = descriptionRef.current?.value
-    if (!segment || !title) return
+    if (!segment) return
     const updatedSeg = {
       ...segment,
-      title: title,
-      description: description,
+      title: titleRef.current?.value || 'No title',
+      description: descriptionRef.current?.value || 'No description',
     }
     updateSegment(updatedSeg)
   }, [segment, updateSegment])
@@ -104,36 +97,19 @@ export const TreeItemRaw = ({ segmentId }: TreeItemProps) => {
     <li>
       <article>
         <StyledVerticalBox>
-          {canEdit ? (
-            <>
-              <StyledInputBase
-                inputRef={titleRef}
-                placeholder={'segment title'}
-                defaultValue={segment.title}
-              />
-              <StyledInputBase
-                inputRef={descriptionRef}
-                placeholder={'segment description'}
-                defaultValue={segment.description && segment.description}
-              />
-            </>
-          ) : (
-            <>
-              <Typography
-                variant="overline"
-                display="block"
-                gutterBottom
-                lineHeight={1}
-              >
-                {segment.title}
-              </Typography>
-              {segment.description && (
-                <Typography variant="overline" display="block" gutterBottom>
-                  {segment.description || 'no description'}
-                </Typography>
-              )}
-            </>
-          )}
+          <EditableLabel
+            inputRef={titleRef}
+            canEdit={canEdit}
+            text={segment.title}
+            placeHolder={'segment title'}
+            lineHeight={1}
+          />
+          <EditableLabel
+            inputRef={descriptionRef}
+            canEdit={canEdit}
+            text={segment.description}
+            placeHolder={'segment description'}
+          />
           {showMore && (
             <Box>
               {segment.screens.map((screen, idx) => {
@@ -145,26 +121,9 @@ export const TreeItemRaw = ({ segmentId }: TreeItemProps) => {
                   />
                 )
               })}
-              <Typography
-                variant="overline"
-                display="block"
-                gutterBottom
-                lineHeight={1}
-              >
-                {segment.id}
-              </Typography>
-              <Typography
-                variant="overline"
-                display="block"
-                gutterBottom
-                lineHeight={1}
-              >
-                {segment.nextSegmentIds
-                  ? segment.nextSegmentIds.join(', ')
-                  : ' - '}
-              </Typography>
             </Box>
           )}
+          {showMore && <Portal />}
         </StyledVerticalBox>
 
         <StyledBox>
@@ -188,7 +147,7 @@ export const TreeItemRaw = ({ segmentId }: TreeItemProps) => {
                   type="file"
                   onChange={handleImportScreen}
                 />
-                <AddToQueue />
+                <QueuePlayNext />
               </IconButton>
               <IconButton onClick={handleSave}>
                 <Save />
@@ -198,7 +157,9 @@ export const TreeItemRaw = ({ segmentId }: TreeItemProps) => {
           <IconButton onClick={handleToggleShowMore}>
             {showMore ? <ExpandLess /> : <ExpandMore />}
           </IconButton>
-          <IconButton onClick={() => navigator.clipboard.writeText(segment.id)}>
+          <IconButton
+            onClick={() => navigator.clipboard.writeText(segment.id.toString())}
+          >
             <CopyAll />
           </IconButton>
         </StyledBox>

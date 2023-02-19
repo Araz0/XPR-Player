@@ -8,7 +8,7 @@ export const useProgram = () => {
   const setProgram = useAdminStore((s) => s.setProgram)
 
   const getSegmentById = useCallback(
-    (segmentId: string) => {
+    (segmentId: number) => {
       if (!program) return
       return program.segments.find((s) => s.id === segmentId)
     },
@@ -25,13 +25,18 @@ export const useProgram = () => {
     [program, setProgram]
   )
   const addNextSegment = useCallback(
-    (parentSegmentId: string, newSegmentTitle: string) => {
+    (
+      parentSegmentId: number,
+      segmentTitle: string,
+      segmentDescription: string
+    ) => {
       if (!program) return
       const parentSegment = getSegmentById(parentSegmentId)
       if (!parentSegment) return
       const newSegment = {
-        id: new Date().getTime().toString(),
-        title: newSegmentTitle,
+        id: new Date().getTime(),
+        title: segmentTitle,
+        description: segmentDescription,
         screens: [],
       }
       parentSegment.nextSegmentIds
@@ -52,7 +57,7 @@ export const useProgram = () => {
     [getSegmentById, program, setProgram]
   )
   const addScreenToSegment = useCallback(
-    (segmentId: string, screen: ScreenType) => {
+    (segmentId: number, screen: ScreenType) => {
       const segment = getSegmentById(segmentId)
       if (!segment) return
       segment.screens.push(screen)
@@ -78,7 +83,7 @@ export const useProgram = () => {
 
   // custom hook to get segment and remove it from the segments array of program
   const removeSegment = useCallback(
-    (segmentId: string) => {
+    (segmentId: number) => {
       if (!program) return
       const updatedSegments = program.segments.map((segment) => {
         if (
