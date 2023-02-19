@@ -4,6 +4,7 @@ import { QueuePlayNext } from '@mui/icons-material'
 import { Divider, IconButton, TextField, Typography } from '@mui/material'
 
 import { useProgram } from '../../hooks'
+import { generateNewId } from '../../utils'
 import { Popup } from '../Popup'
 export type ScreenFormPopupProps = {
   segmentId: number
@@ -18,7 +19,7 @@ export const ScreenFormPopupRaw = ({
   const handleImportScreen = useCallback(
     (e: any) => {
       const screen = {
-        id: new Date().getTime(),
+        id: generateNewId(),
         title: titleRef.current?.value || 'screen title',
         mediaSrc: `/${e.target.files[0].name}`,
       }

@@ -2,6 +2,7 @@ import { useCallback } from 'react'
 
 import { useAdminStore } from '../stores'
 import { ScreenType, SegmentType } from '../types'
+import { generateNewId } from '../utils'
 
 export const useProgram = () => {
   const program = useAdminStore((s) => s.program)
@@ -34,7 +35,7 @@ export const useProgram = () => {
       const parentSegment = getSegmentById(parentSegmentId)
       if (!parentSegment) return
       const newSegment = {
-        id: new Date().getTime(),
+        id: generateNewId(),
         title: segmentTitle,
         description: segmentDescription,
         screens: [],
