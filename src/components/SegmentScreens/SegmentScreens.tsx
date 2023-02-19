@@ -50,18 +50,19 @@ export const SegmentScreensRaw = ({
         {segment.screens.map((screen, idx) => {
           return (
             <StyledVideoContainer key={idx}>
-              {canEdit && (
-                <StyledActionsContainer>
-                  <SmallIconButton
-                    onClick={() => alert(screen.title)}
-                    icon={iconTypes.INFO}
-                  />
+              <StyledActionsContainer>
+                <SmallIconButton
+                  onClick={() => alert(screen.title)}
+                  icon={iconTypes.INFO}
+                />
+                {canEdit && (
                   <SmallIconButton
                     onClick={() => handleDeleteScreen(screen.id)}
                     icon={iconTypes.DELETE}
                   />
-                </StyledActionsContainer>
-              )}
+                )}
+              </StyledActionsContainer>
+
               <StyledScreenVideo src={screen.mediaSrc} controls />
             </StyledVideoContainer>
           )
