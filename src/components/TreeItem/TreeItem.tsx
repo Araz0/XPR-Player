@@ -48,7 +48,7 @@ export const TreeItemRaw = ({ segmentId }: TreeItemProps) => {
       const screen = {
         id: new Date().getTime(),
         title: 'screen title',
-        mediaSrc: e.target.files[0].name,
+        mediaSrc: `/${e.target.files[0].name}`,
       }
       addScreenToSegment(segmentId, screen)
     },

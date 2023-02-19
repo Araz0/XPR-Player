@@ -14,12 +14,12 @@ export const program: ProgramType = {
         {
           id: 65464,
           title: 'screen1',
-          mediaSrc: '60fps_Tester.mp4',
+          mediaSrc: '/60fps_Tester.mp4',
         },
         {
           id: 65564,
           title: 'screen2',
-          mediaSrc: 'Audio Video Sync Test 60 FPS.mp4',
+          mediaSrc: '/Audio Video Sync Test 60 FPS.mp4',
         },
       ],
       nextSegmentIds: [65465465, 65465465465, 654654],
@@ -32,12 +32,12 @@ export const program: ProgramType = {
         {
           id: 655464,
           title: 'screen1',
-          mediaSrc: '60fps_Tester.mp4',
+          mediaSrc: '/60fps_Tester.mp4',
         },
         {
           id: 654645,
           title: 'screen2',
-          mediaSrc: 'Audio Video Sync Test 60 FPS.mp4',
+          mediaSrc: '/Audio Video Sync Test 60 FPS.mp4',
         },
       ],
     },
@@ -49,12 +49,12 @@ export const program: ProgramType = {
         {
           id: 6586,
           title: 'screen2',
-          mediaSrc: 'Audio Video Sync Test 60 FPS.mp4',
+          mediaSrc: '/Audio Video Sync Test 60 FPS.mp4',
         },
         {
           id: 65542,
           title: 'screen1',
-          mediaSrc: '60fps_Tester.mp4',
+          mediaSrc: '/60fps_Tester.mp4',
         },
       ],
     },
@@ -63,11 +63,11 @@ export const program: ProgramType = {
       title: 'doubled',
       description: 'custom description',
       screens: [
-        { id: 653464, title: 'screen1', mediaSrc: '60fps_Tester.mp4' },
+        { id: 653464, title: 'screen1', mediaSrc: '/60fps_Tester.mp4' },
         {
           id: 43523521,
           title: 'screen2',
-          mediaSrc: 'Audio Video Sync Test 60 FPS.mp4',
+          mediaSrc: '/Audio Video Sync Test 60 FPS.mp4',
         },
       ],
       nextSegmentIds: [65465465, 65465465465],
