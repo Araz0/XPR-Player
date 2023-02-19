@@ -109,6 +109,19 @@ export const useProgram = () => {
     [program, setProgram]
   )
 
+  const removeSegmentScreen = useCallback(
+    (segment: SegmentType, screenId: number) => {
+      if (!program) return
+      const segmentIndex = program.segments.findIndex(
+        (s) => s.id === segment.id
+      )
+      segment.screens = segment.screens.filter((s) => s.id !== screenId)
+      program.segments[segmentIndex] = segment
+      setProgram(program)
+    },
+    [program, setProgram]
+  )
+
   return {
     getSegmentById,
     addNextSegment,
@@ -116,5 +129,6 @@ export const useProgram = () => {
     addScreenToSegment,
     updateSegment,
     removeSegment,
+    removeSegmentScreen,
   }
 }

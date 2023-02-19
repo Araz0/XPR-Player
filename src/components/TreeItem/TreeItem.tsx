@@ -2,41 +2,30 @@ import { memo, useCallback, useEffect, useRef, useState } from 'react'
 
 import styled from 'styled-components'
 
-import {
-  QueuePlayNext,
-  Add,
-  ExpandMore,
-  ExpandLess,
-  CopyAll,
-  Edit,
-  Save,
-  Delete,
-} from '@mui/icons-material'
-import { Box, IconButton, Portal } from '@mui/material'
+import { QueuePlayNext, ExpandMore, ExpandLess } from '@mui/icons-material'
+import { IconButton } from '@mui/material'
 
 import { useProgram } from '../../hooks'
-import { useAdminStore } from '../../stores'
 import { SegmentType } from '../../types'
 import { EditableLabel } from '../EditableLabel'
+import { SegmentScreens } from '../SegmentScreens'
+import { iconTypes, SmallIconButton } from '../SmallIconButton'
 
-const StyledVerticalBox = styled(Box)`
+const StyledVerticalContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 2px;
 `
-const StyledBox = styled(Box)`
+const StyledActionsContainer = styled.div`
   display: flex;
 `
-const StyledScreenVideo = styled.video`
-  width: 150px;
-`
+
 export type TreeItemProps = {
   segmentId: number
 }
 export const TreeItemRaw = ({ segmentId }: TreeItemProps) => {
   const titleRef = useRef<HTMLInputElement>()
   const descriptionRef = useRef<HTMLInputElement>()
-  const canEditTreeMap = useAdminStore((s) => s.canEditTreeMap)
   const [canEdit, setCanEdit] = useState<boolean>(false)
   const [showMore, setShowMore] = useState<boolean>(false)
   const [segment, setSegment] = useState<SegmentType | undefined>(undefined)
@@ -96,7 +85,7 @@ export const TreeItemRaw = ({ segmentId }: TreeItemProps) => {
   return (
     <li>
       <article>
-        <StyledVerticalBox>
+        <StyledVerticalContainer>
           <EditableLabel
             inputRef={titleRef}
             canEdit={canEdit}
@@ -110,36 +99,17 @@ export const TreeItemRaw = ({ segmentId }: TreeItemProps) => {
             text={segment.description}
             placeHolder={'segment description'}
           />
-          {showMore && (
-            <Box>
-              {segment.screens.map((screen, idx) => {
-                return (
-                  <StyledScreenVideo
-                    key={idx}
-                    src={`/${screen.mediaSrc}`}
-                    controls
-                  />
-                )
-              })}
-            </Box>
-          )}
-          {showMore && <Portal />}
-        </StyledVerticalBox>
 
-        <StyledBox>
-          {canEditTreeMap && (
-            <IconButton onClick={handleToggleEdit}>
-              <Edit />
-            </IconButton>
-          )}
+          {showMore && <SegmentScreens segment={segment} canEdit={canEdit} />}
+        </StyledVerticalContainer>
+
+        <StyledActionsContainer>
+          <SmallIconButton onClick={handleToggleEdit} icon={iconTypes.EDIT} />
           {canEdit && (
             <>
-              <IconButton onClick={handleDelete}>
-                <Delete />
-              </IconButton>
-              <IconButton onClick={handleAddChild}>
-                <Add />
-              </IconButton>
+              <SmallIconButton onClick={handleDelete} icon={iconTypes.DELETE} />
+              <SmallIconButton onClick={handleAddChild} icon={iconTypes.ADD} />
+
               <IconButton color="primary" component="label">
                 <input
                   hidden
@@ -149,20 +119,17 @@ export const TreeItemRaw = ({ segmentId }: TreeItemProps) => {
                 />
                 <QueuePlayNext />
               </IconButton>
-              <IconButton onClick={handleSave}>
-                <Save />
-              </IconButton>
+              <SmallIconButton onClick={handleSave} icon={iconTypes.SAVE} />
             </>
           )}
           <IconButton onClick={handleToggleShowMore}>
             {showMore ? <ExpandLess /> : <ExpandMore />}
           </IconButton>
-          <IconButton
+          <SmallIconButton
             onClick={() => navigator.clipboard.writeText(segment.id.toString())}
-          >
-            <CopyAll />
-          </IconButton>
-        </StyledBox>
+            icon={iconTypes.COPY_ALL}
+          />
+        </StyledActionsContainer>
       </article>
       {segment.nextSegmentIds && (
         <ul>
