@@ -6,6 +6,8 @@ import {
   Delete,
   Edit,
   EditOff,
+  ExpandLess,
+  ExpandMore,
   Info,
   QueuePlayNext,
   Save,
@@ -20,6 +22,8 @@ export enum iconTypes {
   COPY_ALL = 'CopyAll',
   INFO = 'Info',
   QUEUE_PLAY_NEXT = 'QueuePlayNext',
+  EXPAND_MORE = 'ExpandMore',
+  EXPAND_LESS = 'ExpandLess',
 }
 export type SmallIconButtonProps = {
   icon: iconTypes
@@ -36,6 +40,8 @@ export const SmallIconButtonRaw = ({ icon, onClick }: SmallIconButtonProps) => {
       {icon === iconTypes.INFO && <Info fontSize="small" />}
       {icon === iconTypes.QUEUE_PLAY_NEXT && <QueuePlayNext fontSize="small" />}
       {icon === iconTypes.EDIT_OFF && <EditOff fontSize="small" />}
+      {icon === iconTypes.EXPAND_MORE && <ExpandMore fontSize="small" />}
+      {icon === iconTypes.EXPAND_LESS && <ExpandLess fontSize="small" />}
     </IconButton>
   )
 }

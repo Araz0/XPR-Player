@@ -2,9 +2,6 @@ import { memo, useCallback, useEffect, useRef, useState } from 'react'
 
 import styled from 'styled-components'
 
-import { ExpandMore, ExpandLess } from '@mui/icons-material'
-import { IconButton } from '@mui/material'
-
 import { useProgram } from '../../hooks'
 import { SegmentType } from '../../types'
 import { EditableLabel } from '../EditableLabel'
@@ -19,6 +16,7 @@ const StyledVerticalContainer = styled.div`
 `
 const StyledActionsContainer = styled.div`
   display: flex;
+  justify-content: space-evenly;
 `
 
 export type TreeItemProps = {
@@ -51,6 +49,10 @@ export const TreeItemRaw = ({ segmentId }: TreeItemProps) => {
   const handleToggleEdit = useCallback(() => {
     setCanEdit(!canEdit)
   }, [canEdit])
+
+  const handleCopyId = useCallback(() => {
+    navigator.clipboard.writeText(segmentId.toString())
+  }, [segmentId])
 
   const handleSave = useCallback(() => {
     if (!segment) return
@@ -112,14 +114,12 @@ export const TreeItemRaw = ({ segmentId }: TreeItemProps) => {
               <SmallIconButton onClick={handleSave} icon={iconTypes.SAVE} />
             </>
           )}
-          <IconButton onClick={handleToggleShowMore}>
-            {showMore ? <ExpandLess /> : <ExpandMore />}
-          </IconButton>
-
           <SmallIconButton
-            onClick={() => navigator.clipboard.writeText(segment.id.toString())}
-            icon={iconTypes.COPY_ALL}
+            onClick={handleToggleShowMore}
+            icon={showMore ? iconTypes.EXPAND_LESS : iconTypes.EXPAND_MORE}
           />
+
+          <SmallIconButton onClick={handleCopyId} icon={iconTypes.COPY_ALL} />
         </StyledActionsContainer>
       </article>
       {segment.nextSegmentIds && (
