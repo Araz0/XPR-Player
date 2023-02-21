@@ -93,6 +93,10 @@ export const TreeListRaw = () => {
     )
   return (
     <>
+      <Typography variant="h6" align="center">
+        {program.title}
+      </Typography>
+      <Divider />
       <div className="familyTree">
         <StyledUl>
           <TreeItem segmentId={introSegment.id}></TreeItem>
