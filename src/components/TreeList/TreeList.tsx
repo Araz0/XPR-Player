@@ -2,9 +2,10 @@ import { memo, useCallback, useEffect, useRef, useState } from 'react'
 
 import styled from 'styled-components'
 
-import { NoteAdd } from '@mui/icons-material'
+import { NoteAdd, AddBox } from '@mui/icons-material'
 import { Typography, Divider, TextField, IconButton } from '@mui/material'
 
+import { useProgram } from '../../hooks'
 import { useAdminStore } from '../../stores'
 import { SegmentType } from '../../types'
 import { generateNewId, getIntroSegment } from '../../utils'
@@ -22,11 +23,11 @@ const StyledActionsContainer = styled.div`
 `
 
 export const TreeListRaw = () => {
-  const titleRef = useRef<HTMLInputElement>()
+  const { addSegment } = useProgram()
+  const input1Ref = useRef<HTMLInputElement>()
   const program = useAdminStore((s) => s.program)
   const setProgram = useAdminStore((s) => s.setProgram)
 
-  console.log('🚀 ~ file: TreeList.tsx:18 ~ TreeListRaw ~ program', program)
   const [introSegment, setIntroSegment] = useState<SegmentType | undefined>(
     undefined
   )
@@ -34,10 +35,22 @@ export const TreeListRaw = () => {
   const handleCreateProgram = useCallback(() => {
     setProgram({
       id: generateNewId(),
-      title: titleRef.current?.value || 'New Program',
+      title: input1Ref.current?.value || 'New Program',
       segments: [],
     })
   }, [setProgram])
+
+  const handleIntroSegment = useCallback(() => {
+    const introSegment = {
+      id: generateNewId(),
+      title: input1Ref.current?.value || 'Intro Segment',
+      screens: [],
+      description: '',
+      introSegment: true,
+    }
+    addSegment(introSegment)
+    setIntroSegment(introSegment)
+  }, [addSegment])
 
   useEffect(() => {
     if (!program) return
@@ -52,12 +65,13 @@ export const TreeListRaw = () => {
         <Typography variant="h6">Create new Program</Typography>
         <Divider />
         <Typography variant="subtitle1">
-          please fill the input field and submit to continue creating the
+          Please fill the input field and submit to continue creating the
           program.
         </Typography>
+        <br />
         <TextField
-          inputRef={titleRef}
-          placeholder={'program title'}
+          inputRef={input1Ref}
+          placeholder={'Program title'}
           size="small"
         />
         <IconButton onClick={handleCreateProgram}>
@@ -65,7 +79,18 @@ export const TreeListRaw = () => {
         </IconButton>
       </StyledActionsContainer>
     )
-  if (!introSegment) return null
+  if (!introSegment)
+    return (
+      <StyledActionsContainer>
+        <Typography variant="h6">Create the Intro Segment</Typography>
+        <Divider />
+        <br />
+        <TextField inputRef={input1Ref} placeholder={'Intro segment title'} />
+        <IconButton onClick={handleIntroSegment}>
+          <AddBox />
+        </IconButton>
+      </StyledActionsContainer>
+    )
   return (
     <>
       <div className="familyTree">
