@@ -1,11 +1,19 @@
 import { memo, useCallback, useRef } from 'react'
 
-import { QueuePlayNext } from '@mui/icons-material'
+import styled from 'styled-components'
+
+import { QueuePlayNext, Close } from '@mui/icons-material'
 import { Divider, IconButton, TextField, Typography } from '@mui/material'
 
 import { useProgram } from '../../hooks'
 import { generateNewId } from '../../utils'
 import { Popup } from '../Popup'
+
+const StyledHeaderContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+`
+
 export type ScreenFormPopupProps = {
   segmentId: number
   onClose: () => void
@@ -26,21 +34,26 @@ export const ScreenFormPopupRaw = ({
       addScreenToSegment(segmentId, screen)
       onClose()
     },
-    [addScreenToSegment, segmentId, onClose]
+    [addScreenToSegment, onClose, segmentId]
   )
   return (
     <Popup onClose={onClose}>
-      <Typography variant="h6">Add screen</Typography>
+      <StyledHeaderContainer>
+        <Typography variant="h6">Add screen</Typography>
+        <IconButton onClick={onClose}>
+          <Close />
+        </IconButton>
+      </StyledHeaderContainer>
       <Divider />
       <Typography variant="subtitle1">
-        This is a dynamic popup created using portals.
+        First give it a title, and then select the video file.
       </Typography>
       <TextField
         inputRef={titleRef}
         placeholder={'screen title'}
         size="small"
       />
-      <IconButton color="primary" component="label">
+      <IconButton component="label">
         <input
           hidden
           accept="video/mp4"

@@ -9,12 +9,11 @@ const StyledContainer = styled.div`
   left: 0;
   width: 100%;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
   .popup-content {
-    background-color: white;
+    border: 1px solid;
     padding: 20px;
     border-radius: 5px;
   }
