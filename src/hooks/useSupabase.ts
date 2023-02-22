@@ -1,4 +1,6 @@
-import { createClient } from '@supabase/supabase-js'
+import { useCallback, useEffect, useState } from 'react'
+
+import { createClient, User } from '@supabase/supabase-js'
 
 import { ProgramType } from '../types'
 
@@ -8,24 +10,37 @@ const supabaseKey = process.env.REACT_APP_SUPABASE_KEY || ''
 const supabaseClient = createClient(supabaseUrl, supabaseKey)
 
 export function useSupabase() {
-  const getData = async () => {
-    const { data, error } = await supabaseClient.from('my_table').select('*')
-    if (error) console.log(error)
-    else console.log(data)
-  }
+  const [user, setUser] = useState<User | undefined>()
 
-  const saveProgram = async (program: ProgramType) => {
-    const { data, error } = await supabaseClient
-      .from('programs')
-      .insert({ program, userId: 'user_id' })
+  useEffect(() => {
+    supabaseClient.auth.onAuthStateChange((_event, session) => {
+      if (_event !== 'SIGNED_OUT') {
+        // success
+        setUser(session?.user)
+        console.log('🚀', _event, session?.user, session)
+      } else {
+        // did not work
+        console.log('🚀', _event, session?.user, session)
+      }
+    })
+  }, [])
 
-    if (error) {
-      console.log('error', error)
-    } else {
-      console.log('data', data)
-    }
-  }
-  const loadProgramById = async (programId: string) => {
+  const saveProgram = useCallback(
+    async (program: ProgramType) => {
+      if (!user) return
+      const { data, error } = await supabaseClient
+        .from('programs')
+        .insert({ program, userId: user.id })
+
+      if (error) {
+        console.log('error', error)
+      } else {
+        console.log('data', data)
+      }
+    },
+    [user]
+  )
+  const loadProgramById = useCallback(async (programId: string) => {
     const { data, error } = await supabaseClient
       .from('programs')
       .select('program')
@@ -36,33 +51,51 @@ export function useSupabase() {
     } else {
       console.log(data.program)
     }
-  }
+  }, [])
 
-  const loadAllPrograms = async () => {
+  const loadAllPrograms = useCallback(async () => {
     const { data, error } = await supabaseClient.from('programs').select('*')
     if (error) {
       console.log(error)
     } else {
       console.log(data)
     }
-  }
-  const loadProgramsByUser = async (userId: string) => {
+  }, [])
+  const loadProgramsByUser = useCallback(async () => {
+    console.log('🚀 ~ file: useSupabase.ts:65 ~ loadProgramsByUser')
+
+    if (!user) return
     const { data, error } = await supabaseClient
       .from('programs')
       .select('*')
-      .eq('user_id', userId)
+      .eq('user_id', user.id)
     if (error) {
       throw error
     }
-    return data
-  }
+    console.log(
+      '🚀 ~ file: useSupabase.ts:74 ~ loadProgramsByUser ~ data:',
+      data
+    )
+  }, [user])
+
+  const getUserData = useCallback(async () => {
+    const {
+      data: { user },
+    } = await supabaseClient.auth.getUser()
+    if (!user) return
+    setUser(user)
+    console.log(
+      '🚀 ~ file: useSupabase.ts:64 ~ awaitsupabaseClient.auth.getUser ~ user:',
+      user
+    )
+  }, [])
 
   return {
     supabaseClient,
-    getData,
     saveProgram,
     loadProgramById,
     loadAllPrograms,
     loadProgramsByUser,
+    getUserData,
   }
 }
