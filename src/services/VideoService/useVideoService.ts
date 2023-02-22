@@ -1,7 +1,7 @@
 import { useCallback } from 'react'
 
-import { VideoRefElementType } from '../../types'
 import { VideoService } from './Video.service'
+import { VideoRefElementType } from '../../types'
 
 const videoPlayer = new VideoService('C')
 

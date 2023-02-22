@@ -4,7 +4,7 @@ import { io } from 'socket.io-client'
 
 import { EventNames } from '../../services'
 
-export const AdminRaw = () => {
+export const AdminPageRaw = () => {
   const handleStartProgram = () => {
     const socket = io('http://localhost:8000')
     socket.emit(
@@ -27,4 +27,4 @@ export const AdminRaw = () => {
   )
 }
 
-export const Admin = memo(AdminRaw)
+export const AdminPage = memo(AdminPageRaw)
