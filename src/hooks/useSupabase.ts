@@ -17,10 +17,8 @@ export function useSupabase() {
       if (_event !== 'SIGNED_OUT') {
         // success
         setUser(session?.user)
-        console.log('🚀', _event, session?.user, session)
       } else {
         // did not work
-        console.log('🚀', _event, session?.user, session)
       }
     })
   }, [])
@@ -28,14 +26,12 @@ export function useSupabase() {
   const saveProgram = useCallback(
     async (program: ProgramType) => {
       if (!user) return
-      const { data, error } = await supabaseClient
+      const { error } = await supabaseClient
         .from('programs')
         .insert({ program, userId: user.id })
 
       if (error) {
-        console.log('error', error)
-      } else {
-        console.log('data', data)
+        throw error
       }
     },
     [user]
@@ -47,23 +43,21 @@ export function useSupabase() {
       .eq('program:id', programId)
       .single()
     if (error) {
-      console.log('error', error)
+      throw error
     } else {
-      console.log(data.program)
+      return data.program
     }
   }, [])
 
   const loadAllPrograms = useCallback(async () => {
     const { data, error } = await supabaseClient.from('programs').select('*')
     if (error) {
-      console.log(error)
+      throw error
     } else {
-      console.log(data)
+      return data
     }
   }, [])
   const loadProgramsByUser = useCallback(async () => {
-    console.log('🚀 ~ file: useSupabase.ts:65 ~ loadProgramsByUser')
-
     if (!user) return
     const { data, error } = await supabaseClient
       .from('programs')
@@ -72,10 +66,7 @@ export function useSupabase() {
     if (error) {
       throw error
     }
-    console.log(
-      '🚀 ~ file: useSupabase.ts:74 ~ loadProgramsByUser ~ data:',
-      data
-    )
+    return data
   }, [user])
 
   const getUserData = useCallback(async () => {
@@ -84,10 +75,33 @@ export function useSupabase() {
     } = await supabaseClient.auth.getUser()
     if (!user) return
     setUser(user)
-    console.log(
-      '🚀 ~ file: useSupabase.ts:64 ~ awaitsupabaseClient.auth.getUser ~ user:',
-      user
-    )
+    return user
+  }, [])
+
+  const loginViaMagicLink = useCallback(async (email: string) => {
+    const { data, error } = await supabaseClient.auth.signInWithOtp({
+      email: email,
+    })
+    if (error) {
+      throw error
+    }
+    return data
+  }, [])
+  const signInWithGitHub = useCallback(async () => {
+    const { data, error } = await supabaseClient.auth.signInWithOAuth({
+      provider: 'github',
+    })
+    if (error) {
+      throw error
+    }
+    return data
+  }, [])
+
+  const signOut = useCallback(async () => {
+    const { error } = await supabaseClient.auth.signOut()
+    if (error) {
+      throw error
+    }
   }, [])
 
   return {
@@ -97,5 +111,8 @@ export function useSupabase() {
     loadAllPrograms,
     loadProgramsByUser,
     getUserData,
+    loginViaMagicLink,
+    signInWithGitHub,
+    signOut,
   }
 }
