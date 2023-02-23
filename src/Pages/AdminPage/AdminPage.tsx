@@ -2,12 +2,13 @@ import { memo, useCallback, useEffect, useState } from 'react'
 
 import { io } from 'socket.io-client'
 
+import { AdminPageWrapper } from '../../components'
 import { useSupabase } from '../../hooks'
 import { EventNames } from '../../services'
 import { DbProgram } from '../../types'
 
 export const AdminPageRaw = () => {
-  const { loginViaMagicLink, loadProgramsByUser } = useSupabase()
+  const { loadProgramsByUser } = useSupabase()
   const [error, setError] = useState<any>()
   const [loading, setLoading] = useState<boolean>(true)
   const [programs, setPrograms] = useState<any>()
@@ -26,10 +27,6 @@ export const AdminPageRaw = () => {
     )
   }, [])
 
-  const handleRequestLoginLink = useCallback(() => {
-    loginViaMagicLink('email')
-  }, [loginViaMagicLink])
-
   useEffect(() => {
     setLoading(true)
     loadProgramsByUser()
@@ -44,8 +41,7 @@ export const AdminPageRaw = () => {
   }, [loadProgramsByUser])
 
   return (
-    <>
-      <button onClick={handleRequestLoginLink}>send login magic link</button>
+    <AdminPageWrapper>
       <button onClick={handleStartProgram}>start program</button>
       <button onClick={handelRequestFullscreen}>request Fullscreen</button>
       {loading && <h1>loading...</h1>}
@@ -65,7 +61,7 @@ export const AdminPageRaw = () => {
           })}
         </>
       )}
-    </>
+    </AdminPageWrapper>
   )
 }
 

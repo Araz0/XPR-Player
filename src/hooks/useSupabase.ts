@@ -11,17 +11,28 @@ const supabaseClient = createClient(supabaseUrl, supabaseKey)
 
 export function useSupabase() {
   const [user, setUser] = useState<User | undefined>()
+  const [userIsLoggedIn, setUserIsLoggedIn] = useState<boolean>(false)
 
   useEffect(() => {
     supabaseClient.auth.onAuthStateChange((_event, session) => {
       if (_event !== 'SIGNED_OUT') {
         // success
         setUser(session?.user)
+        setUserIsLoggedIn(true)
       } else {
         // did not work
+        setUserIsLoggedIn(false)
       }
     })
   }, [])
+
+  useEffect(() => {
+    if (user?.role === 'authenticated') {
+      setUserIsLoggedIn(true)
+    } else {
+      setUserIsLoggedIn(false)
+    }
+  }, [user?.role])
 
   const saveProgram = useCallback(
     async (program: ProgramType) => {
@@ -78,7 +89,7 @@ export function useSupabase() {
     return user
   }, [])
 
-  const loginViaMagicLink = useCallback(async (email: string) => {
+  const signInViaMagicLink = useCallback(async (email: string) => {
     const { data, error } = await supabaseClient.auth.signInWithOtp({
       email: email,
     })
@@ -98,6 +109,7 @@ export function useSupabase() {
   }, [])
 
   const signOut = useCallback(async () => {
+    console.log('signing out')
     const { error } = await supabaseClient.auth.signOut()
     if (error) {
       throw error
@@ -111,8 +123,9 @@ export function useSupabase() {
     loadAllPrograms,
     loadProgramsByUser,
     getUserData,
-    loginViaMagicLink,
+    signInViaMagicLink,
     signInWithGitHub,
     signOut,
+    userIsLoggedIn,
   }
 }
