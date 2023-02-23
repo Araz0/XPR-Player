@@ -1,5 +1,6 @@
-import { memo, useCallback } from 'react'
+import { memo, ReactNode, useCallback } from 'react'
 
+import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 
 import { AccountTree, Home, Login, Logout } from '@mui/icons-material'
@@ -34,6 +35,7 @@ const StyledSideNav = styled.div`
 `
 const StyledContentWrapper = styled.div`
   grid-area: mainContent;
+  padding: 0 15px;
 `
 const StyledTopActionsContainer = styled.div`
   display: flex;
@@ -51,10 +53,17 @@ const StyledSymbolContainer = styled.div`
 `
 
 export type AdminPageWrapperProps = {
-  children: React.ReactNode
+  children: ReactNode
+  topNavActions?: ReactNode
+  topNavHeader?: string
 }
-export const AdminPageWrapperRaw = ({ children }: AdminPageWrapperProps) => {
+export const AdminPageWrapperRaw = ({
+  children,
+  topNavHeader,
+  topNavActions,
+}: AdminPageWrapperProps) => {
   const { userIsLoggedIn, signInViaMagicLink, signOut } = useSupabase()
+  const navigate = useNavigate()
 
   const handleRequestLogin = useCallback(async () => {
     await signInViaMagicLink('alhamdani.araz@gmail.com')
@@ -67,11 +76,8 @@ export const AdminPageWrapperRaw = ({ children }: AdminPageWrapperProps) => {
   return (
     <StyledPageContainer>
       <StyledTopNav>
-        <Typography variant="h4">---</Typography>
-        <StyledTopActionsContainer>
-          <Button onClick={() => alert('nav')}>Admin Page</Button>
-          <Button onClick={() => alert('nav')}>Create New Program</Button>
-        </StyledTopActionsContainer>
+        <Typography variant="h4">{topNavHeader}</Typography>
+        <StyledTopActionsContainer>{topNavActions}</StyledTopActionsContainer>
       </StyledTopNav>
 
       <StyledSideNav>
@@ -79,11 +85,14 @@ export const AdminPageWrapperRaw = ({ children }: AdminPageWrapperProps) => {
           <Typography variant="h5">Admin Panel</Typography>
         </StyledSymbolContainer>
         <Divider />
-        <StyledSideButton onClick={() => alert('nav')} startIcon={<Home />}>
+        <StyledSideButton
+          onClick={() => navigate('/admin')}
+          startIcon={<Home />}
+        >
           Home
         </StyledSideButton>
         <StyledSideButton
-          onClick={() => alert('nav')}
+          onClick={() => navigate('/admin/programs')}
           startIcon={<AccountTree />}
         >
           Programs

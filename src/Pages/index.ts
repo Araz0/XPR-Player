@@ -1,4 +1,4 @@
 export * from './Home'
 export * from './ScreenPage'
 export * from './AdminPage'
-export * from './ProgramPage'
+export * from './ProgramsPage'

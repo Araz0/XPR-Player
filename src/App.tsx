@@ -1,6 +1,6 @@
 import { Routes, Route } from 'react-router-dom'
 
-import { AdminPage, ProgramPage, Home, ScreenPage } from './Pages'
+import { AdminPage, ProgramsPage, Home, ScreenPage } from './Pages'
 
 function App() {
   return (
@@ -9,7 +9,8 @@ function App() {
       <Route path="home" element={<Home />} />
       <Route path="app/:screenId/*" element={<ScreenPage />} />
       <Route path="admin" element={<AdminPage />} />
-      <Route path="admin/:programId" element={<ProgramPage />} />
+      <Route path="admin/programs" element={<ProgramsPage />} />
+      <Route path="admin/programs/:programId" element={<ProgramsPage />} />
     </Routes>
   )
 }

@@ -2,11 +2,11 @@ import { memo, useEffect } from 'react'
 
 import { useParams } from 'react-router-dom'
 
-import { TreeList } from '../../components'
+import { AdminPageWrapper, TreeList } from '../../components'
 import { useSupabase } from '../../hooks'
 import { useAdminStore } from '../../stores'
 
-export const ProgramPageRaw = () => {
+export const ProgramsPageRaw = () => {
   const { programId } = useParams()
   const { getProgramById } = useSupabase()
   const setProgram = useAdminStore((s) => s.setProgram)
@@ -19,9 +19,9 @@ export const ProgramPageRaw = () => {
   }, [getProgramById, programId, setProgram])
 
   return (
-    <>
+    <AdminPageWrapper>
       <TreeList />
-    </>
+    </AdminPageWrapper>
   )
 }
-export const ProgramPage = memo(ProgramPageRaw)
+export const ProgramsPage = memo(ProgramsPageRaw)
