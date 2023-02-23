@@ -28,7 +28,7 @@ export function useSupabase() {
       if (!user) return
       const { error } = await supabaseClient
         .from('programs')
-        .insert({ program, userId: user.id })
+        .insert({ internal_id: program.id, program: program, user_id: user.id })
 
       if (error) {
         throw error
@@ -40,7 +40,7 @@ export function useSupabase() {
     const { data, error } = await supabaseClient
       .from('programs')
       .select('program')
-      .eq('id', Id)
+      .eq('internal_id', Id)
       .single()
     if (error) {
       throw error
