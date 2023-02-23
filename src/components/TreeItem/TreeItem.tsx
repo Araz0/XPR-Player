@@ -95,12 +95,27 @@ export const TreeItemRaw = ({ segmentId }: TreeItemProps) => {
           <SmallIconButton
             onClick={handleToggleEdit}
             icon={canEdit ? iconTypes.EDIT_OFF : iconTypes.EDIT}
+            tooltip={canEdit ? 'Cancel' : 'Edit'}
           />
           {canEdit && (
             <>
-              <SmallIconButton onClick={handleDelete} icon={iconTypes.DELETE} />
-              <SmallIconButton onClick={handleAddChild} icon={iconTypes.ADD} />
               <SmallIconButton
+                tooltip="Save"
+                onClick={handleSave}
+                icon={iconTypes.CHECK}
+              />
+              <SmallIconButton
+                tooltip="Delete Segment"
+                onClick={handleDelete}
+                icon={iconTypes.DELETE}
+              />
+              <SmallIconButton
+                tooltip="Add Segment"
+                onClick={handleAddChild}
+                icon={iconTypes.ADD}
+              />
+              <SmallIconButton
+                tooltip="Add Screen"
                 onClick={() => setShowAddScreen(true)}
                 icon={iconTypes.QUEUE_PLAY_NEXT}
               />
@@ -110,16 +125,19 @@ export const TreeItemRaw = ({ segmentId }: TreeItemProps) => {
                   onClose={() => setShowAddScreen(false)}
                 />
               )}
-
-              <SmallIconButton onClick={handleSave} icon={iconTypes.SAVE} />
             </>
           )}
           <SmallIconButton
+            tooltip={showMore ? 'Hide More' : 'Show More'}
             onClick={handleToggleShowMore}
             icon={showMore ? iconTypes.EXPAND_LESS : iconTypes.EXPAND_MORE}
           />
 
-          <SmallIconButton onClick={handleCopyId} icon={iconTypes.COPY_ALL} />
+          <SmallIconButton
+            tooltip="Copy Segment Id"
+            onClick={handleCopyId}
+            icon={iconTypes.COPY_ALL}
+          />
         </StyledActionsContainer>
       </article>
       {segment.nextSegmentIds && (
