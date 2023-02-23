@@ -1,10 +1,9 @@
 import { memo, useEffect } from 'react'
 
 import { TreeList } from '../../components'
-// import { program } from '../../fakeProgram'
 import { useAdminStore } from '../../stores'
 
-export const CreatePageRaw = () => {
+export const ProgramPageRaw = () => {
   const setProgram = useAdminStore((s) => s.setProgram)
   useEffect(() => {
     // setProgram(program)
@@ -16,4 +15,4 @@ export const CreatePageRaw = () => {
     </>
   )
 }
-export const CreatePage = memo(CreatePageRaw)
+export const ProgramPage = memo(ProgramPageRaw)
