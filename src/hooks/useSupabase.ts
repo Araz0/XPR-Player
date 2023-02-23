@@ -36,11 +36,11 @@ export function useSupabase() {
     },
     [user]
   )
-  const loadProgramById = useCallback(async (programId: string) => {
+  const getProgramById = useCallback(async (Id: string) => {
     const { data, error } = await supabaseClient
       .from('programs')
       .select('program')
-      .eq('program:id', programId)
+      .eq('id', Id)
       .single()
     if (error) {
       throw error
@@ -107,7 +107,7 @@ export function useSupabase() {
   return {
     supabaseClient,
     saveProgram,
-    loadProgramById,
+    getProgramById,
     loadAllPrograms,
     loadProgramsByUser,
     getUserData,
