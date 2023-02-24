@@ -1,70 +1,38 @@
-import { memo, useCallback, useEffect, useState } from 'react'
+import { memo, useCallback, useEffect } from 'react'
 
 import { useNavigate, useParams } from 'react-router-dom'
 
 import { Delete, Save, SaveAlt } from '@mui/icons-material'
-import {
-  IconButton,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemText,
-  styled,
-  Tooltip,
-} from '@mui/material'
+import { IconButton } from '@mui/material'
 
 import {
   AdminPageWrapper,
   LoadingAnimation,
   TreeList,
   LoadLocalProgramButton,
+  ProgramsList,
 } from '../../components'
 import { useSupabase } from '../../hooks'
 import { useAdminStore } from '../../stores'
-import { DbProgram } from '../../types'
 import { saveProgramAsJson } from '../../utils'
-
-const StyledProgramsListContainer = styled(List)`
-  max-width: 400px;
-  margin: 0 auto;
-  border: 1px dashed rgba(255, 255, 255, 0.5);
-  border-radius: 5px;
-`
 
 export const ProgramsPageRaw = () => {
   const navigate = useNavigate()
   const { programId } = useParams()
 
   const program = useAdminStore((s) => s.program)
-
-  const {
-    getProgramById,
-    loadProgramsByUser,
-    updateProgram,
-    deleteProgram,
-    userIsLoggedIn,
-  } = useSupabase()
-
   const setProgram = useAdminStore((s) => s.setProgram)
-  const [error, setError] = useState<any>()
-  const [programs, setPrograms] = useState<any>()
+  const loadedPrograms = useAdminStore((s) => s.loadedPrograms)
+  const userIsLoggedIn = useAdminStore((s) => s.userIsLoggedIn)
+
+  const { getProgramById, updateProgram, deleteProgram } = useSupabase()
 
   useEffect(() => {
     if (!programId) return
-    getProgramById(programId).then((res) => {
-      setProgram(res)
+    getProgramById(programId).then((prog) => {
+      setProgram(prog)
     })
   }, [getProgramById, programId, setProgram])
-
-  useEffect(() => {
-    loadProgramsByUser()
-      .then((res) => {
-        setPrograms(res)
-      })
-      .catch((err) => {
-        setError(err)
-      })
-  }, [loadProgramsByUser])
 
   const handleDeleteProgram = useCallback(() => {
     if (!program) return
@@ -83,44 +51,17 @@ export const ProgramsPageRaw = () => {
         topNavHeader="programs"
         topNavActions={<LoadLocalProgramButton />}
       >
-        {error && <h3>Something went Wrong: {error}</h3>}
         {!userIsLoggedIn ? (
           <h3>
             User is not signed in.. please sign in to see the programs library
           </h3>
-        ) : !programs ? (
+        ) : loadedPrograms === undefined ? (
           <LoadingAnimation />
         ) : (
-          <StyledProgramsListContainer>
-            {programs.map((program: DbProgram) => {
-              return (
-                <Tooltip
-                  key={program.id}
-                  title={new Date(program.internal_id).toLocaleString()}
-                  placement="left"
-                >
-                  <ListItem
-                    secondaryAction={
-                      <IconButton edge="end" onClick={handleDeleteProgram}>
-                        <Delete />
-                      </IconButton>
-                    }
-                    disablePadding
-                  >
-                    <ListItemButton
-                      role={undefined}
-                      onClick={() =>
-                        navigate(`/admin/programs/${program.internal_id}`)
-                      }
-                      dense
-                    >
-                      <ListItemText primary={program.program.title} />
-                    </ListItemButton>
-                  </ListItem>
-                </Tooltip>
-              )
-            })}
-          </StyledProgramsListContainer>
+          <ProgramsList
+            programs={loadedPrograms}
+            navigateToPath="/admin/programs"
+          />
         )}
       </AdminPageWrapper>
     )

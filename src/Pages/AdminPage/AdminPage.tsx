@@ -1,30 +1,82 @@
 import { memo, useCallback } from 'react'
 
-import { io } from 'socket.io-client'
+import styled from 'styled-components'
 
-import { AdminPageWrapper } from '../../components'
-import { EventNames } from '../../services'
+import { AccountTree, Backspace, PlayArrow, Stop } from '@mui/icons-material'
+import { Button, IconButton, Tooltip, Typography } from '@mui/material'
+
+import {
+  AdminPageWrapper,
+  LoadingAnimation,
+  LoadLocalProgramButton,
+  ProgramsList,
+} from '../../components'
+import { useSocketService } from '../../services'
+import { useAdminStore } from '../../stores'
+
+const StyledActionsContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+`
 
 export const AdminPageRaw = () => {
-  const handleStartProgram = useCallback(() => {
-    const socket = io('http://localhost:8000')
-    socket.emit(
-      EventNames.ADMIN_BRODCAST_START,
-      'admin requested program start'
-    )
-  }, [])
-  const handelRequestFullscreen = useCallback(() => {
-    const socket = io('http://localhost:8000')
-    socket.emit(
-      EventNames.ADMIN_BRODCAST_FULLSCREEN,
-      'admin requested fullscreen'
-    )
-  }, [])
+  const selectedProgram = useAdminStore((s) => s.selectedProgram)
+  const setSelectedProgram = useAdminStore((s) => s.setSelectedProgram)
+  const loadedPrograms = useAdminStore((s) => s.loadedPrograms)
+  const { emmitProgram, emmitStartProgram, emmitStopProgram } =
+    useSocketService()
+
+  const handelSendProgram = useCallback(() => {
+    if (!selectedProgram) return
+    emmitProgram(selectedProgram)
+  }, [emmitProgram, selectedProgram])
 
   return (
-    <AdminPageWrapper>
-      <button onClick={handleStartProgram}>start program</button>
-      <button onClick={handelRequestFullscreen}>request Fullscreen</button>
+    <AdminPageWrapper topNavActions={<LoadLocalProgramButton />}>
+      {selectedProgram !== undefined ? (
+        <>
+          <Typography variant="button">
+            {`Selected Program: ${selectedProgram.title}`}
+            <Tooltip title="deselect program">
+              <IconButton onClick={() => setSelectedProgram(undefined)}>
+                <Backspace />
+              </IconButton>
+            </Tooltip>
+          </Typography>
+
+          <StyledActionsContainer>
+            <Button
+              variant="contained"
+              onClick={handelSendProgram}
+              startIcon={<AccountTree />}
+            >
+              Send Program
+            </Button>
+            <Button
+              variant="contained"
+              onClick={emmitStartProgram}
+              startIcon={<PlayArrow />}
+            >
+              Start program
+            </Button>
+            <Button
+              variant="contained"
+              onClick={emmitStopProgram}
+              startIcon={<Stop />}
+            >
+              Stop program
+            </Button>
+          </StyledActionsContainer>
+        </>
+      ) : loadedPrograms === undefined ? (
+        <LoadingAnimation />
+      ) : (
+        <ProgramsList
+          programs={loadedPrograms}
+          navigateToPath="/admin/programs"
+        />
+      )}
     </AdminPageWrapper>
   )
 }

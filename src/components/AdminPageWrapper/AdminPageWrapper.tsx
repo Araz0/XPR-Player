@@ -7,6 +7,7 @@ import { AccountTree, Add, Home, Login, Logout } from '@mui/icons-material'
 import { Button, Divider, Typography } from '@mui/material'
 
 import { useSupabase } from '../../hooks'
+import { useAdminStore } from '../../stores'
 import { LoginPopup } from '../LoginPopup'
 
 const StyledPageContainer = styled.div`
@@ -64,8 +65,9 @@ export const AdminPageWrapperRaw = ({
   topNavHeader,
   topNavActions,
 }: AdminPageWrapperProps) => {
-  const { userIsLoggedIn, signOut } = useSupabase()
   const navigate = useNavigate()
+  const { signOut } = useSupabase()
+  const userIsLoggedIn = useAdminStore((s) => s.userIsLoggedIn)
   const [showLoginPopup, setShowLoginPopup] = useState<boolean>(false)
 
   const handleRequestLogout = useCallback(async () => {

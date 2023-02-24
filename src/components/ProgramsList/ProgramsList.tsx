@@ -47,7 +47,8 @@ export const ProgramsListRaw = ({
   const handleSetAsSelectedProgram = useCallback(() => {
     if (!program) return
     setSelectedProgram(program)
-  }, [setSelectedProgram])
+    navigate('/admin')
+  }, [setSelectedProgram, navigate])
 
   return (
     <StyledProgramsListContainer>
