@@ -9,9 +9,7 @@ export class SocketService {
     this._socket = io('http://localhost:' + port)
     this._socket.emit(EventNames.CLIENT_CONNECTED, 'A new client connected')
   }
-  public start = () => {
-    this._socket.emit(EventNames.START_PROGRAM, { payload: '1', headerId: 1 })
-  }
+
   public onStart = (exicute: () => void) => {
     this._socket.on(EventNames.START_PROGRAM, (command: any) => {
       // eslint-disable-next-line no-console
@@ -21,9 +19,6 @@ export class SocketService {
       )
       exicute()
     })
-  }
-  public requestFullscreen = () => {
-    this._socket.emit(EventNames.REQUEST_FULLSCREEN, '')
   }
   public onRequestFullScreen = (exicute: () => void) => {
     this._socket.on(EventNames.REQUEST_FULLSCREEN, (command: any) => {
