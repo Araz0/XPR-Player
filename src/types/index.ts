@@ -21,3 +21,10 @@ export type ScreenType = {
 
 export type VideoRefElementType = React.RefObject<HTMLVideoElement> | undefined
 export type PlayerContainerType = React.RefObject<HTMLDivElement> | undefined
+
+export type DbProgram = {
+  id: number
+  internal_id: number
+  program: ProgramType
+  user_id: string
+}

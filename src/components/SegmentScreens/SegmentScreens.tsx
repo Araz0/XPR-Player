@@ -52,11 +52,13 @@ export const SegmentScreensRaw = ({
             <StyledVideoContainer key={idx}>
               <StyledActionsContainer>
                 <SmallIconButton
+                  tooltip="More Info"
                   onClick={() => alert(screen.title)}
                   icon={iconTypes.INFO}
                 />
                 {canEdit && (
                   <SmallIconButton
+                    tooltip="Delete Screen"
                     onClick={() => handleDeleteScreen(screen.id)}
                     icon={iconTypes.DELETE}
                   />

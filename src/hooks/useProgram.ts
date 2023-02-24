@@ -1,13 +1,36 @@
 import { useCallback } from 'react'
 
+import { useNavigate } from 'react-router-dom'
+
 import { useAdminStore } from '../stores'
-import { ScreenType, SegmentType } from '../types'
-import { generateNewId } from '../utils'
+import { ProgramType, ScreenType, SegmentType } from '../types'
+import { generateNewId, loadJsonFile } from '../utils'
 
 export const useProgram = () => {
   const program = useAdminStore((s) => s.program)
   const setProgram = useAdminStore((s) => s.setProgram)
+  const navigate = useNavigate()
 
+  const loadJsonProgram = useCallback(
+    (jsonPath: string) => {
+      loadJsonFile(jsonPath).then((prog) => {
+        setProgram(prog as ProgramType)
+        navigate(`/admin/programs/${prog.id}`)
+      })
+    },
+    [navigate, setProgram]
+  )
+
+  const updateProgramTitle = useCallback(
+    (newTitle: string) => {
+      if (!program) return
+      setProgram({
+        ...program,
+        title: newTitle,
+      })
+    },
+    [program, setProgram]
+  )
   const getSegmentById = useCallback(
     (segmentId: number) => {
       if (!program) return
@@ -131,5 +154,7 @@ export const useProgram = () => {
     updateSegment,
     removeSegment,
     removeSegmentScreen,
+    updateProgramTitle,
+    loadJsonProgram,
   }
 }
