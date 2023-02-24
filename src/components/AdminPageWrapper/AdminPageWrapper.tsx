@@ -1,4 +1,4 @@
-import { memo, ReactNode, useCallback } from 'react'
+import { memo, ReactNode, useCallback, useState } from 'react'
 
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
@@ -7,6 +7,7 @@ import { AccountTree, Add, Home, Login, Logout } from '@mui/icons-material'
 import { Button, Divider, Typography } from '@mui/material'
 
 import { useSupabase } from '../../hooks'
+import { LoginPopup } from '../LoginPopup'
 
 const StyledPageContainer = styled.div`
   flex: 1;
@@ -63,12 +64,9 @@ export const AdminPageWrapperRaw = ({
   topNavHeader,
   topNavActions,
 }: AdminPageWrapperProps) => {
-  const { userIsLoggedIn, signInViaMagicLink, signOut } = useSupabase()
+  const { userIsLoggedIn, signOut } = useSupabase()
   const navigate = useNavigate()
-
-  const handleRequestLogin = useCallback(async () => {
-    await signInViaMagicLink('email')
-  }, [signInViaMagicLink])
+  const [showLoginPopup, setShowLoginPopup] = useState<boolean>(false)
 
   const handleRequestLogout = useCallback(async () => {
     await signOut()
@@ -112,9 +110,15 @@ export const AdminPageWrapperRaw = ({
             Logout
           </StyledSideButton>
         ) : (
-          <StyledSideButton onClick={handleRequestLogin} startIcon={<Login />}>
+          <StyledSideButton
+            onClick={() => setShowLoginPopup(true)}
+            startIcon={<Login />}
+          >
             Login
           </StyledSideButton>
+        )}
+        {showLoginPopup && (
+          <LoginPopup onClose={() => setShowLoginPopup(false)} />
         )}
       </StyledSideNav>
       <StyledContentWrapper>{children}</StyledContentWrapper>

@@ -16,6 +16,7 @@ const StyledContainer = styled.div`
     border: 1px solid;
     padding: 20px;
     border-radius: 5px;
+    background-color: #212121;
   }
   .popup-content > * {
     margin-bottom: 10px;
