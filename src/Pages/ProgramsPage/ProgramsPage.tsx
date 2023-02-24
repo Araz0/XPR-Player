@@ -32,8 +32,14 @@ export const ProgramsPageRaw = () => {
   const { loadJsonProgram } = useProgram()
   const program = useAdminStore((s) => s.program)
 
-  const { getProgramById, loadProgramsByUser, updateProgram, deleteProgram } =
-    useSupabase()
+  const {
+    getProgramById,
+    loadProgramsByUser,
+    updateProgram,
+    deleteProgram,
+    userIsLoggedIn,
+  } = useSupabase()
+
   const setProgram = useAdminStore((s) => s.setProgram)
   const [error, setError] = useState<any>()
   const [programs, setPrograms] = useState<any>()
@@ -64,7 +70,6 @@ export const ProgramsPageRaw = () => {
   const handleImportJsonProgram = useCallback(
     (e: any) => {
       loadJsonProgram('/' + e.target.files[0].name)
-      console.log(e.target.files[0].name)
     },
     [loadJsonProgram]
   )
@@ -91,8 +96,12 @@ export const ProgramsPageRaw = () => {
           </>
         }
       >
-        {error && <h1>{error}</h1>}
-        {!programs ? (
+        {error && <h3>Something went Wrong: {error}</h3>}
+        {!userIsLoggedIn ? (
+          <h3>
+            User is not signed in.. please sign in to see the programs library
+          </h3>
+        ) : !programs ? (
           <LoadingAnimation />
         ) : (
           <StyledProgramsListContainer>

@@ -48,9 +48,6 @@ export const PopupRaw = ({ onClose, children }: PopupProps) => {
       : document.body.appendChild(newContainer)
 
     setContainer(newContainer)
-    return () => {
-      document.body.removeChild(newContainer)
-    }
   }, [])
   if (!container) return null
   return createPortal(
