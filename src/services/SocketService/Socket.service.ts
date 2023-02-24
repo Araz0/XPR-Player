@@ -11,20 +11,30 @@ export class SocketService {
   }
 
   public onStart = (exicute: () => void) => {
-    this._socket.on(EventNames.START_PROGRAM, (command: any) => {
+    this._socket.on(EventNames.START_PROGRAM, (data: any) => {
       // eslint-disable-next-line no-console
       console.log(
-        `Received command (start-program): ${command}`,
+        `Received command (start-program): ${data}`,
         new Date().getMilliseconds()
       )
       exicute()
     })
   }
   public onRequestFullScreen = (exicute: () => void) => {
-    this._socket.on(EventNames.REQUEST_FULLSCREEN, (command: any) => {
+    this._socket.on(EventNames.REQUEST_FULLSCREEN, (data: any) => {
       // eslint-disable-next-line no-console
       console.log(
-        `Received command (request-full-screen): ${command}`,
+        `Received command (request-full-screen): ${data}`,
+        new Date().getMilliseconds()
+      )
+      exicute()
+    })
+  }
+  public onSetProgram = (exicute: () => void) => {
+    this._socket.on(EventNames.START_PROGRAM, (data: any) => {
+      // eslint-disable-next-line no-console
+      console.log(
+        `Received command (Set Program): ${data}`,
         new Date().getMilliseconds()
       )
       exicute()
