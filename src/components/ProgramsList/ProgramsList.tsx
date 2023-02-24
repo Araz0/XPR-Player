@@ -2,7 +2,7 @@ import { memo, useCallback } from 'react'
 
 import { useNavigate } from 'react-router-dom'
 
-import { Beenhere, Delete } from '@mui/icons-material'
+import { Delete, AccountTree } from '@mui/icons-material'
 import {
   IconButton,
   List,
@@ -50,6 +50,13 @@ export const ProgramsListRaw = ({
     navigate('/admin')
   }, [setSelectedProgram, navigate])
 
+  const handleOpenProgram = useCallback(
+    (program: DbProgram) => {
+      navigate(`/admin/programs/${program.internal_id}`)
+    },
+    [navigate]
+  )
+
   return (
     <StyledProgramsListContainer>
       {programs.map((program: DbProgram) => {
@@ -62,9 +69,12 @@ export const ProgramsListRaw = ({
             <ListItem
               secondaryAction={
                 <>
-                  <Tooltip title="Set As Selected Program">
-                    <IconButton edge="end" onClick={handleSetAsSelectedProgram}>
-                      <Beenhere />
+                  <Tooltip title="Open Program Map">
+                    <IconButton
+                      edge="end"
+                      onClick={() => handleOpenProgram(program)}
+                    >
+                      <AccountTree />
                     </IconButton>
                   </Tooltip>
                   <Tooltip title="Delete Program">
@@ -78,9 +88,7 @@ export const ProgramsListRaw = ({
             >
               <ListItemButton
                 role={undefined}
-                onClick={() =>
-                  navigate(`/admin/programs/${program.internal_id}`)
-                }
+                onClick={handleSetAsSelectedProgram}
                 dense
               >
                 <ListItemText primary={program.program.title} />

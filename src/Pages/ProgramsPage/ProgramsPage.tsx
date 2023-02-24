@@ -2,8 +2,8 @@ import { memo, useCallback, useEffect } from 'react'
 
 import { useNavigate, useParams } from 'react-router-dom'
 
-import { Delete, Save, SaveAlt } from '@mui/icons-material'
-import { IconButton } from '@mui/material'
+import { Beenhere, Delete, Save, SaveAlt } from '@mui/icons-material'
+import { IconButton, Tooltip } from '@mui/material'
 
 import {
   AdminPageWrapper,
@@ -24,6 +24,7 @@ export const ProgramsPageRaw = () => {
   const setProgram = useAdminStore((s) => s.setProgram)
   const loadedPrograms = useAdminStore((s) => s.loadedPrograms)
   const userIsLoggedIn = useAdminStore((s) => s.userIsLoggedIn)
+  const setSelectedProgram = useAdminStore((s) => s.setSelectedProgram)
 
   const { getProgramById, updateProgram, deleteProgram } = useSupabase()
 
@@ -71,15 +72,26 @@ export const ProgramsPageRaw = () => {
       topNavHeader="Tree map"
       topNavActions={
         <>
-          <IconButton onClick={handleSaveProgramAsJson}>
-            <SaveAlt />
-          </IconButton>
-          <IconButton onClick={() => updateProgram(program)}>
-            <Save />
-          </IconButton>
-          <IconButton onClick={handleDeleteProgram}>
-            <Delete />
-          </IconButton>
+          <Tooltip title="Select Program">
+            <IconButton onClick={() => setSelectedProgram(program)}>
+              <Beenhere />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title="Save Program as JSON">
+            <IconButton onClick={handleSaveProgramAsJson}>
+              <SaveAlt />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title="Save Changes">
+            <IconButton onClick={() => updateProgram(program)}>
+              <Save />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title="Delete Program">
+            <IconButton onClick={handleDeleteProgram}>
+              <Delete />
+            </IconButton>
+          </Tooltip>
         </>
       }
     >
