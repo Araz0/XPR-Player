@@ -8,6 +8,16 @@ export const useProgram = () => {
   const program = useAdminStore((s) => s.program)
   const setProgram = useAdminStore((s) => s.setProgram)
 
+  const updateProgramTitle = useCallback(
+    (newTitle: string) => {
+      if (!program) return
+      setProgram({
+        ...program,
+        title: newTitle,
+      })
+    },
+    [program, setProgram]
+  )
   const getSegmentById = useCallback(
     (segmentId: number) => {
       if (!program) return
@@ -131,5 +141,6 @@ export const useProgram = () => {
     updateSegment,
     removeSegment,
     removeSegmentScreen,
+    updateProgramTitle,
   }
 }

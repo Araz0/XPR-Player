@@ -62,7 +62,8 @@ export const TreeItemRaw = ({ segmentId }: TreeItemProps) => {
       description: descriptionRef.current?.value || 'No description',
     }
     updateSegment(updatedSeg)
-  }, [segment, updateSegment])
+    handleToggleEdit()
+  }, [segment, updateSegment, handleToggleEdit])
 
   const handleDelete = useCallback(() => {
     removeSegment(segmentId)

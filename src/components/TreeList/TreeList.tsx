@@ -2,13 +2,13 @@ import { memo, useCallback, useEffect, useRef, useState } from 'react'
 
 import styled from 'styled-components'
 
-import { NoteAdd, AddBox } from '@mui/icons-material'
+import { AddBox, Edit, EditOff, Save } from '@mui/icons-material'
 import { Typography, Divider, TextField, IconButton } from '@mui/material'
 
 import { useProgram } from '../../hooks'
-import { useAdminStore } from '../../stores'
-import { SegmentType } from '../../types'
+import { ProgramType, SegmentType } from '../../types'
 import { generateNewId, getIntroSegment } from '../../utils'
+import { EditableLabel } from '../EditableLabel'
 import { TreeItem } from '../TreeItem'
 
 import './style.css'
@@ -21,24 +21,25 @@ const StyledActionsContainer = styled.div`
   margin-inline: auto;
   margin-top: 100px;
 `
-
-export const TreeListRaw = () => {
-  const { addSegment } = useProgram()
+const StyledTitleContainer = styled.div`
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  h6 {
+    margin: 0;
+  }
+`
+export type TreeListProps = {
+  program: ProgramType
+}
+export const TreeListRaw = ({ program }: TreeListProps) => {
+  const { addSegment, updateProgramTitle } = useProgram()
   const input1Ref = useRef<HTMLInputElement>()
-  const program = useAdminStore((s) => s.program)
-  const setProgram = useAdminStore((s) => s.setProgram)
-
+  const titleRef = useRef<HTMLInputElement>()
+  const [canEditTitle, setCanEditTitle] = useState<boolean>(false)
   const [introSegment, setIntroSegment] = useState<SegmentType | undefined>(
     undefined
   )
-
-  const handleCreateProgram = useCallback(() => {
-    setProgram({
-      id: generateNewId(),
-      title: input1Ref.current?.value || 'New Program',
-      segments: [],
-    })
-  }, [setProgram])
 
   const handleIntroSegment = useCallback(() => {
     const introSegment = {
@@ -52,33 +53,18 @@ export const TreeListRaw = () => {
     setIntroSegment(introSegment)
   }, [addSegment])
 
+  const handleUpdateTitle = useCallback(() => {
+    if (!titleRef.current?.value) return
+    updateProgramTitle(titleRef.current?.value)
+    setCanEditTitle(!canEditTitle)
+  }, [canEditTitle, updateProgramTitle])
+
   useEffect(() => {
-    if (!program) return
     const intro = getIntroSegment(program.segments)
     if (!intro) return
     setIntroSegment(intro)
   }, [program])
 
-  if (!program)
-    return (
-      <StyledActionsContainer>
-        <Typography variant="h6">Create new Program</Typography>
-        <Divider />
-        <Typography variant="subtitle1">
-          Please fill the input field and submit to continue creating the
-          program.
-        </Typography>
-        <br />
-        <TextField
-          inputRef={input1Ref}
-          placeholder={'Program title'}
-          size="small"
-        />
-        <IconButton onClick={handleCreateProgram}>
-          <NoteAdd />
-        </IconButton>
-      </StyledActionsContainer>
-    )
   if (!introSegment)
     return (
       <StyledActionsContainer>
@@ -93,9 +79,24 @@ export const TreeListRaw = () => {
     )
   return (
     <>
-      <Typography variant="h6" align="center">
-        {program.title}
-      </Typography>
+      <StyledTitleContainer>
+        <EditableLabel
+          inputRef={titleRef}
+          canEdit={canEditTitle}
+          text={program.title}
+          placeHolder={'Program Title'}
+          typographyVariant={'h6'}
+        />
+        {canEditTitle && (
+          <IconButton onClick={handleUpdateTitle} size="small">
+            <Save />
+          </IconButton>
+        )}
+        <IconButton onClick={() => setCanEditTitle(!canEditTitle)} size="small">
+          {canEditTitle ? <EditOff /> : <Edit />}
+        </IconButton>
+      </StyledTitleContainer>
+
       <Divider />
       <div className="familyTree">
         <StyledUl>

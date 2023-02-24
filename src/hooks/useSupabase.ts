@@ -34,7 +34,7 @@ export function useSupabase() {
     }
   }, [user?.role])
 
-  const saveProgram = useCallback(
+  const insertProgram = useCallback(
     async (program: ProgramType) => {
       if (!user) return
       const { error } = await supabaseClient
@@ -115,10 +115,29 @@ export function useSupabase() {
       throw error
     }
   }, [])
+  const deleteProgram = useCallback(async (programId: number) => {
+    const { error } = await supabaseClient
+      .from('programs')
+      .delete()
+      .eq('internal_id', programId)
 
+    if (error) {
+      throw error
+    }
+  }, [])
+  const updateProgram = useCallback(async (program: ProgramType) => {
+    const { error } = await supabaseClient
+      .from('programs')
+      .update({ program: program })
+      .eq('internal_id', program.id)
+
+    if (error) {
+      throw error
+    }
+  }, [])
   return {
     supabaseClient,
-    saveProgram,
+    insertProgram,
     getProgramById,
     loadAllPrograms,
     loadProgramsByUser,
@@ -127,5 +146,7 @@ export function useSupabase() {
     signInWithGitHub,
     signOut,
     userIsLoggedIn,
+    deleteProgram,
+    updateProgram,
   }
 }

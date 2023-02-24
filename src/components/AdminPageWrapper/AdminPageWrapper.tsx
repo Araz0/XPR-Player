@@ -3,7 +3,7 @@ import { memo, ReactNode, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 
-import { AccountTree, Home, Login, Logout } from '@mui/icons-material'
+import { AccountTree, Add, Home, Login, Logout } from '@mui/icons-material'
 import { Button, Divider, Typography } from '@mui/material'
 
 import { useSupabase } from '../../hooks'
@@ -26,6 +26,7 @@ const StyledTopNav = styled.div`
   display: flex;
   justify-content: space-between;
   height: fit-content;
+  padding: 0 15px;
 `
 const StyledSideNav = styled.div`
   grid-area: sideNav;
@@ -66,7 +67,7 @@ export const AdminPageWrapperRaw = ({
   const navigate = useNavigate()
 
   const handleRequestLogin = useCallback(async () => {
-    await signInViaMagicLink('alhamdani.araz@gmail.com')
+    await signInViaMagicLink('email')
   }, [signInViaMagicLink])
 
   const handleRequestLogout = useCallback(async () => {
@@ -82,7 +83,7 @@ export const AdminPageWrapperRaw = ({
 
       <StyledSideNav>
         <StyledSymbolContainer>
-          <Typography variant="h5">Admin Panel</Typography>
+          <Typography variant="h5">XPR Admin</Typography>
         </StyledSymbolContainer>
         <Divider />
         <StyledSideButton
@@ -96,6 +97,12 @@ export const AdminPageWrapperRaw = ({
           startIcon={<AccountTree />}
         >
           Programs
+        </StyledSideButton>
+        <StyledSideButton
+          onClick={() => navigate('/admin/create')}
+          startIcon={<Add />}
+        >
+          Create Program
         </StyledSideButton>
         {userIsLoggedIn ? (
           <StyledSideButton
