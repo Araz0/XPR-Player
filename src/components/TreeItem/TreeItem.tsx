@@ -141,7 +141,7 @@ export const TreeItemRaw = ({ segmentId }: TreeItemProps) => {
           />
         </StyledActionsContainer>
       </article>
-      {segment.nextSegmentIds && (
+      {segment.nextSegmentIds && segment.nextSegmentIds.length > 0 && (
         <ul>
           {segment.nextSegmentIds?.map((id, idx) => {
             return <TreeItem key={idx} segmentId={id} />

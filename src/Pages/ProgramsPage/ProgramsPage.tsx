@@ -2,7 +2,7 @@ import { memo, useCallback, useEffect, useState } from 'react'
 
 import { useNavigate, useParams } from 'react-router-dom'
 
-import { Delete, Save } from '@mui/icons-material'
+import { Delete, FileOpen, Save, SaveAlt } from '@mui/icons-material'
 import {
   IconButton,
   List,
@@ -14,9 +14,10 @@ import {
 } from '@mui/material'
 
 import { AdminPageWrapper, LoadingAnimation, TreeList } from '../../components'
-import { useSupabase } from '../../hooks'
+import { useProgram, useSupabase } from '../../hooks'
 import { useAdminStore } from '../../stores'
 import { DbProgram } from '../../types'
+import { saveProgramAsJson } from '../../utils'
 
 const StyledProgramsListContainer = styled(List)`
   max-width: 400px;
@@ -28,6 +29,7 @@ const StyledProgramsListContainer = styled(List)`
 export const ProgramsPageRaw = () => {
   const navigate = useNavigate()
   const { programId } = useParams()
+  const { loadJsonProgram } = useProgram()
   const program = useAdminStore((s) => s.program)
 
   const { getProgramById, loadProgramsByUser, updateProgram, deleteProgram } =
@@ -59,9 +61,36 @@ export const ProgramsPageRaw = () => {
     navigate(`/admin/programs`)
   }, [deleteProgram, navigate, program])
 
+  const handleImportJsonProgram = useCallback(
+    (e: any) => {
+      loadJsonProgram('/' + e.target.files[0].name)
+      console.log(e.target.files[0].name)
+    },
+    [loadJsonProgram]
+  )
+  const handleSaveProgramAsJson = useCallback(() => {
+    if (!program) return
+    saveProgramAsJson(program)
+  }, [program])
+
   if (!programId)
     return (
-      <AdminPageWrapper topNavHeader="programs">
+      <AdminPageWrapper
+        topNavHeader="programs"
+        topNavActions={
+          <>
+            <IconButton component="label">
+              <input
+                hidden
+                accept="application/json"
+                type="file"
+                onChange={handleImportJsonProgram}
+              />
+              <FileOpen />
+            </IconButton>
+          </>
+        }
+      >
         {error && <h1>{error}</h1>}
         {!programs ? (
           <LoadingAnimation />
@@ -105,6 +134,9 @@ export const ProgramsPageRaw = () => {
       topNavHeader="Tree map"
       topNavActions={
         <>
+          <IconButton onClick={handleSaveProgramAsJson}>
+            <SaveAlt />
+          </IconButton>
           <IconButton onClick={() => updateProgram(program)}>
             <Save />
           </IconButton>
