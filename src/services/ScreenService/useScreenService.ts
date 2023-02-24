@@ -2,9 +2,9 @@ import { useCallback } from 'react'
 
 // import { io } from 'socket.io-client'
 
+import { ScreenService } from './Screen.service'
 import { PlayerContainerType, VideoRefElementType } from '../../types'
 import { SocketService } from '../SocketService'
-import { ScreenService } from './Screen.service'
 
 const screenPlayer = new ScreenService()
 const clientSocket = new SocketService()
