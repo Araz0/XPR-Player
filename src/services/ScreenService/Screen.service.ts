@@ -1,4 +1,9 @@
-import { VideoRefElementType, PlayerContainerType } from '../../types'
+import {
+  VideoRefElementType,
+  PlayerContainerType,
+  ProgramType,
+  ScreenStatus,
+} from '../../types'
 import { VideoService } from '../VideoService'
 
 export class ScreenService {
@@ -6,6 +11,8 @@ export class ScreenService {
   private _player2: VideoService
   private _containerRef: PlayerContainerType
   private _selectedPID: string
+  private _program: ProgramType | undefined
+  private _status: ScreenStatus
 
   constructor(
     container?: PlayerContainerType,
@@ -16,12 +23,14 @@ export class ScreenService {
     this._player1 = new VideoService('A', ref1 || undefined)
     this._player2 = new VideoService('B', ref2 || undefined)
     this._selectedPID = this._player1.id
+    this._status = ScreenStatus.EMPTY
   }
   public setRefs = (
     container: PlayerContainerType,
     ref1: VideoRefElementType,
     ref2: VideoRefElementType
   ) => {
+    console.log('🚀 ~ file: Screen.service.ts:34 ~ ScreenService: init')
     this._containerRef = container
     this._player1.videoElement = ref1
     this._player2.videoElement = ref2
@@ -79,12 +88,19 @@ export class ScreenService {
   public setNextSource = (src: string) => {
     this.nextPlayer().setSource(src)
   }
+
+  public setProgram = (program: ProgramType | undefined) => {
+    this._program = program
+    this._status = ScreenStatus.HAS_PROGRAM
+  }
+
   private onPlayerEnded = (player: VideoService) => {
     if (player.id !== this.currentPlayer().id) return
     console.log('🛑 ended - ', player.id)
 
     this.playNext()
   }
+
   private onPlayerUpdate = (player: VideoService) => {
     if (player.id !== this.currentPlayer().id) return
 

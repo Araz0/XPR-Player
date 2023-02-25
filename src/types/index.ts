@@ -28,3 +28,15 @@ export type DbProgram = {
   program: ProgramType
   user_id: string
 }
+
+export enum ScreenStatus {
+  EMPTY = 'EMPTY',
+  HAS_PROGRAM = 'HAS_PROGRAM',
+  STAND_BY = 'STAND_BY',
+  PLAYING = 'PLAYING',
+  VOTING = 'VOTING',
+  PAUSED = 'PAUSED',
+  STOPPED = 'STOPPED',
+  LOADING = 'LOADING',
+  ERROR = 'ERROR',
+}

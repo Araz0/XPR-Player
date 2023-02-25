@@ -1,6 +1,7 @@
 import { io, Socket } from 'socket.io-client'
 
 import { EventNames } from './eventNames'
+import { ProgramType } from '../../types'
 
 export class SocketService {
   private _socket: Socket
@@ -30,14 +31,14 @@ export class SocketService {
       exicute()
     })
   }
-  public onSetProgram = (exicute: () => void) => {
-    this._socket.on(EventNames.START_PROGRAM, (data: any) => {
+  public onSetProgram = (exicute: (program: ProgramType) => void) => {
+    this._socket.on(EventNames.SET_PROGRAM, (program: ProgramType) => {
       // eslint-disable-next-line no-console
       console.log(
-        `Received command (Set Program): ${data}`,
+        `Received command (Set Program): `,
         new Date().getMilliseconds()
       )
-      exicute()
+      exicute(program)
     })
   }
 }

@@ -1,5 +1,6 @@
 export enum EventNames {
   CLIENT_CONNECTED = 'client-connected',
+  SET_PROGRAM = 'set-program',
   START_PROGRAM = 'start-program',
   STOP_PROGRAM = 'stop-program',
   RESET_PROGRAM = 'reset-program',
