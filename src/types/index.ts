@@ -2,6 +2,8 @@ export type ProgramType = {
   id: number
   title: string
   segments: SegmentType[]
+  amountOfScreens: number
+  standBySrc?: string
 }
 export type SegmentType = {
   id: number

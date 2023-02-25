@@ -3,6 +3,7 @@ import { ProgramType } from './types'
 export const program: ProgramType = {
   id: 0,
   title: 'Program Title',
+  amountOfScreens: 2,
   segments: [
     {
       id: 87897156,
