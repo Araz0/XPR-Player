@@ -1,5 +1,6 @@
 import { memo, useCallback, useEffect, useRef } from 'react'
 
+import { useParams } from 'react-router-dom'
 import styled from 'styled-components'
 
 import { VideoPlayer } from '../../components'
@@ -18,6 +19,7 @@ export type ScreenProps = {
 }
 
 export const ScreenRaw = ({ controls = false }: ScreenProps) => {
+  const { screenId } = useParams()
   const playerContainerRef = useRef<any>()
   const videoRef1 = useRef<any>()
   const videoRef2 = useRef<any>()
@@ -27,8 +29,8 @@ export const ScreenRaw = ({ controls = false }: ScreenProps) => {
   useDoubleKeyPress('f', () => requestFullScreen())
 
   useEffect(() => {
-    init(playerContainerRef, videoRef1, videoRef2)
-  }, [init])
+    init(screenId, playerContainerRef, videoRef1, videoRef2)
+  }, [init, screenId])
 
   const handlePlayPause = useCallback(() => {
     playPauseScreen()

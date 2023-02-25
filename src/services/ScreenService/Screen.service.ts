@@ -7,6 +7,7 @@ import {
 import { VideoService } from '../VideoService'
 
 export class ScreenService {
+  private _id: string | undefined
   private _player1: VideoService
   private _player2: VideoService
   private _containerRef: PlayerContainerType
@@ -15,10 +16,12 @@ export class ScreenService {
   private _status: ScreenStatus
 
   constructor(
+    screenId?: string | undefined,
     container?: PlayerContainerType,
     ref1?: VideoRefElementType,
     ref2?: VideoRefElementType
   ) {
+    this._id = screenId
     this._containerRef = container || undefined
     this._player1 = new VideoService('A', ref1 || undefined)
     this._player2 = new VideoService('B', ref2 || undefined)
@@ -26,11 +29,12 @@ export class ScreenService {
     this._status = ScreenStatus.EMPTY
   }
   public setRefs = (
+    screenId: string | undefined,
     container: PlayerContainerType,
     ref1: VideoRefElementType,
     ref2: VideoRefElementType
   ) => {
-    console.log('🚀 ~ file: Screen.service.ts:34 ~ ScreenService: init')
+    this._id = screenId
     this._containerRef = container
     this._player1.videoElement = ref1
     this._player2.videoElement = ref2

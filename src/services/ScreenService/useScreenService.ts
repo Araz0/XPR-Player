@@ -45,11 +45,12 @@ export const useScreenService = () => {
 
   const init = useCallback(
     (
+      screenId: string | undefined,
       container: PlayerContainerType,
       videoRef1: VideoRefElementType,
       videoRef2: VideoRefElementType
     ) => {
-      screenPlayer.setRefs(container, videoRef1, videoRef2)
+      screenPlayer.setRefs(screenId, container, videoRef1, videoRef2)
 
       // eslint-disable-next-line no-console
       console.log('📺 useScreenService init')
