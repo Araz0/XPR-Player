@@ -6,6 +6,7 @@ function App() {
   return (
     <Routes>
       <Route index element={<Home />} />
+      <Route path="screen" element={<ScreenPage />} />
       <Route path="screen/:screenId/*" element={<ScreenPage />} />
       <Route path="admin" element={<AdminPage />} />
       <Route path="admin/create" element={<CreatePage />} />

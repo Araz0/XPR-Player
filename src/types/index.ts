@@ -42,3 +42,8 @@ export enum ScreenStatus {
   LOADING = 'LOADING',
   ERROR = 'ERROR',
 }
+
+export enum StandByMods {
+  ANIMATION = 'ANIMATION',
+  TEXT = 'TEXT',
+}

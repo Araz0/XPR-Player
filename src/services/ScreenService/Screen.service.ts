@@ -56,11 +56,11 @@ export class ScreenService {
   public setCurrentAsNextPlayer = () => {
     this._selectedPID = this.nextPlayer().id
   }
-  private play = () => {
+  public play = () => {
     this.currentPlayer().play()
   }
 
-  private pause = () => {
+  public pause = () => {
     this.currentPlayer().pause()
   }
   public playPause = () => {

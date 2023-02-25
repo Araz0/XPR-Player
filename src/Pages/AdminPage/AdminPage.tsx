@@ -2,7 +2,13 @@ import { memo, useCallback } from 'react'
 
 import styled from 'styled-components'
 
-import { AccountTree, Backspace, PlayArrow, Stop } from '@mui/icons-material'
+import {
+  AccountTree,
+  Airplay,
+  Backspace,
+  PlayArrow,
+  Stop,
+} from '@mui/icons-material'
 import { Button, IconButton, Tooltip, Typography } from '@mui/material'
 
 import {
@@ -24,7 +30,7 @@ export const AdminPageRaw = () => {
   const selectedProgram = useAdminStore((s) => s.selectedProgram)
   const setSelectedProgram = useAdminStore((s) => s.setSelectedProgram)
   const loadedPrograms = useAdminStore((s) => s.loadedPrograms)
-  const { emmitProgram, emmitStartProgram, emmitStopProgram } =
+  const { emmitProgram, emmitStartProgram, emmitStopProgram, emmitEndStandby } =
     useSocketService()
 
   const handelSendProgram = useCallback(() => {
@@ -52,6 +58,13 @@ export const AdminPageRaw = () => {
               startIcon={<AccountTree />}
             >
               Send Program
+            </Button>
+            <Button
+              variant="contained"
+              onClick={emmitEndStandby}
+              startIcon={<Airplay />}
+            >
+              End Standby mode
             </Button>
             <Button
               variant="contained"

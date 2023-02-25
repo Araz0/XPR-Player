@@ -4,10 +4,12 @@ export enum EventNames {
   START_PROGRAM = 'start-program',
   STOP_PROGRAM = 'stop-program',
   RESET_PROGRAM = 'reset-program',
+  END_STANDBY = 'end-standby',
   REQUEST_FULLSCREEN = 'request-fullscreen',
   ADMIN_BRODCAST_START = 'admin-Brodcast-start',
   ADMIN_BRODCAST_STOP = 'admin-Brodcast-stop',
   ADMIN_BRODCAST_RESET = 'admin-Brodcast-reset',
   ADMIN_BRODCAST_FULLSCREEN = 'admin-Brodcast-fullscreen',
   ADMIN_BRODCAST_PROGRAM = 'admin-Brodcast-program',
+  ADMIN_BRODCAST_END_STANDBY = 'admin-Brodcast-end-standby',
 }

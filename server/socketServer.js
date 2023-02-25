@@ -39,6 +39,8 @@ io.on('connection', (socket) => {
   })
   socket.on('admin-Brodcast-start', (args) => {
     socket.broadcast.emit('start-program', args)
+    // eslint-disable-next-line no-console
+    console.log(`📺 - `, args)
   })
   socket.on('admin-Brodcast-fullscreen', (args) => {
     socket.broadcast.emit('request-fullscreen', args)
@@ -49,5 +51,11 @@ io.on('connection', (socket) => {
     socket.broadcast.emit('set-program', args)
     // eslint-disable-next-line no-console
     console.log(`📺 - admin sent program`, args)
+  })
+
+  socket.on('admin-Brodcast-end-standby', (args) => {
+    socket.broadcast.emit('end-standby', args)
+    // eslint-disable-next-line no-console
+    console.log(`📺 - `, args)
   })
 })

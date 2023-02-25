@@ -9,16 +9,18 @@ import {
   ProgramType,
   VideoRefElementType,
 } from '../../types'
-import { SocketService } from '../SocketService'
 
 const screenPlayer = new ScreenService()
-const clientSocket = new SocketService()
 
 export const useScreenService = () => {
   const setProgram = useScreenStore((s) => s.setProgram)
 
   const playPauseScreen = useCallback(() => {
     screenPlayer.playPause()
+  }, [])
+
+  const startProgram = useCallback(() => {
+    screenPlayer.play()
   }, [])
 
   const setCurrentSource = useCallback((src: string) => {
@@ -41,12 +43,6 @@ export const useScreenService = () => {
     [setProgram]
   )
 
-  const initSocket = useCallback(() => {
-    clientSocket.onStart(playPauseScreen)
-    clientSocket.onRequestFullScreen(requestFullScreen)
-    clientSocket.onSetProgram(setScreenProgram)
-  }, [playPauseScreen, setScreenProgram, requestFullScreen])
-
   const init = useCallback(
     (
       container: PlayerContainerType,
@@ -57,9 +53,8 @@ export const useScreenService = () => {
 
       // eslint-disable-next-line no-console
       console.log('📺 useScreenService init')
-      initSocket()
     },
-    [initSocket]
+    []
   )
 
   return {
@@ -68,5 +63,7 @@ export const useScreenService = () => {
     setCurrentSource,
     setNextSource,
     requestFullScreen,
+    setScreenProgram,
+    startProgram,
   }
 }
