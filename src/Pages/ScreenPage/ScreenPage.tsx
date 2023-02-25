@@ -25,6 +25,7 @@ export const ScreenPageRaw = () => {
     })
     clientSocket.onRequestFullScreen(requestFullScreen)
     clientSocket.onSetProgram(setScreenProgram)
+    // todo: check if this hook dep. array effects anything
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 

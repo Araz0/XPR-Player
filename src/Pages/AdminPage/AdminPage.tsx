@@ -6,6 +6,7 @@ import {
   AccountTree,
   Airplay,
   Backspace,
+  Fullscreen,
   PlayArrow,
   Stop,
 } from '@mui/icons-material'
@@ -30,8 +31,13 @@ export const AdminPageRaw = () => {
   const selectedProgram = useAdminStore((s) => s.selectedProgram)
   const setSelectedProgram = useAdminStore((s) => s.setSelectedProgram)
   const loadedPrograms = useAdminStore((s) => s.loadedPrograms)
-  const { emmitProgram, emmitStartProgram, emmitStopProgram, emmitEndStandby } =
-    useSocketService()
+  const {
+    emmitProgram,
+    emmitStartProgram,
+    emmitStopProgram,
+    emmitEndStandby,
+    emmitRequestFullscreen,
+  } = useSocketService()
 
   const handelSendProgram = useCallback(() => {
     if (!selectedProgram) return
@@ -65,6 +71,13 @@ export const AdminPageRaw = () => {
               startIcon={<Airplay />}
             >
               End Standby mode
+            </Button>
+            <Button
+              variant="contained"
+              onClick={emmitRequestFullscreen}
+              startIcon={<Fullscreen />}
+            >
+              Request Fullscreen
             </Button>
             <Button
               variant="contained"
