@@ -1,8 +1,9 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect } from 'react'
 
-import { createClient, User } from '@supabase/supabase-js'
+import { createClient } from '@supabase/supabase-js'
 
-import { ProgramType } from '../types'
+import { useAdminStore } from '../stores'
+import { DbProgram, ProgramType } from '../types'
 
 const supabaseUrl = process.env.REACT_APP_SUPABASE_URL || ''
 const supabaseKey = process.env.REACT_APP_SUPABASE_KEY || ''
@@ -10,42 +11,24 @@ const supabaseKey = process.env.REACT_APP_SUPABASE_KEY || ''
 const supabaseClient = createClient(supabaseUrl, supabaseKey)
 
 export function useSupabase() {
-  const [user, setUser] = useState<User | undefined>()
-  const [userIsLoggedIn, setUserIsLoggedIn] = useState<boolean>(false)
-
-  useEffect(() => {
-    supabaseClient.auth.onAuthStateChange((_event, session) => {
-      if (_event !== 'SIGNED_OUT') {
-        // success
-        setUser(session?.user)
-        setUserIsLoggedIn(true)
-      } else {
-        // did not work
-        setUserIsLoggedIn(false)
-      }
-    })
-  }, [])
-
-  useEffect(() => {
-    if (user?.role === 'authenticated') {
-      setUserIsLoggedIn(true)
-    } else {
-      setUserIsLoggedIn(false)
-    }
-  }, [user?.role])
+  const setLoadedPrograms = useAdminStore((s) => s.setLoadedPrograms)
+  const loadedPrograms = useAdminStore((s) => s.loadedPrograms)
+  const loggedInUser = useAdminStore((s) => s.loggedInUser)
+  const setLoggedInUser = useAdminStore((s) => s.setLoggedInUser)
+  const setUserIsLoggedIn = useAdminStore((s) => s.setUserIsLoggedIn)
 
   const insertProgram = useCallback(
     async (program: ProgramType) => {
-      if (!user) return
-      const { error } = await supabaseClient
-        .from('programs')
-        .insert({ internal_id: program.id, program: program, user_id: user.id })
+      if (!loggedInUser) return
+      const { error } = await supabaseClient.from('programs').insert({
+        internal_id: program.id,
+        program: program,
+        user_id: loggedInUser.id,
+      })
 
-      if (error) {
-        throw error
-      }
+      if (error) throw error
     },
-    [user]
+    [loggedInUser]
   )
   const getProgramById = useCallback(async (Id: string) => {
     const { data, error } = await supabaseClient
@@ -53,88 +36,107 @@ export function useSupabase() {
       .select('program')
       .eq('internal_id', Id)
       .single()
-    if (error) {
-      throw error
-    } else {
-      return data.program
-    }
+
+    if (error) throw error
+
+    return data.program
   }, [])
 
   const loadAllPrograms = useCallback(async () => {
     const { data, error } = await supabaseClient.from('programs').select('*')
-    if (error) {
-      throw error
-    } else {
-      return data
-    }
-  }, [])
+    if (error) throw error
+    setLoadedPrograms(data as DbProgram[])
+    return data as DbProgram[]
+  }, [setLoadedPrograms])
+
   const loadProgramsByUser = useCallback(async () => {
-    if (!user) return
+    if (!loggedInUser) return
     const { data, error } = await supabaseClient
       .from('programs')
       .select('*')
-      .eq('user_id', user.id)
-    if (error) {
-      throw error
-    }
-    return data
-  }, [user])
+      .eq('user_id', loggedInUser.id)
+
+    if (error) throw error
+    setLoadedPrograms(data as DbProgram[])
+    return data as DbProgram[]
+  }, [setLoadedPrograms, loggedInUser])
 
   const getUserData = useCallback(async () => {
     const {
       data: { user },
     } = await supabaseClient.auth.getUser()
     if (!user) return
-    setUser(user)
+    setLoggedInUser(user)
     return user
-  }, [])
+  }, [setLoggedInUser])
 
   const signInViaMagicLink = useCallback(async (email: string) => {
     const { data, error } = await supabaseClient.auth.signInWithOtp({
       email: email,
     })
-    if (error) {
-      throw error
-    }
+    if (error) throw error
     return data
   }, [])
+
   const signInWithGitHub = useCallback(async () => {
     const { data, error } = await supabaseClient.auth.signInWithOAuth({
       provider: 'github',
     })
-    if (error) {
-      throw error
-    }
+    if (error) throw error
     return data
   }, [])
 
   const signOut = useCallback(async () => {
-    console.log('signing out')
     const { error } = await supabaseClient.auth.signOut()
-    if (error) {
-      throw error
-    }
+    if (error) throw error
   }, [])
+
   const deleteProgram = useCallback(async (programId: number) => {
     const { error } = await supabaseClient
       .from('programs')
       .delete()
       .eq('internal_id', programId)
 
-    if (error) {
-      throw error
-    }
+    if (error) throw error
   }, [])
+
   const updateProgram = useCallback(async (program: ProgramType) => {
     const { error } = await supabaseClient
       .from('programs')
       .update({ program: program })
       .eq('internal_id', program.id)
 
-    if (error) {
-      throw error
-    }
+    if (error) throw error
   }, [])
+
+  useEffect(() => {
+    if (!loadedPrograms) loadProgramsByUser()
+  }, [loadProgramsByUser, loadedPrograms])
+
+  useEffect(() => {
+    // if (!loggedInUser) {
+    //   getUserData()
+    // } else {
+    //   if (loggedInUser?.role === 'authenticated') {
+    //     setUserIsLoggedIn(true)
+    //   } else {
+    //     setUserIsLoggedIn(false)
+    //   }
+    // }
+
+    supabaseClient.auth.onAuthStateChange((_event, session) => {
+      if (_event !== 'SIGNED_OUT') {
+        // success
+        setUserIsLoggedIn(true)
+        setLoggedInUser(session?.user)
+      } else {
+        // did not work
+        setUserIsLoggedIn(false)
+        setLoggedInUser(undefined)
+      }
+    })
+  }, [setLoggedInUser, setUserIsLoggedIn])
+
   return {
     supabaseClient,
     insertProgram,
@@ -145,7 +147,6 @@ export function useSupabase() {
     signInViaMagicLink,
     signInWithGitHub,
     signOut,
-    userIsLoggedIn,
     deleteProgram,
     updateProgram,
   }

@@ -1,9 +1,9 @@
-import { memo, useCallback, useRef } from 'react'
+import { memo, useCallback, useRef, useState } from 'react'
 
 import styled from 'styled-components'
 
 import { NoteAdd } from '@mui/icons-material'
-import { Typography, Divider, TextField, IconButton } from '@mui/material'
+import { Typography, Divider, TextField, Slider, Button } from '@mui/material'
 
 import { AdminPageWrapper } from '../../components'
 import { useAdminStore } from '../../stores'
@@ -14,17 +14,30 @@ const StyledActionsContainer = styled.div`
   margin-inline: auto;
   margin-top: 100px;
 `
+const StyledSliderContainer = styled.div`
+  max-width: 200px;
+  padding: 15px;
+`
 export const CreatePageRaw = () => {
-  const input1Ref = useRef<HTMLInputElement>()
+  const titleRef = useRef<HTMLInputElement>()
+  const [screensAmount, setScreensAmount] = useState<number>(1)
   const setProgram = useAdminStore((s) => s.setProgram)
+
+  const handleChangeScreensAmount = (
+    event: Event,
+    newValue: number | number[]
+  ) => {
+    setScreensAmount(newValue as number)
+  }
 
   const handleCreateProgram = useCallback(() => {
     setProgram({
       id: generateNewId(),
-      title: input1Ref.current?.value || 'New Program',
+      title: titleRef.current?.value || 'New Program',
+      amountOfScreens: screensAmount,
       segments: [],
     })
-  }, [setProgram])
+  }, [setProgram, screensAmount])
   return (
     <AdminPageWrapper>
       <StyledActionsContainer>
@@ -36,13 +49,34 @@ export const CreatePageRaw = () => {
         </Typography>
         <br />
         <TextField
-          inputRef={input1Ref}
+          inputRef={titleRef}
           placeholder={'Program title'}
           size="small"
         />
-        <IconButton onClick={handleCreateProgram}>
-          <NoteAdd />
-        </IconButton>
+        <br />
+        <Typography variant="subtitle1">
+          How many screens you plan to use?
+        </Typography>
+        <StyledSliderContainer>
+          <Slider
+            value={screensAmount}
+            onChange={handleChangeScreensAmount}
+            aria-label="amount of screens"
+            defaultValue={1}
+            valueLabelDisplay="auto"
+            marks
+            min={1}
+            max={5}
+            step={1}
+          />
+        </StyledSliderContainer>
+        <Button
+          variant="contained"
+          onClick={handleCreateProgram}
+          endIcon={<NoteAdd />}
+        >
+          Create Program
+        </Button>
       </StyledActionsContainer>
     </AdminPageWrapper>
   )

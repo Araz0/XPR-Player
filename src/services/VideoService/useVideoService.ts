@@ -27,5 +27,20 @@ export const useVideoService = () => {
   const getDuration = useCallback(() => {
     videoPlayer.getDuration()
   }, [])
-  return { init, playVideo, pauseVideo, setSource, toggleMute, getDuration }
+  const hideControls = useCallback(() => {
+    videoPlayer.hideControls()
+  }, [])
+  const showControls = useCallback(() => {
+    videoPlayer.showControls()
+  }, [])
+  return {
+    init,
+    playVideo,
+    pauseVideo,
+    setSource,
+    toggleMute,
+    getDuration,
+    hideControls,
+    showControls,
+  }
 }
