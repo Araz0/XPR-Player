@@ -4,6 +4,7 @@ import styled from 'styled-components'
 
 const StyledVideo = styled.video`
   width: 100%;
+  height: 100%;
 `
 export interface VideoProps {
   src: string
