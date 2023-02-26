@@ -29,7 +29,7 @@ export const ScreenFormPopupRaw = ({
       const screen = {
         id: generateNewId(),
         title: titleRef.current?.value || 'screen title',
-        mediaSrc: `/${e.target.files[0].name}`,
+        mediaSrc: `/programMedia/${e.target.files[0].name}`,
       }
       addScreenToSegment(segmentId, screen)
       onClose()
