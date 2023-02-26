@@ -48,12 +48,12 @@ export class ScreenService {
     this.removeListners(this._player1)
     this.removeListners(this._player2)
   }
-  private currentPlayer() {
+  public currentPlayer() {
     return this._selectedPID === this._player1.id
       ? this._player1
       : this._player2
   }
-  private nextPlayer() {
+  public nextPlayer() {
     return this._selectedPID === this._player1.id
       ? this._player2
       : this._player1
@@ -140,7 +140,6 @@ export class ScreenService {
 
   private setListners = (player: VideoService) => {
     if (!player.videoElement?.current) return
-    console.log('🪄 setListners on video player')
 
     player.videoElement.current.addEventListener('ended', (e: any) => {
       this.onPlayerEnded(player)

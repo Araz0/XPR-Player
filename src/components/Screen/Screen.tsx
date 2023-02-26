@@ -22,11 +22,7 @@ const StyledScreenPlayerContainer = styled.div`
   }
 `
 
-export type ScreenProps = {
-  controls?: boolean
-}
-
-export const ScreenRaw = ({ controls = false }: ScreenProps) => {
+export const ScreenRaw = () => {
   const programStarted = useScreenStore((s) => s.programStarted)
   const standByMode = useScreenStore((s) => s.standByMode)
   const { screenId } = useParams()
@@ -34,7 +30,12 @@ export const ScreenRaw = ({ controls = false }: ScreenProps) => {
   const videoRef1 = useRef<any>()
   const videoRef2 = useRef<any>()
 
-  const { init, requestFullScreen, requestShowControls } = useScreenService()
+  const {
+    init,
+    requestFullScreen,
+    requestShowControls,
+    forceDisplayOnePlayer,
+  } = useScreenService()
 
   useDoubleKeyPress('f', () => requestFullScreen())
   useDoubleKeyPress('c', () => requestShowControls())
@@ -42,6 +43,12 @@ export const ScreenRaw = ({ controls = false }: ScreenProps) => {
   useEffect(() => {
     init(screenId, playerContainerRef, videoRef1, videoRef2)
   }, [init, screenId])
+
+  useEffect(() => {
+    if (programStarted) {
+      forceDisplayOnePlayer()
+    }
+  }, [forceDisplayOnePlayer, programStarted])
 
   return (
     <StyledScreenPlayerContainer ref={playerContainerRef}>

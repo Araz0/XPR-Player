@@ -48,6 +48,9 @@ export const useScreenService = () => {
     },
     [setProgram]
   )
+  const forceDisplayOnePlayer = useCallback(() => {
+    screenPlayer.nextPlayer().hide()
+  }, [])
 
   const init = useCallback(
     (
@@ -75,5 +78,6 @@ export const useScreenService = () => {
     requestShowControls,
     requestHideControls,
     toggleShowingControls,
+    forceDisplayOnePlayer,
   }
 }

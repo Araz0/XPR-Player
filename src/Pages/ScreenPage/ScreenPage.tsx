@@ -39,6 +39,6 @@ export const ScreenPageRaw = () => {
       </CenterdContainer>
     )
 
-  return <Screen controls />
+  return <Screen />
 }
 export const ScreenPage = memo(ScreenPageRaw)
