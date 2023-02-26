@@ -10,7 +10,7 @@ export const LoadLocalProgramButtonRaw = () => {
 
   const handleImportJsonProgram = useCallback(
     (e: any) => {
-      loadJsonProgram('/' + e.target.files[0].name)
+      loadJsonProgram('/localPrograms/' + e.target.files[0].name)
     },
     [loadJsonProgram]
   )

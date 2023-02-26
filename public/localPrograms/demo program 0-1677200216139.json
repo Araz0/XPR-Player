@@ -1,0 +1,75 @@
+{
+  "id": 1677200216139,
+  "title": "demo program 0",
+  "amountOfScreens": 2,
+  "segments": [
+    {
+      "id": 87897156,
+      "title": "Intro",
+      "description": "In the example, we use the useState hook to create a state variable",
+      "isIntro": true,
+      "screens": [
+        {
+          "id": 1677413125403,
+          "title": "intro screeen",
+          "mediaSrc": "/programMedia/60fps_Tester.mp4"
+        }
+      ],
+      "nextSegmentIds": [
+        65465465,
+        65465465465,
+        654654
+      ]
+    },
+    {
+      "id": 65465465,
+      "title": "#1 sequence",
+      "description": "custom description",
+      "screens": [
+        {
+          "id": 1677413150482,
+          "title": "sequ 1 screen ",
+          "mediaSrc": "/programMedia/Audio Video Sync Test 60 FPS.mp4"
+        }
+      ]
+    },
+    {
+      "id": 65465465465,
+      "title": "#2 sequence",
+      "description": "custom description",
+      "screens": [
+        {
+          "id": 6586,
+          "title": "screen2",
+          "mediaSrc": "/programMedia/Audio Video Sync Test 60 FPS.mp4"
+        },
+        {
+          "id": 65542,
+          "title": "screen1",
+          "mediaSrc": "/programMedia/60fps_Tester.mp4"
+        }
+      ]
+    },
+    {
+      "id": 654654,
+      "title": "doubled",
+      "description": "custom description",
+      "screens": [
+        {
+          "id": 653464,
+          "title": "screen1",
+          "mediaSrc": "/programMedia/60fps_Tester.mp4"
+        },
+        {
+          "id": 43523521,
+          "title": "screen2",
+          "mediaSrc": "/programMedia/Audio Video Sync Test 60 FPS.mp4"
+        }
+      ],
+      "nextSegmentIds": [
+        65465465,
+        65465465465
+      ]
+    }
+  ]
+}
