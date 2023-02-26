@@ -3,18 +3,23 @@ import {
   PlayerContainerType,
   ProgramType,
   ScreenStatus,
+  SegmentType,
 } from '../../types'
+import { getIntroSegment, getSegmentById } from '../../utils'
 import { VideoService } from '../VideoService'
 
 export class ScreenService {
-  private _id: string | undefined
+  private _id: number
   private _player1: VideoService
   private _player2: VideoService
   private _containerRef: PlayerContainerType
   private _selectedPID: string
   private _program: ProgramType | undefined
+  private _IntroSegment: SegmentType | undefined
   private _status: ScreenStatus
   private _isShowingControls: boolean
+  private _currentSegment: SegmentType | undefined
+  private _nextSegment: SegmentType | undefined
 
   constructor(
     screenId?: string | undefined,
@@ -23,7 +28,7 @@ export class ScreenService {
     ref2?: VideoRefElementType
   ) {
     this._isShowingControls = false
-    this._id = screenId
+    this._id = screenId ? parseInt(screenId) : 1
     this._containerRef = container || undefined
     this._player1 = new VideoService('A', ref1 || undefined)
     this._player2 = new VideoService('B', ref2 || undefined)
@@ -36,11 +41,13 @@ export class ScreenService {
     ref1: VideoRefElementType,
     ref2: VideoRefElementType
   ) => {
-    this._id = screenId
+    this._id = screenId ? parseInt(screenId) : 1
     this._containerRef = container
     this._player1.videoElement = ref1
     this._player2.videoElement = ref2
     this.nextPlayer().hide()
+  }
+  public setAllListners = () => {
     this.setListners(this._player1)
     this.setListners(this._player2)
   }
@@ -87,6 +94,8 @@ export class ScreenService {
     this.currentPlayer().hide()
     this.currentPlayer().resetPlayer()
     this.setCurrentAsNextPlayer()
+    this._currentSegment = this._nextSegment
+    this._nextSegment = undefined
   }
   public setCurrentSource = (src: string) => {
     this.currentPlayer().setSource(src)
@@ -116,6 +125,15 @@ export class ScreenService {
   public setProgram = (program: ProgramType | undefined) => {
     this._program = program
     this._status = ScreenStatus.HAS_PROGRAM
+    if (!program?.segments) return
+    this._IntroSegment = getIntroSegment(program.segments)
+  }
+
+  public setSrcToIntro = () => {
+    this._currentSegment = this._IntroSegment
+    this.setCurrentSource(
+      this._currentSegment?.screens[this._id - 1].mediaSrc || ''
+    )
   }
 
   private onPlayerEnded = (player: VideoService) => {
@@ -128,13 +146,21 @@ export class ScreenService {
   private onPlayerUpdate = (player: VideoService) => {
     if (player.id !== this.currentPlayer().id) return
 
+    // in the last two seconds
     if (player.getDuration() - 2 <= player.getCurrentTime()) {
-      // in the last two seconds
-      // todo:
-      // maybe set external service to handle reading the program and feed it to here:
-      // set next source to next player
+      console.log('📈 last two seconds - player Id:', player.id)
 
-      console.log('📈 timeupdate - player Id:', player.id)
+      // get next segment
+      this._nextSegment = this._currentSegment?.nextSegmentIds
+        ? getSegmentById(
+            this._program?.segments || [],
+            this._currentSegment?.nextSegmentIds[0]
+          )
+        : undefined
+      // set next source to next player
+      this.setNextSource(
+        this._nextSegment?.screens[this._id - 1].mediaSrc || ''
+      )
     }
   }
 

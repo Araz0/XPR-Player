@@ -50,6 +50,8 @@ export const useScreenService = () => {
   )
   const forceDisplayOnePlayer = useCallback(() => {
     screenPlayer.nextPlayer().hide()
+    screenPlayer.setAllListners()
+    screenPlayer.setSrcToIntro()
   }, [])
 
   const init = useCallback(
