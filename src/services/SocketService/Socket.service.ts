@@ -51,4 +51,34 @@ export class SocketService {
       exicute()
     })
   }
+  public onShowControls = (exicute: () => void) => {
+    this._socket.on(EventNames.SHOW_CONTROLS, () => {
+      // eslint-disable-next-line no-console
+      console.log(
+        `Received command (Show Controls): `,
+        new Date().getMilliseconds()
+      )
+      exicute()
+    })
+  }
+  public onHideControls = (exicute: () => void) => {
+    this._socket.on(EventNames.HIDE_CONTROLS, () => {
+      // eslint-disable-next-line no-console
+      console.log(
+        `Received command (Hide Controls): `,
+        new Date().getMilliseconds()
+      )
+      exicute()
+    })
+  }
+  public onToggleShowControls = (exicute: () => void) => {
+    this._socket.on(EventNames.TOGGLE_SHOW_CONTROLS, () => {
+      // eslint-disable-next-line no-console
+      console.log(
+        `Received command (Toggle Show Controls): `,
+        new Date().getMilliseconds()
+      )
+      exicute()
+    })
+  }
 }

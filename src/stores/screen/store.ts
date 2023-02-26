@@ -11,6 +11,9 @@ export type ScreenState = {
 
   programStarted: boolean
   setProgramStarted: (programStarted: boolean) => void
+
+  showControls: boolean
+  setShowControls: (showControls: boolean) => void
 }
 
 export const useScreenStore = create<ScreenState>((set) => ({
@@ -23,4 +26,7 @@ export const useScreenStore = create<ScreenState>((set) => ({
   programStarted: false,
   setProgramStarted: (programStarted: boolean) =>
     set(() => ({ programStarted })),
+
+  showControls: false,
+  setShowControls: (showControls: boolean) => set(() => ({ showControls })),
 }))

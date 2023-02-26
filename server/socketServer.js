@@ -35,27 +35,53 @@ io.on('connection', (socket) => {
   socket.on('disconnect', () => {
     clients = clients.filter((c) => c !== socket)
     // eslint-disable-next-line no-console
-    console.log(`🛑 - Client disconnected. Total clients: ${clients.length}`)
+    console.log(`❌ - Client disconnected. Total clients: ${clients.length}`)
   })
   socket.on('admin-Brodcast-start', (args) => {
     socket.broadcast.emit('start-program', args)
     // eslint-disable-next-line no-console
-    console.log(`📺 - `, args)
+    console.log(`▶️ - `, args)
   })
+
+  socket.on('admin-Brodcast-stop', (args) => {
+    socket.broadcast.emit('stop-program', args)
+    // eslint-disable-next-line no-console
+    console.log(`🛑 - `, args)
+  })
+
   socket.on('admin-Brodcast-fullscreen', (args) => {
     socket.broadcast.emit('request-fullscreen', args)
     // eslint-disable-next-line no-console
     console.log(`📺 - `, args)
   })
+
   socket.on('admin-Brodcast-program', (args) => {
     socket.broadcast.emit('set-program', args)
     // eslint-disable-next-line no-console
-    console.log(`📺 - admin sent program`, args)
+    console.log(`📀 - admin sent program`, args)
   })
 
   socket.on('admin-Brodcast-end-standby', (args) => {
     socket.broadcast.emit('end-standby', args)
     // eslint-disable-next-line no-console
-    console.log(`📺 - `, args)
+    console.log(`🔚🧍🏽‍♀️ - `, args)
+  })
+
+  socket.on('admin-Brodcast-show-controls', (args) => {
+    socket.broadcast.emit('show-controls', args)
+    // eslint-disable-next-line no-console
+    console.log(`🎛️ - `, args)
+  })
+
+  socket.on('admin-Brodcast-hide-controls', (args) => {
+    socket.broadcast.emit('hide-controls', args)
+    // eslint-disable-next-line no-console
+    console.log(`🎛️ - `, args)
+  })
+
+  socket.on('admin-Brodcast-toggle-show-controls', (args) => {
+    socket.broadcast.emit('toggle-show-controls', args)
+    // eslint-disable-next-line no-console
+    console.log(`🎛️ - `, args)
   })
 })

@@ -65,6 +65,14 @@ export class VideoService {
     if (!this._videoElement?.current) return
     this._videoElement.current.style.display = 'block'
   }
+  public showControls = () => {
+    if (!this._videoElement?.current) return
+    this._videoElement.current.controls = true
+  }
+  public hideControls = () => {
+    if (!this._videoElement?.current) return
+    this._videoElement.current.controls = false
+  }
 
   public resetPlayer = () => {
     if (!this._videoElement?.current) return

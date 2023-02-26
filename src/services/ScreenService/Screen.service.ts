@@ -14,6 +14,7 @@ export class ScreenService {
   private _selectedPID: string
   private _program: ProgramType | undefined
   private _status: ScreenStatus
+  private _isShowingControls: boolean
 
   constructor(
     screenId?: string | undefined,
@@ -21,6 +22,7 @@ export class ScreenService {
     ref1?: VideoRefElementType,
     ref2?: VideoRefElementType
   ) {
+    this._isShowingControls = false
     this._id = screenId
     this._containerRef = container || undefined
     this._player1 = new VideoService('A', ref1 || undefined)
@@ -91,6 +93,24 @@ export class ScreenService {
   }
   public setNextSource = (src: string) => {
     this.nextPlayer().setSource(src)
+  }
+
+  public showControls = () => {
+    this.currentPlayer().showControls()
+    this.nextPlayer().showControls()
+    this._isShowingControls = true
+  }
+  public hideControls = () => {
+    this.currentPlayer().hideControls()
+    this.nextPlayer().hideControls()
+    this._isShowingControls = false
+  }
+  public toggleControls = () => {
+    if (this._isShowingControls) {
+      this.hideControls()
+    } else {
+      this.showControls()
+    }
   }
 
   public setProgram = (program: ProgramType | undefined) => {

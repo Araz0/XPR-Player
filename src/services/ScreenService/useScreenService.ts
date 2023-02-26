@@ -1,7 +1,5 @@
 import { useCallback } from 'react'
 
-// import { io } from 'socket.io-client'
-
 import { ScreenService } from './Screen.service'
 import { useScreenStore } from '../../stores'
 import {
@@ -35,6 +33,14 @@ export const useScreenService = () => {
     screenPlayer.requestFullScreen()
   }, [])
 
+  const requestShowControls = useCallback(() => screenPlayer.showControls(), [])
+  const requestHideControls = useCallback(() => screenPlayer.hideControls(), [])
+
+  const toggleShowingControls = useCallback(
+    () => screenPlayer.toggleControls(),
+    []
+  )
+
   const setScreenProgram = useCallback(
     (program: ProgramType) => {
       screenPlayer.setProgram(program)
@@ -66,5 +72,8 @@ export const useScreenService = () => {
     requestFullScreen,
     setScreenProgram,
     startProgram,
+    requestShowControls,
+    requestHideControls,
+    toggleShowingControls,
   }
 }

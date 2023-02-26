@@ -36,8 +36,29 @@ export const useSocketService = () => {
     emmit(EventNames.ADMIN_BRODCAST_STOP, 'admin requested program stop')
   }, [emmit])
 
-  const emmitresetProgram = useCallback(() => {
+  const emmitResetProgram = useCallback(() => {
     emmit(EventNames.ADMIN_BRODCAST_RESET, 'admin requested program reset')
+  }, [emmit])
+
+  const emmitShowControls = useCallback(() => {
+    emmit(
+      EventNames.ADMIN_BRODCAST_SHOW_CONTROLS,
+      'admin requested show controls'
+    )
+  }, [emmit])
+
+  const emmitHideControls = useCallback(() => {
+    emmit(
+      EventNames.ADMIN_BRODCAST_HIDE_CONTROLS,
+      'admin requested hide controls'
+    )
+  }, [emmit])
+
+  const emmitToggleShowControls = useCallback(() => {
+    emmit(
+      EventNames.ADMIN_BRODCAST_TOGGLE_SHOW_CONTROLS,
+      'admin requested toggle show controls'
+    )
   }, [emmit])
 
   return {
@@ -45,8 +66,11 @@ export const useSocketService = () => {
     emmitProgram,
     emmitStartProgram,
     emmitStopProgram,
-    emmitresetProgram,
+    emmitResetProgram,
     emmitEndStandby,
     emmitRequestFullscreen,
+    emmitShowControls,
+    emmitHideControls,
+    emmitToggleShowControls,
   }
 }

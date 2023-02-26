@@ -6,6 +6,7 @@ import {
   AccountTree,
   Airplay,
   Backspace,
+  ControlCamera,
   Fullscreen,
   PlayArrow,
   Stop,
@@ -37,6 +38,7 @@ export const AdminPageRaw = () => {
     emmitStopProgram,
     emmitEndStandby,
     emmitRequestFullscreen,
+    emmitToggleShowControls,
   } = useSocketService()
 
   const handelSendProgram = useCallback(() => {
@@ -78,6 +80,13 @@ export const AdminPageRaw = () => {
               startIcon={<Fullscreen />}
             >
               Request Fullscreen
+            </Button>
+            <Button
+              variant="contained"
+              onClick={emmitToggleShowControls}
+              startIcon={<ControlCamera />}
+            >
+              Toggle Show Controls
             </Button>
             <Button
               variant="contained"

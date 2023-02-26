@@ -5,6 +5,9 @@ export enum EventNames {
   STOP_PROGRAM = 'stop-program',
   RESET_PROGRAM = 'reset-program',
   END_STANDBY = 'end-standby',
+  TOGGLE_SHOW_CONTROLS = 'toggle-show-controls',
+  SHOW_CONTROLS = 'show-controls',
+  HIDE_CONTROLS = 'hide-controls',
   REQUEST_FULLSCREEN = 'request-fullscreen',
   ADMIN_BRODCAST_START = 'admin-Brodcast-start',
   ADMIN_BRODCAST_STOP = 'admin-Brodcast-stop',
@@ -12,4 +15,7 @@ export enum EventNames {
   ADMIN_BRODCAST_FULLSCREEN = 'admin-Brodcast-fullscreen',
   ADMIN_BRODCAST_PROGRAM = 'admin-Brodcast-program',
   ADMIN_BRODCAST_END_STANDBY = 'admin-Brodcast-end-standby',
+  ADMIN_BRODCAST_HIDE_CONTROLS = 'admin-Brodcast-hide-controls',
+  ADMIN_BRODCAST_SHOW_CONTROLS = 'admin-Brodcast-show-controls',
+  ADMIN_BRODCAST_TOGGLE_SHOW_CONTROLS = 'admin-Brodcast-toggle-show-controls',
 }

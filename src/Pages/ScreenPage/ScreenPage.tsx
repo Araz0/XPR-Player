@@ -1,22 +1,24 @@
 import { memo, useEffect } from 'react'
 
-import { CircularProgress, Typography } from '@mui/material'
+import { Typography } from '@mui/material'
 
 import { CenterdContainer, Screen } from '../../components'
 import { SocketService, useScreenService } from '../../services'
 import { useScreenStore } from '../../stores'
-import { StandByMods } from '../../types'
 
 const clientSocket = new SocketService()
 
 export const ScreenPageRaw = () => {
   const program = useScreenStore((s) => s.program)
-  const programStarted = useScreenStore((s) => s.programStarted)
-  const setProgramStarted = useScreenStore((s) => s.setProgramStarted)
-  const standByMode = useScreenStore((s) => s.standByMode)
 
-  const { startProgram, requestFullScreen, setScreenProgram } =
-    useScreenService()
+  const setProgramStarted = useScreenStore((s) => s.setProgramStarted)
+
+  const {
+    startProgram,
+    requestFullScreen,
+    setScreenProgram,
+    toggleShowingControls,
+  } = useScreenService()
 
   useEffect(() => {
     clientSocket.onStart(startProgram)
@@ -25,6 +27,7 @@ export const ScreenPageRaw = () => {
     })
     clientSocket.onRequestFullScreen(requestFullScreen)
     clientSocket.onSetProgram(setScreenProgram)
+    clientSocket.onToggleShowControls(toggleShowingControls)
     // todo: check if this hook dep. array effects anything
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
@@ -35,17 +38,7 @@ export const ScreenPageRaw = () => {
         <Typography>No program was selected</Typography>
       </CenterdContainer>
     )
-  if (!programStarted && program)
-    return (
-      <CenterdContainer>
-        {standByMode === StandByMods.TEXT && (
-          <Typography>
-            Program is set, waiting on your command to start!
-          </Typography>
-        )}
-        {standByMode === StandByMods.ANIMATION && <CircularProgress />}
-      </CenterdContainer>
-    )
+
   return <Screen controls />
 }
 export const ScreenPage = memo(ScreenPageRaw)

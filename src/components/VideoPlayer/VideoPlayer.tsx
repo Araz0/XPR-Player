@@ -9,7 +9,7 @@ export interface VideoProps {
   src: string
 }
 export const VideoPlayerRaw = forwardRef<HTMLVideoElement>((props, ref) => (
-  <StyledVideo controls ref={ref} />
+  <StyledVideo ref={ref} />
 ))
 
 export const VideoPlayer = memo(VideoPlayerRaw)
