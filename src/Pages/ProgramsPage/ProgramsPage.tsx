@@ -46,6 +46,16 @@ export const ProgramsPageRaw = () => {
     saveProgramAsJson(program)
   }, [program])
 
+  const handleUpdateProgramInDb = useCallback(() => {
+    if (!program) return
+    updateProgram(program)
+  }, [updateProgram, program])
+
+  const handleSettingProgramAsSelected = useCallback(() => {
+    if (!program) return
+    setSelectedProgram(program)
+  }, [setSelectedProgram, program])
+
   if (!programId)
     return (
       <AdminPageWrapper
@@ -66,14 +76,14 @@ export const ProgramsPageRaw = () => {
         )}
       </AdminPageWrapper>
     )
-  if (!program) return <h1>Something went wrong loading a program</h1>
+  if (!program) return <h1>Something went wrong loading the program</h1>
   return (
     <AdminPageWrapper
       topNavHeader="Tree map"
       topNavActions={
         <>
           <Tooltip title="Select Program">
-            <IconButton onClick={() => setSelectedProgram(program)}>
+            <IconButton onClick={handleSettingProgramAsSelected}>
               <Beenhere />
             </IconButton>
           </Tooltip>
@@ -82,8 +92,8 @@ export const ProgramsPageRaw = () => {
               <SaveAlt />
             </IconButton>
           </Tooltip>
-          <Tooltip title="Save Changes">
-            <IconButton onClick={() => updateProgram(program)}>
+          <Tooltip title="Save Changes in Database">
+            <IconButton onClick={handleUpdateProgramInDb}>
               <Save />
             </IconButton>
           </Tooltip>

@@ -7,6 +7,7 @@ import { NoteAdd } from '@mui/icons-material'
 import { Typography, Divider, TextField, Slider, Button } from '@mui/material'
 
 import { AdminPageWrapper } from '../../components'
+import { useSupabase } from '../../hooks'
 import { useAdminStore } from '../../stores'
 import { generateNewId } from '../../utils'
 
@@ -22,6 +23,7 @@ const StyledSliderContainer = styled.div`
 export const CreatePageRaw = () => {
   const navigate = useNavigate()
   const titleRef = useRef<HTMLInputElement>()
+  const { insertProgram } = useSupabase()
   const [screensAmount, setScreensAmount] = useState<number>(1)
   const setProgram = useAdminStore((s) => s.setProgram)
 
@@ -40,8 +42,10 @@ export const CreatePageRaw = () => {
       segments: [],
     }
     setProgram(newProgram)
+    insertProgram(newProgram)
     navigate(`/admin/programs/${newProgram.id}`)
-  }, [setProgram, navigate, screensAmount])
+  }, [insertProgram, setProgram, navigate, screensAmount])
+
   return (
     <AdminPageWrapper>
       <StyledActionsContainer>
