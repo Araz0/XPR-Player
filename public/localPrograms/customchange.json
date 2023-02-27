@@ -1,0 +1,284 @@
+{
+  "id": 1677200216139,
+  "title": "demo program 0",
+  "amountOfScreens": 2,
+  "segments": [
+    {
+      "id": 87897156,
+      "title": "Intro",
+      "description": "tbd...",
+      "isIntro": true,
+      "screens": [
+        {
+          "id": 1677413125403,
+          "title": "intro screeen",
+          "mediaSrc": "/programMedia/60fps_Tester.mp4"
+        }
+      ],
+      "nextSegmentIds": [
+        1677506784774,
+        1677506801057
+      ]
+    },
+    {
+      "id": 65465465,
+      "title": "#1 sequence",
+      "description": "custom description",
+      "screens": [
+        {
+          "id": 1677413150482,
+          "title": "sequ 1 screen ",
+          "mediaSrc": "/programMedia/Audio Video Sync Test 60 FPS.mp4"
+        }
+      ]
+    },
+    {
+      "id": 65465465465,
+      "title": "#2 sequence",
+      "description": "custom description",
+      "screens": [
+        {
+          "id": 6586,
+          "title": "screen2",
+          "mediaSrc": "/programMedia/Audio Video Sync Test 60 FPS.mp4"
+        },
+        {
+          "id": 65542,
+          "title": "screen1",
+          "mediaSrc": "/programMedia/60fps_Tester.mp4"
+        }
+      ]
+    },
+    {
+      "id": 654654,
+      "title": "doubled",
+      "description": "custom description",
+      "screens": [
+        {
+          "id": 653464,
+          "title": "screen1",
+          "mediaSrc": "/programMedia/60fps_Tester.mp4"
+        },
+        {
+          "id": 43523521,
+          "title": "screen2",
+          "mediaSrc": "/programMedia/Audio Video Sync Test 60 FPS.mp4"
+        }
+      ],
+      "nextSegmentIds": []
+    },
+    {
+      "id": 1677506784774,
+      "title": "#2",
+      "description": "Delusion",
+      "screens": [],
+      "nextSegmentIds": [
+        1677506819932,
+        1677507121860
+      ]
+    },
+    {
+      "id": 1677506801057,
+      "title": "#1",
+      "description": "Anger",
+      "screens": [],
+      "nextSegmentIds": [
+        1677507512565,
+        1677507524076
+      ]
+    },
+    {
+      "id": 1677506819932,
+      "title": "#4B",
+      "description": "Confronting",
+      "screens": [],
+      "nextSegmentIds": [
+        1677506867022,
+        1677507141157
+      ]
+    },
+    {
+      "id": 1677506842672,
+      "title": "#6B",
+      "description": "Coping Mechanisms",
+      "screens": []
+    },
+    {
+      "id": 1677506867022,
+      "title": "#5",
+      "description": "Trauma Origin",
+      "screens": [],
+      "nextSegmentIds": [
+        1677506923531,
+        1677506944108
+      ]
+    },
+    {
+      "id": 1677506923531,
+      "title": "#7",
+      "description": "Healing (end)",
+      "screens": []
+    },
+    {
+      "id": 1677506944108,
+      "title": "#3B",
+      "description": "Dead (End)",
+      "screens": []
+    },
+    {
+      "id": 1677507121860,
+      "title": "#6B",
+      "description": "Coping Mechanisims",
+      "screens": [],
+      "nextSegmentIds": [
+        1677506867022,
+        1677507196171
+      ]
+    },
+    {
+      "id": 1677507141157,
+      "title": "#6B",
+      "description": "Coping Mechanisms",
+      "screens": [],
+      "nextSegmentIds": [
+        1677506867022,
+        1677507466360
+      ]
+    },
+    {
+      "id": 1677507196171,
+      "title": "#3",
+      "description": "Repetition",
+      "screens": [],
+      "nextSegmentIds": [
+        1677507217245
+      ]
+    },
+    {
+      "id": 1677507217245,
+      "title": "#1",
+      "description": "Anger",
+      "screens": [],
+      "nextSegmentIds": [
+        1677507488330,
+        1677508635020
+      ]
+    },
+    {
+      "id": 1677507403735,
+      "title": "#5",
+      "description": "Trauma Origin",
+      "screens": []
+    },
+    {
+      "id": 1677507415350,
+      "title": "#3",
+      "description": "Repetition",
+      "screens": []
+    },
+    {
+      "id": 1677507466360,
+      "title": "#3",
+      "description": "Repetition",
+      "screens": [],
+      "nextSegmentIds": [
+        1677507488330
+      ]
+    },
+    {
+      "id": 1677507488330,
+      "title": "#4A",
+      "description": "Confronting",
+      "screens": [],
+      "nextSegmentIds": [
+        1677506867022,
+        1677508635020
+      ]
+    },
+    {
+      "id": 1677507512565,
+      "title": "#4A",
+      "description": "confronting",
+      "screens": [],
+      "nextSegmentIds": [
+        1677506867022,
+        1677507578534
+      ]
+    },
+    {
+      "id": 1677507524076,
+      "title": "#6A",
+      "description": "Coping Mechanisms",
+      "screens": [],
+      "nextSegmentIds": [
+        1677506867022,
+        1677507628296
+      ]
+    },
+    {
+      "id": 1677507578534,
+      "title": "#6A",
+      "description": "Coping Mechanisms",
+      "screens": [],
+      "nextSegmentIds": [
+        1677506867022,
+        1677507703626
+      ]
+    },
+    {
+      "id": 1677507628296,
+      "title": "#3",
+      "description": "Repetition",
+      "screens": [],
+      "nextSegmentIds": [
+        1677507667517
+      ]
+    },
+    {
+      "id": 1677507667517,
+      "title": "#2",
+      "description": "Delusion",
+      "screens": []
+    },
+    {
+      "id": 1677507703626,
+      "title": "#3",
+      "description": "Repetition",
+      "screens": [],
+      "nextSegmentIds": [
+        1677507716674
+      ]
+    },
+    {
+      "id": 1677507716674,
+      "title": "#4B",
+      "description": "Confronting",
+      "screens": []
+    },
+    {
+      "id": 1677508635020,
+      "title": "#6A",
+      "description": "Coping Mechanisms",
+      "screens": [],
+      "nextSegmentIds": [
+        1677506867022,
+        1677508663031
+      ]
+    },
+    {
+      "id": 1677508663031,
+      "title": "#3",
+      "description": "Repetition",
+      "screens": [],
+      "nextSegmentIds": [
+        1677508678256
+      ]
+    },
+    {
+      "id": 1677508678256,
+      "title": "#3B",
+      "description": "Dead (End)",
+      "screens": []
+    }
+  ]
+}
