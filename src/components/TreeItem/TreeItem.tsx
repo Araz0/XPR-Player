@@ -5,6 +5,7 @@ import styled from 'styled-components'
 import { useProgram } from '../../hooks'
 import { SegmentType } from '../../types'
 import { EditableLabel } from '../EditableLabel'
+import { PasteSegmentIdPopup } from '../PasteSegmentIdPopup'
 import { ScreenFormPopup } from '../ScreenFormPopup'
 import { SegmentScreens } from '../SegmentScreens'
 import { iconTypes, SmallIconButton } from '../SmallIconButton'
@@ -27,6 +28,7 @@ export const TreeItemRaw = ({ segmentId }: TreeItemProps) => {
   const descriptionRef = useRef<HTMLInputElement>()
   const [canEdit, setCanEdit] = useState<boolean>(false)
   const [showMore, setShowMore] = useState<boolean>(false)
+  const [showPasteId, setShowPasteId] = useState<boolean>(false)
   const [showAddScreen, setShowAddScreen] = useState<boolean>(false)
   const [segment, setSegment] = useState<SegmentType | undefined>(undefined)
   const { addNextSegment, getSegmentById, updateSegment, removeSegment } =
@@ -116,6 +118,11 @@ export const TreeItemRaw = ({ segmentId }: TreeItemProps) => {
                 icon={iconTypes.ADD}
               />
               <SmallIconButton
+                tooltip="Paste Segment ID"
+                onClick={() => setShowPasteId(true)}
+                icon={iconTypes.CONTENT_PASTE}
+              />
+              <SmallIconButton
                 tooltip="Add Screen"
                 onClick={() => setShowAddScreen(true)}
                 icon={iconTypes.QUEUE_PLAY_NEXT}
@@ -124,6 +131,12 @@ export const TreeItemRaw = ({ segmentId }: TreeItemProps) => {
                 <ScreenFormPopup
                   segmentId={segment.id}
                   onClose={() => setShowAddScreen(false)}
+                />
+              )}
+              {showPasteId && (
+                <PasteSegmentIdPopup
+                  segmentId={segment.id}
+                  onClose={() => setShowPasteId(false)}
                 />
               )}
             </>

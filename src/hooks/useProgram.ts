@@ -48,6 +48,32 @@ export const useProgram = () => {
     },
     [program, setProgram]
   )
+
+  const addNextSegmentById = useCallback(
+    (parentSegmentId: number, segmentId: number) => {
+      if (!program) return
+      const parentSegment = getSegmentById(parentSegmentId)
+      if (!parentSegment) return
+
+      parentSegment.nextSegmentIds
+        ? parentSegment.nextSegmentIds.push(segmentId)
+        : (parentSegment.nextSegmentIds = [segmentId])
+
+      const parentSegmentIndex = program.segments.findIndex(
+        (s) => s.id === parentSegmentId
+      )
+
+      const updatedSegments = [...program.segments]
+      updatedSegments[parentSegmentIndex] = parentSegment
+
+      setProgram({
+        ...program,
+        segments: [...updatedSegments],
+      })
+    },
+    [getSegmentById, program, setProgram]
+  )
+
   const addNextSegment = useCallback(
     (
       parentSegmentId: number,
@@ -68,7 +94,7 @@ export const useProgram = () => {
         : (parentSegment.nextSegmentIds = [newSegment.id])
 
       const parentSegmentIndex = program.segments.findIndex(
-        (s) => s.id === parentSegment.id
+        (s) => s.id === parentSegmentId
       )
       const updatedSegments = [...program.segments]
       updatedSegments[parentSegmentIndex] = parentSegment
@@ -156,5 +182,6 @@ export const useProgram = () => {
     removeSegmentScreen,
     updateProgramTitle,
     loadJsonProgram,
+    addNextSegmentById,
   }
 }

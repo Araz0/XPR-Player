@@ -3,6 +3,7 @@ import { memo } from 'react'
 import {
   Add,
   Check,
+  ContentPaste,
   CopyAll,
   Delete,
   Edit,
@@ -26,6 +27,7 @@ export enum iconTypes {
   EXPAND_MORE = 'ExpandMore',
   EXPAND_LESS = 'ExpandLess',
   CHECK = 'Check',
+  CONTENT_PASTE = 'ContentPaste',
 }
 export type SmallIconButtonProps = {
   icon: iconTypes
@@ -53,6 +55,7 @@ export const SmallIconButtonRaw = ({
         {icon === iconTypes.EXPAND_MORE && <ExpandMore fontSize="small" />}
         {icon === iconTypes.EXPAND_LESS && <ExpandLess fontSize="small" />}
         {icon === iconTypes.CHECK && <Check fontSize="small" />}
+        {icon === iconTypes.CONTENT_PASTE && <ContentPaste fontSize="small" />}
       </IconButton>
     </Tooltip>
   )
