@@ -1,5 +1,6 @@
 import { memo, useCallback, useRef, useState } from 'react'
 
+import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 
 import { NoteAdd } from '@mui/icons-material'
@@ -19,6 +20,7 @@ const StyledSliderContainer = styled.div`
   padding: 15px;
 `
 export const CreatePageRaw = () => {
+  const navigate = useNavigate()
   const titleRef = useRef<HTMLInputElement>()
   const [screensAmount, setScreensAmount] = useState<number>(1)
   const setProgram = useAdminStore((s) => s.setProgram)
@@ -31,13 +33,15 @@ export const CreatePageRaw = () => {
   }
 
   const handleCreateProgram = useCallback(() => {
-    setProgram({
+    const newProgram = {
       id: generateNewId(),
       title: titleRef.current?.value || 'New Program',
       amountOfScreens: screensAmount,
       segments: [],
-    })
-  }, [setProgram, screensAmount])
+    }
+    setProgram(newProgram)
+    navigate(`/admin/programs/${newProgram.id}`)
+  }, [setProgram, navigate, screensAmount])
   return (
     <AdminPageWrapper>
       <StyledActionsContainer>
