@@ -39,6 +39,7 @@ const StyledSideNav = styled.div`
 const StyledContentWrapper = styled.div`
   grid-area: mainContent;
   padding: 0 15px;
+  overflow: auto;
 `
 const StyledTopActionsContainer = styled.div`
   display: flex;
