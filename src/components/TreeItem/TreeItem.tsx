@@ -4,6 +4,7 @@ import styled from 'styled-components'
 
 import { useProgram } from '../../hooks'
 import { SegmentType } from '../../types'
+import { AddSegmentPopup } from '../AddSegmentPopup'
 import { EditableLabel } from '../EditableLabel'
 import { PasteSegmentIdPopup } from '../PasteSegmentIdPopup'
 import { ScreenFormPopup } from '../ScreenFormPopup'
@@ -29,20 +30,16 @@ export const TreeItemRaw = ({ segmentId }: TreeItemProps) => {
   const [canEdit, setCanEdit] = useState<boolean>(false)
   const [showMore, setShowMore] = useState<boolean>(false)
   const [showPasteId, setShowPasteId] = useState<boolean>(false)
+  const [showAddSegment, setShowAddSegment] = useState<boolean>(false)
   const [showAddScreen, setShowAddScreen] = useState<boolean>(false)
   const [segment, setSegment] = useState<SegmentType | undefined>(undefined)
-  const { addNextSegment, getSegmentById, updateSegment, removeSegment } =
-    useProgram()
+  const { getSegmentById, updateSegment, removeSegment } = useProgram()
 
   useEffect(() => {
     const foundSegment = getSegmentById(segmentId)
     if (!foundSegment) return
     setSegment(foundSegment)
   }, [getSegmentById, segmentId])
-
-  const handleAddChild = useCallback(() => {
-    addNextSegment(segmentId, 'new cool segment', 'custom description')
-  }, [addNextSegment, segmentId])
 
   const handleToggleShowMore = useCallback(() => {
     setShowMore(!showMore)
@@ -114,7 +111,7 @@ export const TreeItemRaw = ({ segmentId }: TreeItemProps) => {
               />
               <SmallIconButton
                 tooltip="Add Segment"
-                onClick={handleAddChild}
+                onClick={() => setShowAddSegment(true)}
                 icon={iconTypes.ADD}
               />
               <SmallIconButton
@@ -137,6 +134,12 @@ export const TreeItemRaw = ({ segmentId }: TreeItemProps) => {
                 <PasteSegmentIdPopup
                   segmentId={segment.id}
                   onClose={() => setShowPasteId(false)}
+                />
+              )}
+              {showAddSegment && (
+                <AddSegmentPopup
+                  segmentId={segment.id}
+                  onClose={() => setShowAddSegment(false)}
                 />
               )}
             </>
