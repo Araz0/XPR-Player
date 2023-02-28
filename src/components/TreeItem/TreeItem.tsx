@@ -3,8 +3,8 @@ import { memo, useCallback, useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 
 import { useProgram } from '../../hooks'
-import { SegmentType } from '../../types'
-import { AddSegmentPopup } from '../AddSegmentPopup'
+import { SegmentMediaType, SegmentType } from '../../types'
+import { generateNewId } from '../../utils'
 import { EditableLabel } from '../EditableLabel'
 import { PasteSegmentIdPopup } from '../PasteSegmentIdPopup'
 import { ScreenFormPopup } from '../ScreenFormPopup'
@@ -30,16 +30,28 @@ export const TreeItemRaw = ({ segmentId }: TreeItemProps) => {
   const [canEdit, setCanEdit] = useState<boolean>(false)
   const [showMore, setShowMore] = useState<boolean>(false)
   const [showPasteId, setShowPasteId] = useState<boolean>(false)
-  const [showAddSegment, setShowAddSegment] = useState<boolean>(false)
   const [showAddScreen, setShowAddScreen] = useState<boolean>(false)
   const [segment, setSegment] = useState<SegmentType | undefined>(undefined)
-  const { getSegmentById, updateSegment, removeSegment } = useProgram()
+  const [media, setMedia] = useState<SegmentMediaType | undefined>(undefined)
+  const {
+    getSegmentById,
+    updateMedia,
+    removeSegment,
+    getMediaById,
+    setMediaIdInSegment,
+    addMediaToProgram,
+    addNewSegment,
+  } = useProgram()
 
   useEffect(() => {
     const foundSegment = getSegmentById(segmentId)
     if (!foundSegment) return
     setSegment(foundSegment)
-  }, [getSegmentById, segmentId])
+    if (!foundSegment.mediaId) return
+    const foundMedia = getMediaById(foundSegment.mediaId)
+    if (!foundMedia) return
+    setMedia(foundMedia)
+  }, [getMediaById, getSegmentById, segmentId])
 
   const handleToggleShowMore = useCallback(() => {
     setShowMore(!showMore)
@@ -55,14 +67,29 @@ export const TreeItemRaw = ({ segmentId }: TreeItemProps) => {
 
   const handleSave = useCallback(() => {
     if (!segment) return
-    const updatedSeg = {
-      ...segment,
+    const updatedMedia = {
+      ...media,
+      id: media ? media.id : generateNewId(),
       title: titleRef.current?.value || 'No title',
       description: descriptionRef.current?.value || 'No description',
+      screens: media ? media.screens : [],
     }
-    updateSegment(updatedSeg)
+    if (media) {
+      updateMedia(updatedMedia)
+    } else {
+      addMediaToProgram(updatedMedia)
+      setMediaIdInSegment(segment, updatedMedia.id)
+    }
+
     handleToggleEdit()
-  }, [segment, updateSegment, handleToggleEdit])
+  }, [
+    addMediaToProgram,
+    handleToggleEdit,
+    media,
+    segment,
+    setMediaIdInSegment,
+    updateMedia,
+  ])
 
   const handleDelete = useCallback(() => {
     removeSegment(segmentId)
@@ -76,19 +103,21 @@ export const TreeItemRaw = ({ segmentId }: TreeItemProps) => {
           <EditableLabel
             inputRef={titleRef}
             canEdit={canEdit}
-            text={segment.title}
-            placeHolder={'segment title'}
+            text={media?.title}
+            placeHolder={'media title'}
             lineHeight={1}
           />
           <EditableLabel
             inputRef={descriptionRef}
             canEdit={canEdit}
-            text={segment.description}
-            placeHolder={'segment description'}
+            text={media?.description}
+            placeHolder={'media description'}
             typographyVariant={'body2'}
           />
 
-          {showMore && <SegmentScreens segment={segment} canEdit={canEdit} />}
+          {showMore && media && (
+            <SegmentScreens media={media} canEdit={canEdit} />
+          )}
         </StyledVerticalContainer>
 
         <StyledActionsContainer>
@@ -111,7 +140,7 @@ export const TreeItemRaw = ({ segmentId }: TreeItemProps) => {
               />
               <SmallIconButton
                 tooltip="Add Segment"
-                onClick={() => setShowAddSegment(true)}
+                onClick={() => addNewSegment(segment, generateNewId())}
                 icon={iconTypes.ADD}
               />
               <SmallIconButton
@@ -119,14 +148,16 @@ export const TreeItemRaw = ({ segmentId }: TreeItemProps) => {
                 onClick={() => setShowPasteId(true)}
                 icon={iconTypes.CONTENT_PASTE}
               />
-              <SmallIconButton
-                tooltip="Add Screen"
-                onClick={() => setShowAddScreen(true)}
-                icon={iconTypes.QUEUE_PLAY_NEXT}
-              />
-              {showAddScreen && (
+              {media && (
+                <SmallIconButton
+                  tooltip="Add Screen"
+                  onClick={() => setShowAddScreen(true)}
+                  icon={iconTypes.QUEUE_PLAY_NEXT}
+                />
+              )}
+              {media && showAddScreen && (
                 <ScreenFormPopup
-                  segmentId={segment.id}
+                  mediatId={media.id}
                   onClose={() => setShowAddScreen(false)}
                 />
               )}
@@ -136,19 +167,15 @@ export const TreeItemRaw = ({ segmentId }: TreeItemProps) => {
                   onClose={() => setShowPasteId(false)}
                 />
               )}
-              {showAddSegment && (
-                <AddSegmentPopup
-                  segmentId={segment.id}
-                  onClose={() => setShowAddSegment(false)}
-                />
-              )}
             </>
           )}
-          <SmallIconButton
-            tooltip={showMore ? 'Hide More' : 'Show More'}
-            onClick={handleToggleShowMore}
-            icon={showMore ? iconTypes.EXPAND_LESS : iconTypes.EXPAND_MORE}
-          />
+          {media && (
+            <SmallIconButton
+              tooltip={showMore ? 'Hide More' : 'Show More'}
+              onClick={handleToggleShowMore}
+              icon={showMore ? iconTypes.EXPAND_LESS : iconTypes.EXPAND_MORE}
+            />
+          )}
 
           <SmallIconButton
             tooltip="Copy Segment Id"

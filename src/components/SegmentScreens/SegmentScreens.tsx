@@ -5,7 +5,7 @@ import styled from 'styled-components'
 import { Typography } from '@mui/material'
 
 import { useProgram } from '../../hooks'
-import { SegmentType } from '../../types'
+import { SegmentMediaType } from '../../types'
 import { iconTypes, SmallIconButton } from '../SmallIconButton'
 
 const StyledScreenVideo = styled.video`
@@ -27,19 +27,19 @@ const StyledActionsContainer = styled.div`
 `
 
 export type SegmentScreensProps = {
-  segment: SegmentType
+  media: SegmentMediaType
   canEdit: boolean
 }
 export const SegmentScreensRaw = ({
-  segment,
+  media,
   canEdit = false,
 }: SegmentScreensProps) => {
-  const { removeSegmentScreen } = useProgram()
+  const { removeMediaScreen } = useProgram()
   const handleDeleteScreen = useCallback(
     (screenId: number) => {
-      removeSegmentScreen(segment, screenId)
+      removeMediaScreen(media, screenId)
     },
-    [removeSegmentScreen, segment]
+    [removeMediaScreen, media]
   )
   return (
     <>
@@ -47,7 +47,7 @@ export const SegmentScreensRaw = ({
         screens:
       </Typography>
       <StyledContainer>
-        {segment.screens.map((screen, idx) => {
+        {media.screens.map((screen, idx) => {
           return (
             <StyledVideoContainer key={idx}>
               <StyledActionsContainer>

@@ -1,11 +1,10 @@
-import { memo, useCallback, useRef } from 'react'
+import { memo, useRef } from 'react'
 
 import styled from 'styled-components'
 
 import { Close, Check } from '@mui/icons-material'
 import { Divider, IconButton, TextField, Typography } from '@mui/material'
 
-import { useProgram } from '../../hooks'
 import { Popup } from '../Popup'
 
 const StyledHeaderContainer = styled.div`
@@ -23,18 +22,18 @@ export const AddSegmentPopupRaw = ({
 }: AddSegmentPopupProps) => {
   const titleRef = useRef<HTMLInputElement>()
   const descriptionRef = useRef<HTMLInputElement>()
-  const { addNextSegment } = useProgram()
+  // const { addNextSegment } = useProgram()
 
-  const handleAddChild = useCallback(() => {
-    const titleValue = titleRef.current
-      ? titleRef.current.value
-      : 'New Segment Title'
-    const descriptionValue = descriptionRef.current
-      ? descriptionRef.current.value
-      : 'New Segment Description'
-    addNextSegment(segmentId, titleValue, descriptionValue)
-    onClose()
-  }, [addNextSegment, onClose, segmentId])
+  // const handleAddChild = useCallback(() => {
+  //   const titleValue = titleRef.current
+  //     ? titleRef.current.value
+  //     : 'New Segment Title'
+  //   const descriptionValue = descriptionRef.current
+  //     ? descriptionRef.current.value
+  //     : 'New Segment Description'
+  //   // addNextSegment(segmentId, titleValue, descriptionValue)
+  //   onClose()
+  // }, [])
 
   return (
     <Popup onClose={onClose}>
@@ -59,7 +58,7 @@ export const AddSegmentPopupRaw = ({
         placeholder={'Segment description'}
         size="small"
       />
-      <IconButton onClick={handleAddChild}>
+      <IconButton onClick={() => alert('')}>
         <Check />
       </IconButton>
     </Popup>

@@ -40,6 +40,7 @@ export const CreatePageRaw = () => {
       title: titleRef.current?.value || 'New Program',
       amountOfScreens: screensAmount,
       segments: [],
+      media: [],
     }
     setProgram(newProgram)
     insertProgram(newProgram)

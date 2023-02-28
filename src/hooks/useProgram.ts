@@ -3,7 +3,12 @@ import { useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { useAdminStore } from '../stores'
-import { ProgramType, ScreenType, SegmentType } from '../types'
+import {
+  ProgramType,
+  ScreenType,
+  SegmentMediaType,
+  SegmentType,
+} from '../types'
 import { generateNewId, loadJsonFile } from '../utils'
 
 export const useProgram = () => {
@@ -38,6 +43,15 @@ export const useProgram = () => {
     },
     [program]
   )
+
+  const getMediaById = useCallback(
+    (mediaId: number) => {
+      if (!program) return
+      return program.media.find((m) => m.id === mediaId)
+    },
+    [program]
+  )
+
   const addSegment = useCallback(
     (newSegment: SegmentType) => {
       if (!program) return
@@ -74,27 +88,19 @@ export const useProgram = () => {
     [getSegmentById, program, setProgram]
   )
 
-  const addNextSegment = useCallback(
-    (
-      parentSegmentId: number,
-      segmentTitle: string,
-      segmentDescription: string
-    ) => {
+  const addNewSegment = useCallback(
+    (parentSegment: SegmentType, mediaId: number) => {
       if (!program) return
-      const parentSegment = getSegmentById(parentSegmentId)
-      if (!parentSegment) return
       const newSegment = {
         id: generateNewId(),
-        title: segmentTitle,
-        description: segmentDescription,
-        screens: [],
+        mediaId: mediaId,
       }
       parentSegment.nextSegmentIds
         ? parentSegment.nextSegmentIds.push(newSegment.id)
         : (parentSegment.nextSegmentIds = [newSegment.id])
 
       const parentSegmentIndex = program.segments.findIndex(
-        (s) => s.id === parentSegmentId
+        (s) => s.id === parentSegment.id
       )
       const updatedSegments = [...program.segments]
       updatedSegments[parentSegmentIndex] = parentSegment
@@ -104,15 +110,20 @@ export const useProgram = () => {
         segments: [...updatedSegments, newSegment],
       })
     },
-    [getSegmentById, program, setProgram]
+    [program, setProgram]
   )
-  const addScreenToSegment = useCallback(
-    (segmentId: number, screen: ScreenType) => {
-      const segment = getSegmentById(segmentId)
-      if (!segment) return
-      segment.screens.push(screen)
+  const addScreenToMedia = useCallback(
+    (mediaId: number, screen: ScreenType) => {
+      const media = getMediaById(mediaId)
+      if (!media) return
+      media.screens.push(screen)
+
+      if (!program) return
+      const mediaIndex = program.media.findIndex((m) => m.id === media.id)
+      program.media[mediaIndex] = media
+      setProgram(program)
     },
-    [getSegmentById]
+    [getMediaById, program, setProgram]
   )
   const updateSegment = useCallback(
     (segment: SegmentType) => {
@@ -126,6 +137,52 @@ export const useProgram = () => {
       setProgram({
         ...program,
         segments: [...updatedSegments],
+      })
+    },
+    [program, setProgram]
+  )
+
+  const setMediaIdInSegment = useCallback(
+    (segment: SegmentType, mediaId: number) => {
+      if (!program) return
+      const segmentIndex = program.segments.findIndex(
+        (s) => s.id === segment.id
+      )
+      segment.mediaId = mediaId
+      const updatedSegments = [...program.segments]
+      updatedSegments[segmentIndex] = segment
+
+      setProgram({
+        ...program,
+        segments: [...updatedSegments],
+      })
+    },
+    [program, setProgram]
+  )
+
+  const updateMedia = useCallback(
+    (media: SegmentMediaType) => {
+      if (!program) return
+      const mediaIndex = program.media.findIndex((m) => m.id === media.id)
+
+      const updatedMedia = [...program.media]
+      updatedMedia[mediaIndex] = media
+
+      setProgram({
+        ...program,
+        media: [...updatedMedia],
+      })
+    },
+    [program, setProgram]
+  )
+
+  const addMediaToProgram = useCallback(
+    (media: SegmentMediaType) => {
+      if (!program) return
+      program.media.push(media)
+      setProgram({
+        ...program,
+        media: program.media,
       })
     },
     [program, setProgram]
@@ -159,14 +216,12 @@ export const useProgram = () => {
     [program, setProgram]
   )
 
-  const removeSegmentScreen = useCallback(
-    (segment: SegmentType, screenId: number) => {
+  const removeMediaScreen = useCallback(
+    (media: SegmentMediaType, mediaId: number) => {
       if (!program) return
-      const segmentIndex = program.segments.findIndex(
-        (s) => s.id === segment.id
-      )
-      segment.screens = segment.screens.filter((s) => s.id !== screenId)
-      program.segments[segmentIndex] = segment
+      const mediaIndex = program.media.findIndex((m) => m.id === media.id)
+      media.screens = media.screens.filter((s) => s.id !== mediaId)
+      program.media[mediaIndex] = media
       setProgram(program)
     },
     [program, setProgram]
@@ -174,14 +229,18 @@ export const useProgram = () => {
 
   return {
     getSegmentById,
-    addNextSegment,
+    addNewSegment,
     addSegment,
-    addScreenToSegment,
+    addMediaToProgram,
+    addScreenToMedia,
     updateSegment,
+    setMediaIdInSegment,
+    updateMedia,
     removeSegment,
-    removeSegmentScreen,
+    removeMediaScreen,
     updateProgramTitle,
     loadJsonProgram,
     addNextSegmentById,
+    getMediaById,
   }
 }

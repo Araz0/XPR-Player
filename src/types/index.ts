@@ -2,16 +2,22 @@ export type ProgramType = {
   id: number
   title: string
   segments: SegmentType[]
+  media: SegmentMediaType[]
   amountOfScreens: number
   standBySrc?: string
 }
 export type SegmentType = {
   id: number
+  isIntro?: boolean
+  mediaId: number
+  nextSegmentIds?: number[]
+}
+
+export type SegmentMediaType = {
+  id: number
   title: string
   description: string
   screens: ScreenType[]
-  isIntro?: boolean
-  nextSegmentIds?: number[]
   globalAudio?: string
 }
 

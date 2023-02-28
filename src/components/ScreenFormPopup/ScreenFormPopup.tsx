@@ -15,15 +15,15 @@ const StyledHeaderContainer = styled.div`
 `
 
 export type ScreenFormPopupProps = {
-  segmentId: number
+  mediatId: number
   onClose: () => void
 }
 export const ScreenFormPopupRaw = ({
-  segmentId,
+  mediatId,
   onClose,
 }: ScreenFormPopupProps) => {
   const titleRef = useRef<HTMLInputElement>()
-  const { addScreenToSegment } = useProgram()
+  const { addScreenToMedia } = useProgram()
   const handleImportScreen = useCallback(
     (e: any) => {
       const screen = {
@@ -31,10 +31,10 @@ export const ScreenFormPopupRaw = ({
         title: titleRef.current?.value || 'screen title',
         mediaSrc: `/programMedia/${e.target.files[0].name}`,
       }
-      addScreenToSegment(segmentId, screen)
+      addScreenToMedia(mediatId, screen)
       onClose()
     },
-    [addScreenToSegment, onClose, segmentId]
+    [addScreenToMedia, onClose, mediatId]
   )
   return (
     <Popup onClose={onClose}>

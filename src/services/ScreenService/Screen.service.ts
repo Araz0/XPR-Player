@@ -5,7 +5,7 @@ import {
   ScreenStatus,
   SegmentType,
 } from '../../types'
-import { getIntroSegment, getSegmentById } from '../../utils'
+import { getIntroSegment, getMediaById, getSegmentById } from '../../utils'
 import { VideoService } from '../VideoService'
 
 export class ScreenService {
@@ -131,9 +131,12 @@ export class ScreenService {
 
   public setSrcToIntro = () => {
     this._currentSegment = this._IntroSegment
-    this.setCurrentSource(
-      this._currentSegment?.screens[this._id - 1].mediaSrc || ''
+    if (!this._program || !this._currentSegment?.mediaId) return
+    const segmentMedia = getMediaById(
+      this._program.media,
+      this._currentSegment.mediaId
     )
+    this.setCurrentSource(segmentMedia?.screens[this._id - 1].mediaSrc || '')
   }
 
   private onPlayerEnded = (player: VideoService) => {
@@ -158,9 +161,12 @@ export class ScreenService {
           )
         : undefined
       // set next source to next player
-      this.setNextSource(
-        this._nextSegment?.screens[this._id - 1].mediaSrc || ''
+      if (!this._program?.media || !this._nextSegment?.mediaId) return
+      const media = getMediaById(
+        this._program?.media,
+        this._nextSegment?.mediaId
       )
+      this.setNextSource(media ? media.screens[this._id - 1].mediaSrc : '')
     }
   }
 
