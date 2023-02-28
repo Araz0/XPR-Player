@@ -37,12 +37,13 @@ export const ProgramsListRaw = ({
   const navigate = useNavigate()
   const { deleteProgram } = useSupabase()
   const setSelectedProgram = useAdminStore((s) => s.setSelectedProgram)
+  const setProgram = useAdminStore((s) => s.setProgram)
 
   const handleDeleteProgram = useCallback(() => {
     if (!program) return
     deleteProgram(program.id)
-    navigate(navigateToPath)
-  }, [deleteProgram, navigate, navigateToPath])
+    navigate('/admin/programs')
+  }, [deleteProgram, navigate])
 
   const handleSetAsSelectedProgram = useCallback(() => {
     if (!program) return
@@ -51,10 +52,11 @@ export const ProgramsListRaw = ({
   }, [setSelectedProgram, navigate])
 
   const handleOpenProgram = useCallback(
-    (program: DbProgram) => {
-      navigate(`/admin/programs/${program.internal_id}`)
+    (dbProgram: DbProgram) => {
+      setProgram(dbProgram.program)
+      navigate('/admin/programMap')
     },
-    [navigate]
+    [navigate, setProgram]
   )
 
   return (

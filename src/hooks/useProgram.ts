@@ -52,15 +52,37 @@ export const useProgram = () => {
     [program]
   )
 
-  const addSegment = useCallback(
-    (newSegment: SegmentType) => {
-      if (!program) return
+  const getProgramIntroSegment = useCallback(() => {
+    if (!program) return
+    const introSegment = program.segments.find((s) => s.isIntro)
+    if (!introSegment) {
+      const newIntroSegment: SegmentType = {
+        id: generateNewId(),
+        mediaId: generateNewId(),
+        isIntro: true,
+      }
       setProgram({
         ...program,
-        segments: [...program.segments, newSegment],
+        segments: [...program.segments, newIntroSegment],
       })
+      return newIntroSegment
+    }
+    return introSegment
+  }, [program, setProgram])
+
+  const createNewProgram = useCallback(
+    (title: string, amountOfScreens: number) => {
+      const newProgram = {
+        id: generateNewId(),
+        title: title,
+        amountOfScreens: amountOfScreens,
+        segments: [],
+        media: [],
+      }
+      setProgram(newProgram)
+      navigate(`/admin/programMap`)
     },
-    [program, setProgram]
+    [navigate, setProgram]
   )
 
   const addNextSegmentById = useCallback(
@@ -230,7 +252,7 @@ export const useProgram = () => {
   return {
     getSegmentById,
     addNewSegment,
-    addSegment,
+    getProgramIntroSegment,
     addMediaToProgram,
     addScreenToMedia,
     updateSegment,
@@ -242,5 +264,6 @@ export const useProgram = () => {
     loadJsonProgram,
     addNextSegmentById,
     getMediaById,
+    createNewProgram,
   }
 }

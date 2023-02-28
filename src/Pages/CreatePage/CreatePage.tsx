@@ -1,15 +1,12 @@
 import { memo, useCallback, useRef, useState } from 'react'
 
-import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 
 import { NoteAdd } from '@mui/icons-material'
 import { Typography, Divider, TextField, Slider, Button } from '@mui/material'
 
 import { AdminPageWrapper } from '../../components'
-import { useSupabase } from '../../hooks'
-import { useAdminStore } from '../../stores'
-import { generateNewId } from '../../utils'
+import { useProgram } from '../../hooks'
 
 const StyledActionsContainer = styled.div`
   max-width: 720px;
@@ -21,11 +18,9 @@ const StyledSliderContainer = styled.div`
   padding: 15px;
 `
 export const CreatePageRaw = () => {
-  const navigate = useNavigate()
   const titleRef = useRef<HTMLInputElement>()
-  const { insertProgram } = useSupabase()
+  const { createNewProgram } = useProgram()
   const [screensAmount, setScreensAmount] = useState<number>(1)
-  const setProgram = useAdminStore((s) => s.setProgram)
 
   const handleChangeScreensAmount = (
     event: Event,
@@ -35,17 +30,9 @@ export const CreatePageRaw = () => {
   }
 
   const handleCreateProgram = useCallback(() => {
-    const newProgram = {
-      id: generateNewId(),
-      title: titleRef.current?.value || 'New Program',
-      amountOfScreens: screensAmount,
-      segments: [],
-      media: [],
-    }
-    setProgram(newProgram)
-    insertProgram(newProgram)
-    navigate(`/admin/programs/${newProgram.id}`)
-  }, [insertProgram, setProgram, navigate, screensAmount])
+    if (!titleRef.current?.value) return
+    createNewProgram(titleRef.current?.value, screensAmount)
+  }, [createNewProgram, screensAmount])
 
   return (
     <AdminPageWrapper>

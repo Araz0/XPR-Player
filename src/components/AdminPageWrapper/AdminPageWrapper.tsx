@@ -124,7 +124,15 @@ export const AdminPageWrapperRaw = ({
           <LoginPopup onClose={() => setShowLoginPopup(false)} />
         )}
       </StyledSideNav>
-      <StyledContentWrapper>{children}</StyledContentWrapper>
+      <StyledContentWrapper>
+        {!userIsLoggedIn ? (
+          <h3>
+            User is not signed in.. please sign in to see the programs library
+          </h3>
+        ) : (
+          children
+        )}
+      </StyledContentWrapper>
     </StyledPageContainer>
   )
 }

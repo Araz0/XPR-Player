@@ -7,7 +7,6 @@ import { Divider, IconButton } from '@mui/material'
 
 import { useProgram } from '../../hooks'
 import { ProgramType, SegmentType } from '../../types'
-import { generateNewId, getIntroSegment } from '../../utils'
 import { EditableLabel } from '../EditableLabel'
 import { TreeItem } from '../TreeItem'
 
@@ -29,7 +28,7 @@ export type TreeListProps = {
   program: ProgramType
 }
 export const TreeListRaw = ({ program }: TreeListProps) => {
-  const { addSegment, updateProgramTitle } = useProgram()
+  const { getProgramIntroSegment, updateProgramTitle } = useProgram()
   const titleRef = useRef<HTMLInputElement>()
   const [canEditTitle, setCanEditTitle] = useState<boolean>(false)
   const [introSegment, setIntroSegment] = useState<SegmentType | undefined>(
@@ -43,18 +42,9 @@ export const TreeListRaw = ({ program }: TreeListProps) => {
   }, [canEditTitle, updateProgramTitle])
 
   useEffect(() => {
-    const intro = getIntroSegment(program.segments)
-    if (!intro) {
-      const introSegment: SegmentType = {
-        id: generateNewId(),
-        mediaId: generateNewId(),
-        isIntro: true,
-      }
-      addSegment(introSegment)
-      setIntroSegment(introSegment)
-    }
+    const intro = getProgramIntroSegment()
     setIntroSegment(intro)
-  }, [addSegment, program.segments])
+  }, [getProgramIntroSegment])
 
   if (!introSegment) return null
   return (
