@@ -13,21 +13,13 @@ export const ProgramsPageRaw = () => {
 
   return (
     <AdminPageWrapper
-      topNavHeader="programs"
+      topNavHeader="Programs"
       topNavActions={<LoadLocalProgramButton />}
     >
       {!loadedPrograms ? (
         <LoadingAnimation />
-      ) : loadedPrograms.length < 1 ? (
-        <h3>
-          You dont have any programs saved online, import a local json save or
-          create a new one.
-        </h3>
       ) : (
-        <ProgramsList
-          programs={loadedPrograms}
-          navigateToPath="/admin/programs"
-        />
+        <ProgramsList programs={loadedPrograms} />
       )}
     </AdminPageWrapper>
   )

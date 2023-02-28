@@ -27,13 +27,9 @@ const StyledProgramsListContainer = styled(List)`
 
 export type ProgramsListProps = {
   programs: DbProgram[]
-  navigateToPath: string
 }
 
-export const ProgramsListRaw = ({
-  programs,
-  navigateToPath,
-}: ProgramsListProps) => {
+export const ProgramsListRaw = ({ programs }: ProgramsListProps) => {
   const navigate = useNavigate()
   const { deleteProgram } = useSupabase()
   const setSelectedProgram = useAdminStore((s) => s.setSelectedProgram)
@@ -58,7 +54,19 @@ export const ProgramsListRaw = ({
     },
     [navigate, setProgram]
   )
+  console.log(
+    '🚀 ~ file: ProgramsList.tsx:107 ~ ProgramsListRaw ~ programs:',
+    programs,
+    programs.length
+  )
 
+  if (programs.length === 0)
+    return (
+      <h3>
+        You dont have any programs saved online, import a local json save or
+        create a new one.
+      </h3>
+    )
   return (
     <StyledProgramsListContainer>
       {programs.map((program: DbProgram) => {
