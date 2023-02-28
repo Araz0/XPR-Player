@@ -56,7 +56,7 @@ export const useScreenService = () => {
 
   const init = useCallback(
     (
-      screenId: string | undefined,
+      screenId: number,
       container: PlayerContainerType,
       videoRef1: VideoRefElementType,
       videoRef2: VideoRefElementType

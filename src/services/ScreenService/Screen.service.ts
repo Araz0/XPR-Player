@@ -22,13 +22,13 @@ export class ScreenService {
   private _nextSegment: SegmentType | undefined
 
   constructor(
-    screenId?: string | undefined,
+    screenId?: number,
     container?: PlayerContainerType,
     ref1?: VideoRefElementType,
     ref2?: VideoRefElementType
   ) {
     this._isShowingControls = false
-    this._id = screenId ? parseInt(screenId) : 1
+    this._id = screenId ? screenId : 0
     this._containerRef = container || undefined
     this._player1 = new VideoService('A', ref1 || undefined)
     this._player2 = new VideoService('B', ref2 || undefined)
@@ -36,12 +36,12 @@ export class ScreenService {
     this._status = ScreenStatus.EMPTY
   }
   public setRefs = (
-    screenId: string | undefined,
+    screenId: number,
     container: PlayerContainerType,
     ref1: VideoRefElementType,
     ref2: VideoRefElementType
   ) => {
-    this._id = screenId ? parseInt(screenId) : 1
+    this._id = screenId
     this._containerRef = container
     this._player1.videoElement = ref1
     this._player2.videoElement = ref2
