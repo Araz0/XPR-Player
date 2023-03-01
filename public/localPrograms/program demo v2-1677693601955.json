@@ -1,0 +1,55 @@
+{
+  "id": 1677693601955,
+  "title": "program demo v2",
+  "amountOfScreens": 2,
+  "segments": [
+    {
+      "id": 1677693602036,
+      "mediaId": 1677693618589,
+      "isIntro": true,
+      "nextSegmentIds": [
+        1677693648281
+      ]
+    },
+    {
+      "id": 1677693648281,
+      "mediaId": 1677693659267
+    }
+  ],
+  "media": [
+    {
+      "id": 1677693618589,
+      "title": "teo intro",
+      "description": "No description",
+      "screens": [
+        {
+          "id": 1677693632684,
+          "title": "s1",
+          "mediaSrc": "/programMedia/station_test_v001.mp4"
+        },
+        {
+          "id": 1677693639455,
+          "title": "s2",
+          "mediaSrc": "/programMedia/station_6_proto_v001.mp4"
+        }
+      ]
+    },
+    {
+      "id": 1677693659267,
+      "title": "something nice",
+      "description": "idk",
+      "screens": [
+        {
+          "id": 1677693673731,
+          "title": "s1",
+          "mediaSrc": "/programMedia/station_6_proto_v001.mp4"
+        },
+        {
+          "id": 1677693679469,
+          "title": "s2",
+          "mediaSrc": "/programMedia/station_test_v001.mp4"
+        }
+      ]
+    }
+  ]
+}
