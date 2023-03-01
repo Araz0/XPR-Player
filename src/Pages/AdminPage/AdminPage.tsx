@@ -4,12 +4,9 @@ import styled from 'styled-components'
 
 import {
   AccountTree,
-  Airplay,
   Backspace,
   ControlCamera,
-  Fullscreen,
   PlayArrow,
-  Stop,
 } from '@mui/icons-material'
 import { Button, IconButton, Tooltip, Typography } from '@mui/material'
 
@@ -32,14 +29,8 @@ export const AdminPageRaw = () => {
   const selectedProgram = useAdminStore((s) => s.selectedProgram)
   const setSelectedProgram = useAdminStore((s) => s.setSelectedProgram)
   const loadedPrograms = useAdminStore((s) => s.loadedPrograms)
-  const {
-    emmitProgram,
-    emmitStartProgram,
-    emmitStopProgram,
-    emmitEndStandby,
-    emmitRequestFullscreen,
-    emmitToggleShowControls,
-  } = useSocketService()
+  const { emmitProgram, emmitStartProgram, emmitToggleShowControls } =
+    useSocketService()
 
   const handelSendProgram = useCallback(() => {
     if (!selectedProgram) return
@@ -70,20 +61,7 @@ export const AdminPageRaw = () => {
             >
               Send Program
             </Button>
-            <Button
-              variant="contained"
-              onClick={emmitEndStandby}
-              startIcon={<Airplay />}
-            >
-              End Standby mode
-            </Button>
-            <Button
-              variant="contained"
-              onClick={emmitRequestFullscreen}
-              startIcon={<Fullscreen />}
-            >
-              Request Fullscreen
-            </Button>
+
             <Button
               variant="contained"
               onClick={emmitToggleShowControls}
@@ -97,13 +75,6 @@ export const AdminPageRaw = () => {
               startIcon={<PlayArrow />}
             >
               Start program
-            </Button>
-            <Button
-              variant="contained"
-              onClick={emmitStopProgram}
-              startIcon={<Stop />}
-            >
-              Stop program
             </Button>
           </StyledActionsContainer>
         </>

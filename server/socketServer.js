@@ -61,12 +61,6 @@ io.on('connection', (socket) => {
     console.log(`📀 - admin sent program`, args)
   })
 
-  socket.on('admin-Brodcast-end-standby', (args) => {
-    socket.broadcast.emit('end-standby', args)
-    // eslint-disable-next-line no-console
-    console.log(`🔚🧍🏽‍♀️ - `, args)
-  })
-
   socket.on('admin-Brodcast-show-controls', (args) => {
     socket.broadcast.emit('show-controls', args)
     // eslint-disable-next-line no-console

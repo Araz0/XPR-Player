@@ -13,19 +13,14 @@ export const ScreenPageRaw = () => {
 
   const setProgramStarted = useScreenStore((s) => s.setProgramStarted)
 
-  const {
-    startProgram,
-    requestFullScreen,
-    setScreenProgram,
-    toggleShowingControls,
-  } = useScreenService()
+  const { startProgram, setScreenProgram, toggleShowingControls } =
+    useScreenService()
 
   useEffect(() => {
-    clientSocket.onStart(startProgram)
-    clientSocket.onEndStandby(() => {
+    clientSocket.onStart(() => {
       setProgramStarted(true)
+      startProgram()
     })
-    clientSocket.onRequestFullScreen(requestFullScreen)
     clientSocket.onSetProgram(setScreenProgram)
     clientSocket.onToggleShowControls(toggleShowingControls)
     // todo: check if this hook dep. array effects anything
