@@ -13,9 +13,10 @@ import { saveProgramAsJson } from '../../utils'
 export const ProgramMapPageRaw = () => {
   const navigate = useNavigate()
   const program = useAdminStore((s) => s.program)
+  const loadedPrograms = useAdminStore((s) => s.loadedPrograms)
   const setSelectedProgram = useAdminStore((s) => s.setSelectedProgram)
 
-  const { updateProgram, deleteProgram } = useSupabase()
+  const { updateProgram, deleteProgram, insertProgram } = useSupabase()
 
   const handleDeleteProgram = useCallback(() => {
     if (!program) return
@@ -30,8 +31,15 @@ export const ProgramMapPageRaw = () => {
 
   const handleUpdateProgramInDb = useCallback(() => {
     if (!program) return
-    updateProgram(program)
-  }, [updateProgram, program])
+    const programIdExist = loadedPrograms?.some(
+      (item) => item.program.id === program.id
+    )
+    if (programIdExist) {
+      updateProgram(program)
+    } else {
+      insertProgram(program)
+    }
+  }, [insertProgram, loadedPrograms, program, updateProgram])
 
   const handleSettingProgramAsSelected = useCallback(() => {
     if (!program) return
