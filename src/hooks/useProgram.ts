@@ -20,7 +20,7 @@ export const useProgram = () => {
     (jsonPath: string) => {
       loadJsonFile(jsonPath).then((prog) => {
         setProgram(prog as ProgramType)
-        navigate(`/admin/programs/${prog.id}`)
+        navigate(`/admin/programMap`)
       })
     },
     [navigate, setProgram]
