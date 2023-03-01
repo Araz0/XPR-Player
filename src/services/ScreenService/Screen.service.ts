@@ -136,7 +136,7 @@ export class ScreenService {
       this._program.media,
       this._currentSegment.mediaId
     )
-    this.setCurrentSource(segmentMedia?.screens[this._id - 1].mediaSrc || '')
+    this.setCurrentSource(segmentMedia?.screens[this._id].mediaSrc || '')
   }
 
   private onPlayerEnded = (player: VideoService) => {
@@ -166,7 +166,7 @@ export class ScreenService {
         this._program?.media,
         this._nextSegment?.mediaId
       )
-      this.setNextSource(media ? media.screens[this._id - 1].mediaSrc : '')
+      this.setNextSource(media ? media.screens[this._id].mediaSrc : '')
     }
   }
 
