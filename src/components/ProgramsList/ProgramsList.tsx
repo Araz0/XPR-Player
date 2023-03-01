@@ -13,10 +13,9 @@ import {
   Tooltip,
 } from '@mui/material'
 
-import { program } from '../../fakeProgram'
 import { useSupabase } from '../../hooks'
 import { useAdminStore } from '../../stores'
-import { DbProgram } from '../../types'
+import { DbProgram, ProgramType } from '../../types'
 
 const StyledProgramsListContainer = styled(List)`
   max-width: 400px;
@@ -35,17 +34,21 @@ export const ProgramsListRaw = ({ programs }: ProgramsListProps) => {
   const setSelectedProgram = useAdminStore((s) => s.setSelectedProgram)
   const setProgram = useAdminStore((s) => s.setProgram)
 
-  const handleDeleteProgram = useCallback(() => {
-    if (!program) return
-    deleteProgram(program.id)
-    navigate('/admin/programs')
-  }, [deleteProgram, navigate])
+  const handleDeleteProgram = useCallback(
+    (program: ProgramType) => {
+      deleteProgram(program.id)
+      navigate('/admin/programs')
+    },
+    [deleteProgram, navigate]
+  )
 
-  const handleSetAsSelectedProgram = useCallback(() => {
-    if (!program) return
-    setSelectedProgram(program)
-    navigate('/admin')
-  }, [setSelectedProgram, navigate])
+  const handleSetAsSelectedProgram = useCallback(
+    (program: ProgramType) => {
+      setSelectedProgram(program)
+      navigate('/admin')
+    },
+    [setSelectedProgram, navigate]
+  )
 
   const handleOpenProgram = useCallback(
     (dbProgram: DbProgram) => {
@@ -53,11 +56,6 @@ export const ProgramsListRaw = ({ programs }: ProgramsListProps) => {
       navigate('/admin/programMap')
     },
     [navigate, setProgram]
-  )
-  console.log(
-    '🚀 ~ file: ProgramsList.tsx:107 ~ ProgramsListRaw ~ programs:',
-    programs,
-    programs.length
   )
 
   if (programs.length === 0)
@@ -88,7 +86,10 @@ export const ProgramsListRaw = ({ programs }: ProgramsListProps) => {
                     </IconButton>
                   </Tooltip>
                   <Tooltip title="Delete Program">
-                    <IconButton edge="end" onClick={handleDeleteProgram}>
+                    <IconButton
+                      edge="end"
+                      onClick={() => handleDeleteProgram(program.program)}
+                    >
                       <Delete />
                     </IconButton>
                   </Tooltip>
@@ -98,7 +99,7 @@ export const ProgramsListRaw = ({ programs }: ProgramsListProps) => {
             >
               <ListItemButton
                 role={undefined}
-                onClick={handleSetAsSelectedProgram}
+                onClick={() => handleSetAsSelectedProgram(program.program)}
                 dense
               >
                 <ListItemText primary={program.program.title} />

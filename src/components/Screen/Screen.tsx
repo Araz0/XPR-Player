@@ -5,8 +5,7 @@ import styled from 'styled-components'
 
 import { Typography, CircularProgress } from '@mui/material'
 
-import { CenterdContainer, VideoPlayer } from '../../components'
-import { program } from '../../fakeProgram'
+import { StandbyOverlay, VideoPlayer } from '../../components'
 import { useDoubleKeyPress } from '../../hooks'
 import { useScreenService } from '../../services'
 import { useScreenStore } from '../../stores'
@@ -25,6 +24,7 @@ const StyledScreenPlayerContainer = styled.div`
 export const ScreenRaw = () => {
   const programStarted = useScreenStore((s) => s.programStarted)
   const standByMode = useScreenStore((s) => s.standByMode)
+  const program = useScreenStore((s) => s.program)
   const { screenId } = useParams()
   const playerContainerRef = useRef<any>()
   const videoRef1 = useRef<any>()
@@ -46,30 +46,26 @@ export const ScreenRaw = () => {
   }, [init, screenId])
 
   useEffect(() => {
-    if (programStarted) {
-      forceDisplayOnePlayer()
-    }
-  }, [forceDisplayOnePlayer, programStarted])
+    forceDisplayOnePlayer()
+  }, [forceDisplayOnePlayer])
 
   return (
     <StyledScreenPlayerContainer ref={playerContainerRef}>
-      {!programStarted && program && (
-        <CenterdContainer>
+      {!programStarted && (
+        <StandbyOverlay>
           {standByMode === StandByMods.TEXT && (
             <Typography>
-              Program ({program.title}) is set, waiting on your command to
+              Program ({program?.title}) is set, waiting on your command to
               start!
             </Typography>
           )}
           {standByMode === StandByMods.ANIMATION && <CircularProgress />}
-        </CenterdContainer>
+        </StandbyOverlay>
       )}
-      {programStarted && (
-        <>
-          <VideoPlayer ref={videoRef1} />
-          <VideoPlayer ref={videoRef2} />
-        </>
-      )}
+      <>
+        <VideoPlayer ref={videoRef1} />
+        <VideoPlayer ref={videoRef2} />
+      </>
     </StyledScreenPlayerContainer>
   )
 }

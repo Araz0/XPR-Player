@@ -28,10 +28,6 @@ export const useSocketService = () => {
     emmit(EventNames.ADMIN_BRODCAST_FULLSCREEN, 'admin requested full screen')
   }, [emmit])
 
-  const emmitEndStandby = useCallback(() => {
-    emmit(EventNames.ADMIN_BRODCAST_END_STANDBY, 'admin requested end standby')
-  }, [emmit])
-
   const emmitStopProgram = useCallback(() => {
     emmit(EventNames.ADMIN_BRODCAST_STOP, 'admin requested program stop')
   }, [emmit])
@@ -67,7 +63,6 @@ export const useSocketService = () => {
     emmitStartProgram,
     emmitStopProgram,
     emmitResetProgram,
-    emmitEndStandby,
     emmitRequestFullscreen,
     emmitShowControls,
     emmitHideControls,

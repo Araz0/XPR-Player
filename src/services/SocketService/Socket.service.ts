@@ -41,16 +41,7 @@ export class SocketService {
       exicute(program)
     })
   }
-  public onEndStandby = (exicute: () => void) => {
-    this._socket.on(EventNames.END_STANDBY, () => {
-      // eslint-disable-next-line no-console
-      console.log(
-        `Received command (End Standby): `,
-        new Date().getMilliseconds()
-      )
-      exicute()
-    })
-  }
+
   public onShowControls = (exicute: () => void) => {
     this._socket.on(EventNames.SHOW_CONTROLS, () => {
       // eslint-disable-next-line no-console
