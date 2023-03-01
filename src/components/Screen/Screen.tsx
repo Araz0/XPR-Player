@@ -41,7 +41,8 @@ export const ScreenRaw = () => {
   useDoubleKeyPress('c', () => requestShowControls())
 
   useEffect(() => {
-    init(screenId, playerContainerRef, videoRef1, videoRef2)
+    if (!screenId) return
+    init(parseInt(screenId), playerContainerRef, videoRef1, videoRef2)
   }, [init, screenId])
 
   useEffect(() => {

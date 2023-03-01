@@ -114,15 +114,15 @@ export function useSupabase() {
   }, [loadProgramsByUser, loadedPrograms])
 
   useEffect(() => {
-    // if (!loggedInUser) {
-    //   getUserData()
-    // } else {
-    //   if (loggedInUser?.role === 'authenticated') {
-    //     setUserIsLoggedIn(true)
-    //   } else {
-    //     setUserIsLoggedIn(false)
-    //   }
-    // }
+    if (!loggedInUser) {
+      getUserData()
+    } else {
+      if (loggedInUser?.role === 'authenticated') {
+        setUserIsLoggedIn(true)
+      } else {
+        setUserIsLoggedIn(false)
+      }
+    }
 
     supabaseClient.auth.onAuthStateChange((_event, session) => {
       if (_event !== 'SIGNED_OUT') {
@@ -135,7 +135,7 @@ export function useSupabase() {
         setLoggedInUser(undefined)
       }
     })
-  }, [setLoggedInUser, setUserIsLoggedIn])
+  }, [getUserData, loggedInUser, setLoggedInUser, setUserIsLoggedIn])
 
   return {
     supabaseClient,

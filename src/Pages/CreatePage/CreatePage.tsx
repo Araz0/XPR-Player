@@ -6,8 +6,7 @@ import { NoteAdd } from '@mui/icons-material'
 import { Typography, Divider, TextField, Slider, Button } from '@mui/material'
 
 import { AdminPageWrapper } from '../../components'
-import { useAdminStore } from '../../stores'
-import { generateNewId } from '../../utils'
+import { useProgram } from '../../hooks'
 
 const StyledActionsContainer = styled.div`
   max-width: 720px;
@@ -20,8 +19,8 @@ const StyledSliderContainer = styled.div`
 `
 export const CreatePageRaw = () => {
   const titleRef = useRef<HTMLInputElement>()
+  const { createNewProgram } = useProgram()
   const [screensAmount, setScreensAmount] = useState<number>(1)
-  const setProgram = useAdminStore((s) => s.setProgram)
 
   const handleChangeScreensAmount = (
     event: Event,
@@ -31,13 +30,10 @@ export const CreatePageRaw = () => {
   }
 
   const handleCreateProgram = useCallback(() => {
-    setProgram({
-      id: generateNewId(),
-      title: titleRef.current?.value || 'New Program',
-      amountOfScreens: screensAmount,
-      segments: [],
-    })
-  }, [setProgram, screensAmount])
+    if (!titleRef.current?.value) return
+    createNewProgram(titleRef.current?.value, screensAmount)
+  }, [createNewProgram, screensAmount])
+
   return (
     <AdminPageWrapper>
       <StyledActionsContainer>

@@ -5,7 +5,7 @@ import {
   ScreenStatus,
   SegmentType,
 } from '../../types'
-import { getIntroSegment, getSegmentById } from '../../utils'
+import { getIntroSegment, getMediaById, getSegmentById } from '../../utils'
 import { VideoService } from '../VideoService'
 
 export class ScreenService {
@@ -22,13 +22,13 @@ export class ScreenService {
   private _nextSegment: SegmentType | undefined
 
   constructor(
-    screenId?: string | undefined,
+    screenId?: number,
     container?: PlayerContainerType,
     ref1?: VideoRefElementType,
     ref2?: VideoRefElementType
   ) {
     this._isShowingControls = false
-    this._id = screenId ? parseInt(screenId) : 1
+    this._id = screenId ? screenId : 0
     this._containerRef = container || undefined
     this._player1 = new VideoService('A', ref1 || undefined)
     this._player2 = new VideoService('B', ref2 || undefined)
@@ -36,12 +36,12 @@ export class ScreenService {
     this._status = ScreenStatus.EMPTY
   }
   public setRefs = (
-    screenId: string | undefined,
+    screenId: number,
     container: PlayerContainerType,
     ref1: VideoRefElementType,
     ref2: VideoRefElementType
   ) => {
-    this._id = screenId ? parseInt(screenId) : 1
+    this._id = screenId
     this._containerRef = container
     this._player1.videoElement = ref1
     this._player2.videoElement = ref2
@@ -131,9 +131,12 @@ export class ScreenService {
 
   public setSrcToIntro = () => {
     this._currentSegment = this._IntroSegment
-    this.setCurrentSource(
-      this._currentSegment?.screens[this._id - 1].mediaSrc || ''
+    if (!this._program || !this._currentSegment?.mediaId) return
+    const segmentMedia = getMediaById(
+      this._program.media,
+      this._currentSegment.mediaId
     )
+    this.setCurrentSource(segmentMedia?.screens[this._id].mediaSrc || '')
   }
 
   private onPlayerEnded = (player: VideoService) => {
@@ -158,9 +161,12 @@ export class ScreenService {
           )
         : undefined
       // set next source to next player
-      this.setNextSource(
-        this._nextSegment?.screens[this._id - 1].mediaSrc || ''
+      if (!this._program?.media || !this._nextSegment?.mediaId) return
+      const media = getMediaById(
+        this._program?.media,
+        this._nextSegment?.mediaId
       )
+      this.setNextSource(media ? media.screens[this._id].mediaSrc : '')
     }
   }
 

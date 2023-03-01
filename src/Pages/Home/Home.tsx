@@ -20,7 +20,7 @@ export const HomeRaw = () => {
       </Button>
       <Button
         variant="outlined"
-        onClick={() => navigate('/screen')}
+        onClick={() => navigate('/screen/0')}
         startIcon={<Tv />}
       >
         Screen

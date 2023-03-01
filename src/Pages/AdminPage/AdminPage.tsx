@@ -47,7 +47,10 @@ export const AdminPageRaw = () => {
   }, [emmitProgram, selectedProgram])
 
   return (
-    <AdminPageWrapper topNavActions={<LoadLocalProgramButton />}>
+    <AdminPageWrapper
+      topNavHeader="Home"
+      topNavActions={<LoadLocalProgramButton />}
+    >
       {selectedProgram !== undefined ? (
         <>
           <Typography variant="button">
@@ -104,13 +107,10 @@ export const AdminPageRaw = () => {
             </Button>
           </StyledActionsContainer>
         </>
-      ) : loadedPrograms === undefined ? (
+      ) : !loadedPrograms ? (
         <LoadingAnimation />
       ) : (
-        <ProgramsList
-          programs={loadedPrograms}
-          navigateToPath="/admin/programs"
-        />
+        <ProgramsList programs={loadedPrograms} />
       )}
     </AdminPageWrapper>
   )
