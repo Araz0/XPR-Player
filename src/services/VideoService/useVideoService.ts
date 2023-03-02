@@ -5,7 +5,7 @@ import { VideoRefElementType } from '../../types'
 
 const videoPlayer = new VideoService('C')
 
-export const useVideoService = () => {
+export function useVideoService() {
   const init = useCallback((videoElement: VideoRefElementType) => {
     videoPlayer.videoElement = videoElement
   }, [])

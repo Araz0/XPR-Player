@@ -2,7 +2,7 @@ import { memo } from 'react'
 
 import { useNavigate } from 'react-router-dom'
 
-import { Person, Tv } from '@mui/icons-material'
+import { Person, Tv, ThumbsUpDown } from '@mui/icons-material'
 import { Button } from '@mui/material'
 
 import { CenterdContainer } from '../../components'
@@ -24,6 +24,13 @@ export const HomeRaw = () => {
         startIcon={<Tv />}
       >
         Screen
+      </Button>
+      <Button
+        variant="outlined"
+        onClick={() => navigate('/selection')}
+        startIcon={<ThumbsUpDown />}
+      >
+        Screen Selection
       </Button>
     </CenterdContainer>
   )

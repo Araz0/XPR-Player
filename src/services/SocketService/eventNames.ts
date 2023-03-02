@@ -2,6 +2,7 @@ export enum EventNames {
   CLIENT_CONNECTED = 'client-connected',
   SET_PROGRAM = 'set-program',
   START_PROGRAM = 'start-program',
+  PAUSE_PROGRAM = 'pause-program',
   STOP_PROGRAM = 'stop-program',
   RESET_PROGRAM = 'reset-program',
   END_STANDBY = 'end-standby',
@@ -10,6 +11,7 @@ export enum EventNames {
   HIDE_CONTROLS = 'hide-controls',
   REQUEST_FULLSCREEN = 'request-fullscreen',
   ADMIN_BRODCAST_START = 'admin-Brodcast-start',
+  ADMIN_BRODCAST_PAUSE = 'admin-Brodcast-pause',
   ADMIN_BRODCAST_STOP = 'admin-Brodcast-stop',
   ADMIN_BRODCAST_RESET = 'admin-Brodcast-reset',
   ADMIN_BRODCAST_FULLSCREEN = 'admin-Brodcast-fullscreen',
@@ -18,4 +20,6 @@ export enum EventNames {
   ADMIN_BRODCAST_HIDE_CONTROLS = 'admin-Brodcast-hide-controls',
   ADMIN_BRODCAST_SHOW_CONTROLS = 'admin-Brodcast-show-controls',
   ADMIN_BRODCAST_TOGGLE_SHOW_CONTROLS = 'admin-Brodcast-toggle-show-controls',
+  USER_SENT_SELECTED_SEGMENT = 'user-sent-selected-segment',
+  USER_SELECTED_SEGMENT = 'user-selected-segment',
 }

@@ -21,6 +21,26 @@ export class SocketService {
       exicute()
     })
   }
+  public onPause = (exicute: () => void) => {
+    this._socket.on(EventNames.PAUSE_PROGRAM, (data: any) => {
+      // eslint-disable-next-line no-console
+      console.log(
+        `Received command (pause-program): ${data}`,
+        new Date().getMilliseconds()
+      )
+      exicute()
+    })
+  }
+  public onReset = (exicute: () => void) => {
+    this._socket.on(EventNames.RESET_PROGRAM, (data: any) => {
+      // eslint-disable-next-line no-console
+      console.log(
+        `Received command (reset-program): ${data}`,
+        new Date().getMilliseconds()
+      )
+      exicute()
+    })
+  }
   public onRequestFullScreen = (exicute: () => void) => {
     this._socket.on(EventNames.REQUEST_FULLSCREEN, (data: any) => {
       // eslint-disable-next-line no-console
@@ -35,7 +55,7 @@ export class SocketService {
     this._socket.on(EventNames.SET_PROGRAM, (program: ProgramType) => {
       // eslint-disable-next-line no-console
       console.log(
-        `Received command (Set Program): `,
+        `Received command (set-program): `,
         new Date().getMilliseconds()
       )
       exicute(program)
@@ -46,7 +66,7 @@ export class SocketService {
     this._socket.on(EventNames.SHOW_CONTROLS, () => {
       // eslint-disable-next-line no-console
       console.log(
-        `Received command (Show Controls): `,
+        `Received command (show-controls): `,
         new Date().getMilliseconds()
       )
       exicute()
@@ -56,17 +76,32 @@ export class SocketService {
     this._socket.on(EventNames.HIDE_CONTROLS, () => {
       // eslint-disable-next-line no-console
       console.log(
-        `Received command (Hide Controls): `,
+        `Received command (hide-controls): `,
         new Date().getMilliseconds()
       )
       exicute()
     })
   }
+  public onUserSelectedNextSegment = (
+    exicute: (selectedNextSegmentIndex: number) => void
+  ) => {
+    this._socket.on(
+      EventNames.USER_SELECTED_SEGMENT,
+      (selectedNextSegmentIndex: number) => {
+        // eslint-disable-next-line no-console
+        console.log(
+          `Received command (user-selected-segment): `,
+          new Date().getMilliseconds()
+        )
+        exicute(selectedNextSegmentIndex)
+      }
+    )
+  }
   public onToggleShowControls = (exicute: () => void) => {
     this._socket.on(EventNames.TOGGLE_SHOW_CONTROLS, () => {
       // eslint-disable-next-line no-console
       console.log(
-        `Received command (Toggle Show Controls): `,
+        `Received command (toggle-show-controls): `,
         new Date().getMilliseconds()
       )
       exicute()

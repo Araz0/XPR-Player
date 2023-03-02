@@ -8,7 +8,7 @@ import { ProgramType } from '../../types'
 const serverUrl = 'http://localhost:8000'
 const socket = io(serverUrl)
 
-export const useSocketService = () => {
+export function useSocketService() {
   const emmit = useCallback((EventName: string, commandPackage: any) => {
     socket.emit(EventName, commandPackage)
   }, [])
@@ -30,6 +30,10 @@ export const useSocketService = () => {
 
   const emmitStopProgram = useCallback(() => {
     emmit(EventNames.ADMIN_BRODCAST_STOP, 'admin requested program stop')
+  }, [emmit])
+
+  const emmitPauseProgram = useCallback(() => {
+    emmit(EventNames.ADMIN_BRODCAST_PAUSE, 'admin requested program pause')
   }, [emmit])
 
   const emmitResetProgram = useCallback(() => {
@@ -57,15 +61,24 @@ export const useSocketService = () => {
     )
   }, [emmit])
 
+  const emmitSelectedScreenIndex = useCallback(
+    (index: number) => {
+      emmit(EventNames.USER_SENT_SELECTED_SEGMENT, index)
+    },
+    [emmit]
+  )
+
   return {
     emmit,
     emmitProgram,
     emmitStartProgram,
+    emmitPauseProgram,
     emmitStopProgram,
     emmitResetProgram,
     emmitRequestFullscreen,
     emmitShowControls,
     emmitHideControls,
     emmitToggleShowControls,
+    emmitSelectedScreenIndex,
   }
 }
