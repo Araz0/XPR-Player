@@ -11,7 +11,7 @@ import {
 } from '../types'
 import { generateNewId, loadJsonFile } from '../utils'
 
-export const useProgram = () => {
+export function useProgram() {
   const program = useAdminStore((s) => s.program)
   const setProgram = useAdminStore((s) => s.setProgram)
   const navigate = useNavigate()

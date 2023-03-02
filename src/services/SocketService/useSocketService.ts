@@ -8,7 +8,7 @@ import { ProgramType } from '../../types'
 const serverUrl = 'http://localhost:8000'
 const socket = io(serverUrl)
 
-export const useSocketService = () => {
+export function useSocketService() {
   const emmit = useCallback((EventName: string, commandPackage: any) => {
     socket.emit(EventName, commandPackage)
   }, [])
@@ -57,6 +57,13 @@ export const useSocketService = () => {
     )
   }, [emmit])
 
+  const emmitSelectedScreenIndex = useCallback(
+    (index: number) => {
+      emmit(EventNames.USER_SENT_SELECTED_SEGMENT, index)
+    },
+    [emmit]
+  )
+
   return {
     emmit,
     emmitProgram,
@@ -67,5 +74,6 @@ export const useSocketService = () => {
     emmitShowControls,
     emmitHideControls,
     emmitToggleShowControls,
+    emmitSelectedScreenIndex,
   }
 }

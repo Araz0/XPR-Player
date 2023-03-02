@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useState } from 'react'
 
-export const useDoubleKeyPress = (
+export function useDoubleKeyPress(
   key: string,
   exicute: () => void,
   interval = 500
-) => {
+) {
   const [keyPressCount, setKeyPressCount] = useState(0)
   let timeoutId: any
 

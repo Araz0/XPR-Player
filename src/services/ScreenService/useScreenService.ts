@@ -10,8 +10,9 @@ import {
 
 const screenPlayer = new ScreenService()
 
-export const useScreenService = () => {
+export function useScreenService() {
   const setProgram = useScreenStore((s) => s.setProgram)
+  const setProgramStarted = useScreenStore((s) => s.setProgramStarted)
 
   const playPauseScreen = useCallback(() => {
     screenPlayer.playPause()
@@ -19,7 +20,8 @@ export const useScreenService = () => {
 
   const startProgram = useCallback(() => {
     screenPlayer.play()
-  }, [])
+    setProgramStarted(true)
+  }, [setProgramStarted])
 
   const setCurrentSource = useCallback((src: string) => {
     screenPlayer.setCurrentSource(src)
@@ -54,6 +56,10 @@ export const useScreenService = () => {
     screenPlayer.setSrcToIntro()
   }, [])
 
+  const setSelectedNextSegment = (index: number) => {
+    screenPlayer.setNextSelectedSegmentIndex(index)
+  }
+
   const init = useCallback(
     (
       screenId: number,
@@ -81,5 +87,6 @@ export const useScreenService = () => {
     requestHideControls,
     toggleShowingControls,
     forceDisplayOnePlayer,
+    setSelectedNextSegment,
   }
 }
