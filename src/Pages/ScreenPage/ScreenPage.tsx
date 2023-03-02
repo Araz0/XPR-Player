@@ -11,18 +11,18 @@ const clientSocket = new SocketService()
 export const ScreenPageRaw = () => {
   const program = useScreenStore((s) => s.program)
 
-  const setProgramStarted = useScreenStore((s) => s.setProgramStarted)
-
-  const { startProgram, setScreenProgram, toggleShowingControls } =
-    useScreenService()
+  const {
+    startProgram,
+    setScreenProgram,
+    toggleShowingControls,
+    setSelectedNextSegment,
+  } = useScreenService()
 
   useEffect(() => {
-    clientSocket.onStart(() => {
-      setProgramStarted(true)
-      startProgram()
-    })
+    clientSocket.onStart(startProgram)
     clientSocket.onSetProgram(setScreenProgram)
     clientSocket.onToggleShowControls(toggleShowingControls)
+    clientSocket.onUserSelectedNextSegment(setSelectedNextSegment)
     // todo: check if this hook dep. array effects anything
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])

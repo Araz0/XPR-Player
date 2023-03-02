@@ -78,4 +78,10 @@ io.on('connection', (socket) => {
     // eslint-disable-next-line no-console
     console.log(`🎛️ - `, args)
   })
+
+  socket.on('user-sent-selected-segment', (args) => {
+    socket.broadcast.emit('user-selected-segment', args)
+    // eslint-disable-next-line no-console
+    console.log(`👍🏽👎🏽 - `, args)
+  })
 })

@@ -20,7 +20,7 @@ export class ScreenService {
   private _isShowingControls: boolean
   private _currentSegment: SegmentType | undefined
   private _nextSegment: SegmentType | undefined
-  private _nextVotedSegmentIndex: number | undefined
+  private _nextSelectedSegmentIndex: number | undefined
 
   constructor(
     screenId?: number,
@@ -51,6 +51,9 @@ export class ScreenService {
   public setAllListners = () => {
     this.setListners(this._player1)
     this.setListners(this._player2)
+  }
+  public setNextSelectedSegmentIndex = (index: number) => {
+    this._nextSelectedSegmentIndex = index
   }
   public destroyScreen = () => {
     this.removeListners(this._player1)
@@ -97,12 +100,13 @@ export class ScreenService {
     this.setCurrentAsNextPlayer()
     this._currentSegment = this._nextSegment
     this._nextSegment = undefined
+    this._nextSelectedSegmentIndex = undefined
   }
   public setEndScreen = () => {
     this._status = ScreenStatus.STAND_BY
     this._currentSegment = undefined
     this._nextSegment = undefined
-    this._nextVotedSegmentIndex = undefined
+    this._nextSelectedSegmentIndex = undefined
     this.currentPlayer().pause()
     this.nextPlayer().pause()
     this.currentPlayer().resetPlayer()
@@ -154,12 +158,19 @@ export class ScreenService {
     this.setCurrentSource(segmentMedia?.screens[this._id].mediaSrc || '')
   }
 
-  private getNextSegment = (nextIndex = 0) => {
+  private getNextSegment = () => {
     if (!this._currentSegment?.nextSegmentIds) return undefined // does not have next segment
     return getSegmentById(
       this._program?.segments || [],
-      this._currentSegment?.nextSegmentIds[nextIndex] // this._nextVotedSegmentIndex
+      this._currentSegment?.nextSegmentIds[
+        this._nextSelectedSegmentIndex || this.getRandomNextSegmentIndex() || 0
+      ]
     )
+  }
+  private getRandomNextSegmentIndex = () => {
+    if (!this._currentSegment?.nextSegmentIds) return undefined // does not have next segment
+    const items = this._currentSegment?.nextSegmentIds
+    return items[Math.floor(Math.random() * items.length)]
   }
 
   private onPlayerEnded = (player: VideoService) => {
@@ -178,7 +189,7 @@ export class ScreenService {
     // in the last two seconds
     if (player.getDuration() - 2 <= player.getCurrentTime()) {
       // get next segment
-      this._nextSegment = this.getNextSegment() // this._nextVotedSegmentIndex
+      this._nextSegment = this.getNextSegment()
       if (this._nextSegment) {
         // set next source to next player
         if (!this._program?.media || !this._nextSegment?.mediaId) return

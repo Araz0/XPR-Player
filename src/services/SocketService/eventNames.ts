@@ -18,4 +18,6 @@ export enum EventNames {
   ADMIN_BRODCAST_HIDE_CONTROLS = 'admin-Brodcast-hide-controls',
   ADMIN_BRODCAST_SHOW_CONTROLS = 'admin-Brodcast-show-controls',
   ADMIN_BRODCAST_TOGGLE_SHOW_CONTROLS = 'admin-Brodcast-toggle-show-controls',
+  USER_SENT_SELECTED_SEGMENT = 'user-sent-selected-segment',
+  USER_SELECTED_SEGMENT = 'user-selected-segment',
 }

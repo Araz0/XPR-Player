@@ -62,6 +62,21 @@ export class SocketService {
       exicute()
     })
   }
+  public onUserSelectedNextSegment = (
+    exicute: (selectedNextSegmentIndex: number) => void
+  ) => {
+    this._socket.on(
+      EventNames.USER_SELECTED_SEGMENT,
+      (selectedNextSegmentIndex: number) => {
+        // eslint-disable-next-line no-console
+        console.log(
+          `Received command (Select Next Segment): `,
+          new Date().getMilliseconds()
+        )
+        exicute(selectedNextSegmentIndex)
+      }
+    )
+  }
   public onToggleShowControls = (exicute: () => void) => {
     this._socket.on(EventNames.TOGGLE_SHOW_CONTROLS, () => {
       // eslint-disable-next-line no-console
