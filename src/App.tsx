@@ -7,6 +7,7 @@ import {
   ScreenPage,
   CreatePage,
   ProgramMapPage,
+  ScreenSelectionPage,
 } from './Pages'
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
       <Route path="admin/create" element={<CreatePage />} />
       <Route path="admin/programs" element={<ProgramsPage />} />
       <Route path="admin/programMap" element={<ProgramMapPage />} />
+      <Route path="selection" element={<ScreenSelectionPage />} />
     </Routes>
   )
 }
