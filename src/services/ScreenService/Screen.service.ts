@@ -80,6 +80,12 @@ export class ScreenService {
   public pause = () => {
     this.currentPlayer().pause()
   }
+
+  public reset = () => {
+    this.setEndScreen()
+    this.setSrcToIntro()
+  }
+
   public playPause = () => {
     if (this.currentPlayer().videoElement?.current?.paused) {
       this.play()

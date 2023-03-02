@@ -13,6 +13,8 @@ export const ScreenPageRaw = () => {
 
   const {
     startProgram,
+    pauseProgram,
+    resetProgram,
     setScreenProgram,
     toggleShowingControls,
     setSelectedNextSegment,
@@ -20,6 +22,8 @@ export const ScreenPageRaw = () => {
 
   useEffect(() => {
     clientSocket.onStart(startProgram)
+    clientSocket.onPause(pauseProgram)
+    clientSocket.onReset(resetProgram)
     clientSocket.onSetProgram(setScreenProgram)
     clientSocket.onToggleShowControls(toggleShowingControls)
     clientSocket.onUserSelectedNextSegment(setSelectedNextSegment)

@@ -49,6 +49,12 @@ io.on('connection', (socket) => {
     console.log(`🛑 - `, args)
   })
 
+  socket.on('admin-Brodcast-reset', (args) => {
+    socket.broadcast.emit('reset-program', args)
+    // eslint-disable-next-line no-console
+    console.log(`▶️ - `, args)
+  })
+
   socket.on('admin-Brodcast-fullscreen', (args) => {
     socket.broadcast.emit('request-fullscreen', args)
     // eslint-disable-next-line no-console

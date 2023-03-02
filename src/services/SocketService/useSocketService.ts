@@ -32,6 +32,10 @@ export function useSocketService() {
     emmit(EventNames.ADMIN_BRODCAST_STOP, 'admin requested program stop')
   }, [emmit])
 
+  const emmitPauseProgram = useCallback(() => {
+    emmit(EventNames.ADMIN_BRODCAST_PAUSE, 'admin requested program pause')
+  }, [emmit])
+
   const emmitResetProgram = useCallback(() => {
     emmit(EventNames.ADMIN_BRODCAST_RESET, 'admin requested program reset')
   }, [emmit])
@@ -68,6 +72,7 @@ export function useSocketService() {
     emmit,
     emmitProgram,
     emmitStartProgram,
+    emmitPauseProgram,
     emmitStopProgram,
     emmitResetProgram,
     emmitRequestFullscreen,

@@ -7,6 +7,8 @@ import {
   Backspace,
   ControlCamera,
   PlayArrow,
+  RestartAlt,
+  Pause,
 } from '@mui/icons-material'
 import { Button, IconButton, Tooltip, Typography } from '@mui/material'
 
@@ -29,8 +31,13 @@ export const AdminPageRaw = () => {
   const selectedProgram = useAdminStore((s) => s.selectedProgram)
   const setSelectedProgram = useAdminStore((s) => s.setSelectedProgram)
   const loadedPrograms = useAdminStore((s) => s.loadedPrograms)
-  const { emmitProgram, emmitStartProgram, emmitToggleShowControls } =
-    useSocketService()
+  const {
+    emmitProgram,
+    emmitStartProgram,
+    emmitPauseProgram,
+    emmitResetProgram,
+    emmitToggleShowControls,
+  } = useSocketService()
 
   const handelSendProgram = useCallback(() => {
     if (!selectedProgram) return
@@ -74,7 +81,21 @@ export const AdminPageRaw = () => {
               onClick={emmitStartProgram}
               startIcon={<PlayArrow />}
             >
-              Start program
+              Start Program
+            </Button>
+            <Button
+              variant="contained"
+              onClick={emmitPauseProgram}
+              startIcon={<Pause />}
+            >
+              Pause Program
+            </Button>
+            <Button
+              variant="contained"
+              onClick={emmitResetProgram}
+              startIcon={<RestartAlt />}
+            >
+              Reset Program
             </Button>
           </StyledActionsContainer>
         </>

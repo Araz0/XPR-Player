@@ -23,6 +23,16 @@ export function useScreenService() {
     setProgramStarted(true)
   }, [setProgramStarted])
 
+  const pauseProgram = useCallback(() => {
+    screenPlayer.pause()
+    setProgramStarted(false)
+  }, [setProgramStarted])
+
+  const resetProgram = useCallback(() => {
+    screenPlayer.reset()
+    setProgramStarted(false)
+  }, [setProgramStarted])
+
   const setCurrentSource = useCallback((src: string) => {
     screenPlayer.setCurrentSource(src)
   }, [])
@@ -78,11 +88,13 @@ export function useScreenService() {
   return {
     init,
     playPauseScreen,
+    startProgram,
+    pauseProgram,
+    resetProgram,
     setCurrentSource,
     setNextSource,
     requestFullScreen,
     setScreenProgram,
-    startProgram,
     requestShowControls,
     requestHideControls,
     toggleShowingControls,
