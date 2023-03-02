@@ -20,7 +20,7 @@ export class ScreenService {
   private _isShowingControls: boolean
   private _currentSegment: SegmentType | undefined
   private _nextSegment: SegmentType | undefined
-  private _nextSelectedSegmentIndex: number | undefined
+  private _nextSelectedSegmentIndex: number
 
   constructor(
     screenId?: number,
@@ -35,6 +35,7 @@ export class ScreenService {
     this._player2 = new VideoService('B', ref2 || undefined)
     this._selectedPID = this._player1.id
     this._status = ScreenStatus.EMPTY
+    this._nextSelectedSegmentIndex = 0
   }
   public setRefs = (
     screenId: number,
@@ -106,13 +107,13 @@ export class ScreenService {
     this.setCurrentAsNextPlayer()
     this._currentSegment = this._nextSegment
     this._nextSegment = undefined
-    this._nextSelectedSegmentIndex = undefined
+    this._nextSelectedSegmentIndex = 0
   }
   public setEndScreen = () => {
     this._status = ScreenStatus.STAND_BY
     this._currentSegment = undefined
     this._nextSegment = undefined
-    this._nextSelectedSegmentIndex = undefined
+    this._nextSelectedSegmentIndex = 0
     this.currentPlayer().pause()
     this.nextPlayer().pause()
     this.currentPlayer().resetPlayer()
@@ -166,17 +167,11 @@ export class ScreenService {
 
   private getNextSegment = () => {
     if (!this._currentSegment?.nextSegmentIds) return undefined // does not have next segment
+
     return getSegmentById(
       this._program?.segments || [],
-      this._currentSegment?.nextSegmentIds[
-        this._nextSelectedSegmentIndex || this.getRandomNextSegmentIndex() || 0
-      ]
+      this._currentSegment?.nextSegmentIds[this._nextSelectedSegmentIndex]
     )
-  }
-  private getRandomNextSegmentIndex = () => {
-    if (!this._currentSegment?.nextSegmentIds) return undefined // does not have next segment
-    const items = this._currentSegment?.nextSegmentIds
-    return items[Math.floor(Math.random() * items.length)]
   }
 
   private onPlayerEnded = (player: VideoService) => {
@@ -195,7 +190,7 @@ export class ScreenService {
     // in the last two seconds
     if (player.getDuration() - 2 <= player.getCurrentTime()) {
       // get next segment
-      this._nextSegment = this.getNextSegment()
+      if (!this._nextSegment) this._nextSegment = this.getNextSegment()
       if (this._nextSegment) {
         // set next source to next player
         if (!this._program?.media || !this._nextSegment?.mediaId) return
