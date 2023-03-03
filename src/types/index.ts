@@ -1,3 +1,5 @@
+export * from './eventNames'
+
 export type ProgramType = {
   id: number
   title: string
