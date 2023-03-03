@@ -3,14 +3,20 @@ import { memo, useEffect } from 'react'
 import { Typography } from '@mui/material'
 
 import { CenterdContainer, Screen } from '../../components'
-import { SocketService, useScreenService } from '../../services'
+import { useSocketService } from '../../hooks'
+import { useScreenService } from '../../services'
 import { useScreenStore } from '../../stores'
-
-const clientSocket = new SocketService()
 
 export const ScreenPageRaw = () => {
   const program = useScreenStore((s) => s.program)
-
+  const {
+    onStart,
+    onPause,
+    onReset,
+    onSetProgram,
+    onToggleShowControls,
+    onUserSelectedNextSegment,
+  } = useSocketService()
   const {
     startProgram,
     pauseProgram,
@@ -21,12 +27,12 @@ export const ScreenPageRaw = () => {
   } = useScreenService()
 
   useEffect(() => {
-    clientSocket.onStart(startProgram)
-    clientSocket.onPause(pauseProgram)
-    clientSocket.onReset(resetProgram)
-    clientSocket.onSetProgram(setScreenProgram)
-    clientSocket.onToggleShowControls(toggleShowingControls)
-    clientSocket.onUserSelectedNextSegment(setSelectedNextSegment)
+    onStart(startProgram)
+    onPause(pauseProgram)
+    onReset(resetProgram)
+    onSetProgram(setScreenProgram)
+    onToggleShowControls(toggleShowingControls)
+    onUserSelectedNextSegment(setSelectedNextSegment)
     // todo: check if this hook dep. array effects anything
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])

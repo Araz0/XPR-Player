@@ -18,7 +18,7 @@ import {
   LoadLocalProgramButton,
   ProgramsList,
 } from '../../components'
-import { useSocketService } from '../../services'
+import { useSocketService } from '../../hooks'
 import { useAdminStore } from '../../stores'
 
 const StyledActionsContainer = styled.div`
