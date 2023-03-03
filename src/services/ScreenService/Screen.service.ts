@@ -2,7 +2,6 @@ import {
   VideoRefElementType,
   PlayerContainerType,
   ProgramType,
-  ScreenStatus,
   SegmentType,
 } from '../../types'
 import { getIntroSegment, getMediaById, getSegmentById } from '../../utils'
@@ -16,7 +15,6 @@ export class ScreenService {
   private _selectedPID: string
   private _program: ProgramType | undefined
   private _IntroSegment: SegmentType | undefined
-  private _status: ScreenStatus
   private _isShowingControls: boolean
   private _currentSegment: SegmentType | undefined
   private _nextSegment: SegmentType | undefined
@@ -34,7 +32,6 @@ export class ScreenService {
     this._player1 = new VideoService('A', ref1 || undefined)
     this._player2 = new VideoService('B', ref2 || undefined)
     this._selectedPID = this._player1.id
-    this._status = ScreenStatus.EMPTY
     this._nextSelectedSegmentIndex = 0
   }
   public setRefs = (
@@ -88,15 +85,13 @@ export class ScreenService {
   }
 
   public playPause = () => {
-    if (this.currentPlayer().videoElement?.current?.paused) {
-      this.play()
-    } else {
-      this.pause()
-    }
+    this.currentPlayer().videoElement?.current?.paused
+      ? this.play()
+      : this.pause()
   }
   public requestFullScreen = () => {
-    if (!this._containerRef?.current) return
-    this._containerRef?.current.requestFullscreen()
+    if (this._containerRef?.current)
+      this._containerRef.current.requestFullscreen()
   }
   public playNext = () => {
     this.currentPlayer().pause()
@@ -110,7 +105,6 @@ export class ScreenService {
     this._nextSelectedSegmentIndex = 0
   }
   public setEndScreen = () => {
-    this._status = ScreenStatus.STAND_BY
     this._currentSegment = undefined
     this._nextSegment = undefined
     this._nextSelectedSegmentIndex = 0
@@ -141,28 +135,24 @@ export class ScreenService {
     this._isShowingControls = false
   }
   public toggleControls = () => {
-    if (this._isShowingControls) {
-      this.hideControls()
-    } else {
-      this.showControls()
-    }
+    this._isShowingControls ? this.hideControls() : this.showControls()
   }
 
   public setProgram = (program: ProgramType | undefined) => {
     this._program = program
-    this._status = ScreenStatus.HAS_PROGRAM
-    if (!program?.segments) return
-    this._IntroSegment = getIntroSegment(program.segments)
+    if (program?.segments)
+      this._IntroSegment = getIntroSegment(program.segments)
   }
 
   public setSrcToIntro = () => {
     this._currentSegment = this._IntroSegment
-    if (!this._program || !this._currentSegment?.mediaId) return
+    if (!this._program || !this._currentSegment?.mediaId) return // no program or no media id
     const segmentMedia = getMediaById(
       this._program.media,
       this._currentSegment.mediaId
     )
-    this.setCurrentSource(segmentMedia?.screens[this._id].mediaSrc || '')
+    if (segmentMedia?.screens[this._id])
+      this.setCurrentSource(segmentMedia?.screens[this._id].mediaSrc)
   }
 
   private getNextSegment = () => {
@@ -176,12 +166,8 @@ export class ScreenService {
 
   private onPlayerEnded = (player: VideoService) => {
     if (player.id !== this.currentPlayer().id) return
-    if (this._nextSegment === undefined) {
-      // if there is no more next segments to play
-      this.setEndScreen()
-    } else {
-      this.playNext()
-    }
+    // if there is no more next segments to play, end screen, otherwise, play next
+    this._nextSegment === undefined ? this.setEndScreen() : this.playNext()
   }
 
   private onPlayerUpdate = (player: VideoService) => {
