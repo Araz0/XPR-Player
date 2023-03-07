@@ -42,6 +42,7 @@
     "@typescript-eslint/eslint-plugin": "^5.42.1",
     "@typescript-eslint/parser": "^5.42.1",
     "babel-plugin-named-exports-order": "^0.0.2",
+    "chromatic": "^6.17.1",
     "eslint": "^8.27.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-config-react-app": "^7.0.1",
@@ -93,6 +94,9 @@
     "lint:fix": "eslint --fix 'src/**/*.{js,jsx,ts,tsx,json}'",
     "format": "prettier --write 'src/**/*.{js,jsx,ts,tsx,css,md,json}' --config ./.prettierrc",
     "storybook": "start-storybook -p 6006 -s public",
-    "build-storybook": "build-storybook -s public"
-  }
+    "build-storybook": "build-storybook -s public",
+    "chromatic": "npx chromatic"
+  },
+  "readme": "ERROR: No README data found!",
+  "_id": "mmp3-demo@0.1.0"
 }

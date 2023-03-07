@@ -1,4 +1,5 @@
 import React from 'react'
+
 import { ComponentStory, ComponentMeta } from '@storybook/react'
 
 import { Header } from './Header'
@@ -17,7 +18,7 @@ const Template: ComponentStory<typeof Header> = (args) => <Header {...args} />
 export const LoggedIn = Template.bind({})
 LoggedIn.args = {
   user: {
-    name: 'Jane Doe',
+    name: 'Jone Smith',
   },
 }
 
