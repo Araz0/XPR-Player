@@ -1,17 +1,18 @@
-import { memo, useCallback, useEffect } from 'react'
+import { memo, useCallback, useEffect, useState } from 'react'
 
 import { useNavigate } from 'react-router-dom'
 
-import { Beenhere, Delete, Save, SaveAlt } from '@mui/icons-material'
+import { Beenhere, Check, Delete, Save, SaveAlt } from '@mui/icons-material'
 import { IconButton, Tooltip } from '@mui/material'
 
-import { AdminPageWrapper, TreeList } from '../../components'
+import { AdminPageWrapper, Popup, TreeList } from '../../components'
 import { useSupabase } from '../../hooks'
 import { useAdminStore } from '../../stores'
 import { saveProgramAsJson } from '../../utils'
 
 export const ProgramMapPageRaw = () => {
   const navigate = useNavigate()
+  const [showDeleteProgram, setShowDeleteProgram] = useState<boolean>(false)
   const program = useAdminStore((s) => s.program)
   const loadedPrograms = useAdminStore((s) => s.loadedPrograms)
   const setSelectedProgram = useAdminStore((s) => s.setSelectedProgram)
@@ -72,7 +73,7 @@ export const ProgramMapPageRaw = () => {
             </IconButton>
           </Tooltip>
           <Tooltip title="Delete Program">
-            <IconButton onClick={handleDeleteProgram}>
+            <IconButton onClick={() => setShowDeleteProgram(true)}>
               <Delete />
             </IconButton>
           </Tooltip>
@@ -80,6 +81,17 @@ export const ProgramMapPageRaw = () => {
       }
     >
       <TreeList program={program} />
+      {showDeleteProgram && (
+        <Popup
+          onClose={() => setShowDeleteProgram(false)}
+          header="Delete Segment"
+          bodyText="Are you sure you want to delete this Program?"
+        >
+          <IconButton onClick={handleDeleteProgram}>
+            <Check />
+          </IconButton>
+        </Popup>
+      )}
     </AdminPageWrapper>
   )
 }

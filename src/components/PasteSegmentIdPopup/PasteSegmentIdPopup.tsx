@@ -14,7 +14,7 @@ const StyledHeaderContainer = styled.div`
 `
 
 export type PasteSegmentIdPopupProps = {
-  segmentId: number
+  segmentId?: number
   onClose: () => void
 }
 export const PasteSegmentIdPopupRaw = ({
@@ -26,7 +26,7 @@ export const PasteSegmentIdPopupRaw = ({
 
   const handleAddSegmentById = useCallback(() => {
     const inputValue = titleRef.current ? parseInt(titleRef.current.value) : 0
-    addNextSegmentById(segmentId, inputValue)
+    segmentId && addNextSegmentById(segmentId, inputValue)
     onClose()
   }, [addNextSegmentById, segmentId, onClose])
 

@@ -2,15 +2,26 @@ import { memo, useCallback, useEffect, useRef, useState } from 'react'
 
 import styled from 'styled-components'
 
+import { Check } from '@mui/icons-material'
+import { IconButton } from '@mui/material'
+
 import { useProgram } from '../../hooks'
 import { SegmentMediaType, SegmentType } from '../../types'
 import { generateNewId } from '../../utils'
 import { EditableLabel } from '../EditableLabel'
 import { PasteSegmentIdPopup } from '../PasteSegmentIdPopup'
+import { Popup } from '../Popup'
 import { ScreenFormPopup } from '../ScreenFormPopup'
 import { SegmentScreens } from '../SegmentScreens'
 import { iconTypes, SmallIconButton } from '../SmallIconButton'
 
+const StyledListItemContainer = styled.li`
+  display: inline-table;
+  text-align: center;
+  list-style-type: none;
+  position: relative;
+  padding: 20px 5px 0 5px;
+`
 const StyledVerticalContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -31,16 +42,17 @@ export const TreeItemRaw = ({ segmentId }: TreeItemProps) => {
   const [showMore, setShowMore] = useState<boolean>(false)
   const [showPasteId, setShowPasteId] = useState<boolean>(false)
   const [showAddScreen, setShowAddScreen] = useState<boolean>(false)
+  const [showDeleteSegment, setShowDeleteSegment] = useState<boolean>(false)
   const [segment, setSegment] = useState<SegmentType | undefined>(undefined)
   const [media, setMedia] = useState<SegmentMediaType | undefined>(undefined)
   const {
     getSegmentById,
     updateMedia,
-    removeSegment,
     getMediaById,
     setMediaIdInSegment,
     addMediaToProgram,
     addNewSegment,
+    removeSegment,
   } = useProgram()
 
   useEffect(() => {
@@ -64,6 +76,11 @@ export const TreeItemRaw = ({ segmentId }: TreeItemProps) => {
   const handleCopyId = useCallback(() => {
     navigator.clipboard.writeText(segmentId.toString())
   }, [segmentId])
+
+  const handleDeleteSegment = useCallback(() => {
+    removeSegment(segmentId)
+    setShowDeleteSegment(false)
+  }, [removeSegment, segmentId])
 
   const handleSave = useCallback(() => {
     if (!segment) return
@@ -91,13 +108,9 @@ export const TreeItemRaw = ({ segmentId }: TreeItemProps) => {
     updateMedia,
   ])
 
-  const handleDelete = useCallback(() => {
-    removeSegment(segmentId)
-  }, [removeSegment, segmentId])
-
-  if (!segment) return null
+  // if (!segment) return null
   return (
-    <li>
+    <StyledListItemContainer>
       <article>
         <StyledVerticalContainer>
           <EditableLabel
@@ -135,12 +148,16 @@ export const TreeItemRaw = ({ segmentId }: TreeItemProps) => {
               />
               <SmallIconButton
                 tooltip="Delete Segment"
-                onClick={handleDelete}
+                onClick={() => setShowDeleteSegment(true)}
                 icon={iconTypes.DELETE}
               />
               <SmallIconButton
                 tooltip="Add Segment"
-                onClick={() => addNewSegment(segment, generateNewId())}
+                onClick={() =>
+                  segment
+                    ? addNewSegment(segment, generateNewId())
+                    : alert('No segment found')
+                }
                 icon={iconTypes.ADD}
               />
               <SmallIconButton
@@ -163,9 +180,21 @@ export const TreeItemRaw = ({ segmentId }: TreeItemProps) => {
               )}
               {showPasteId && (
                 <PasteSegmentIdPopup
-                  segmentId={segment.id}
+                  segmentId={segment ? segment.id : undefined}
                   onClose={() => setShowPasteId(false)}
                 />
+              )}
+
+              {showDeleteSegment && (
+                <Popup
+                  onClose={() => setShowDeleteSegment(false)}
+                  header="Delete Segment"
+                  bodyText="Are you sure you want to delete this segment?"
+                >
+                  <IconButton onClick={handleDeleteSegment}>
+                    <Check />
+                  </IconButton>
+                </Popup>
               )}
             </>
           )}
@@ -184,14 +213,14 @@ export const TreeItemRaw = ({ segmentId }: TreeItemProps) => {
           />
         </StyledActionsContainer>
       </article>
-      {segment.nextSegmentIds && segment.nextSegmentIds.length > 0 && (
+      {segment?.nextSegmentIds && segment?.nextSegmentIds.length > 0 && (
         <ul>
           {segment.nextSegmentIds?.map((id, idx) => {
             return <TreeItem key={idx} segmentId={id} />
           })}
         </ul>
       )}
-    </li>
+    </StyledListItemContainer>
   )
 }
 
