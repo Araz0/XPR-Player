@@ -1,8 +1,8 @@
-import { memo, useCallback } from 'react'
+import { memo, useCallback, useState } from 'react'
 
 import { useNavigate } from 'react-router-dom'
 
-import { Delete, AccountTree } from '@mui/icons-material'
+import { Delete, AccountTree, Check } from '@mui/icons-material'
 import {
   IconButton,
   List,
@@ -16,6 +16,7 @@ import {
 import { useSupabase } from '../../hooks'
 import { useAdminStore } from '../../stores'
 import { DbProgram, ProgramType } from '../../types'
+import { Popup } from '../Popup'
 
 const StyledProgramsListContainer = styled(List)`
   max-width: 400px;
@@ -33,14 +34,15 @@ export const ProgramsListRaw = ({ programs }: ProgramsListProps) => {
   const { deleteProgram } = useSupabase()
   const setSelectedProgram = useAdminStore((s) => s.setSelectedProgram)
   const setProgram = useAdminStore((s) => s.setProgram)
-
-  const handleDeleteProgram = useCallback(
-    (program: ProgramType) => {
-      deleteProgram(program.id)
-      navigate('/admin/programs')
-    },
-    [deleteProgram, navigate]
+  const [deleteProgramId, setDeleteProgramId] = useState<number | undefined>(
+    undefined
   )
+
+  const handleDeleteProgram = useCallback(() => {
+    if (!deleteProgramId) return
+    deleteProgram(deleteProgramId)
+    navigate('/admin/programs')
+  }, [deleteProgram, deleteProgramId, navigate])
 
   const handleSetAsSelectedProgram = useCallback(
     (program: ProgramType) => {
@@ -88,7 +90,7 @@ export const ProgramsListRaw = ({ programs }: ProgramsListProps) => {
                   <Tooltip title="Delete Program">
                     <IconButton
                       edge="end"
-                      onClick={() => handleDeleteProgram(program.program)}
+                      onClick={() => setDeleteProgramId(program.program.id)}
                     >
                       <Delete />
                     </IconButton>
@@ -108,6 +110,17 @@ export const ProgramsListRaw = ({ programs }: ProgramsListProps) => {
           </Tooltip>
         )
       })}
+      {deleteProgramId && (
+        <Popup
+          onClose={() => setDeleteProgramId(undefined)}
+          header="Delete Segment"
+          bodyText="Are you sure you want to delete this Program?"
+        >
+          <IconButton onClick={handleDeleteProgram}>
+            <Check />
+          </IconButton>
+        </Popup>
+      )}
     </StyledProgramsListContainer>
   )
 }
