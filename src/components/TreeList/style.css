@@ -25,11 +25,11 @@
 }
 
 .familyTree li {
-  display: inline-table;
+  /* display: inline-table;
   text-align: center;
   list-style-type: none;
   position: relative;
-  padding: 20px 5px 0 5px;
+  padding: 20px 5px 0 5px; */
 
   transition: all var(--treansitionSpeed);
   -webkit-transition: all var(--treansitionSpeed);
