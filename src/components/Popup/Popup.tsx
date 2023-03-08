@@ -3,6 +3,9 @@ import { memo, useCallback, useEffect, useState } from 'react'
 import { createPortal } from 'react-dom'
 import styled from 'styled-components'
 
+import { Close } from '@mui/icons-material'
+import { Typography, IconButton, Divider } from '@mui/material'
+
 const StyledContainer = styled.div`
   position: absolute;
   top: 0;
@@ -22,12 +25,27 @@ const StyledContainer = styled.div`
     margin-bottom: 10px;
   }
 `
+const StyledHeaderContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+`
+const StyledActionsContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+`
 
 export type PopupProps = {
   onClose: () => void
+  header?: string
+  bodyText?: string
   children: React.ReactNode
 }
-export const PopupRaw = ({ onClose, children }: PopupProps) => {
+export const PopupRaw = ({
+  onClose,
+  header,
+  bodyText,
+  children,
+}: PopupProps) => {
   const [container, setContainer] = useState<HTMLDivElement | undefined>()
 
   const handleOnClose = useCallback(
@@ -53,7 +71,19 @@ export const PopupRaw = ({ onClose, children }: PopupProps) => {
   return createPortal(
     <StyledContainer onClick={handleOnClose}>
       <div className="popup-content" onClick={handlePopUpClick}>
-        {children}
+        {header && (
+          <>
+            <StyledHeaderContainer>
+              <Typography variant="h6">{header}</Typography>
+              <IconButton onClick={onClose}>
+                <Close />
+              </IconButton>
+            </StyledHeaderContainer>
+            <Divider />
+          </>
+        )}
+        {bodyText && <Typography variant="subtitle1">{bodyText}</Typography>}
+        <StyledActionsContainer>{children}</StyledActionsContainer>
       </div>
     </StyledContainer>,
     container
