@@ -31,13 +31,14 @@ const StyledHeaderContainer = styled.div`
 `
 const StyledActionsContainer = styled.div`
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
 `
 
 export type PopupProps = {
   onClose: () => void
-  header?: string
-  bodyText?: string
+  header: string
+  bodyText: string
   children: React.ReactNode
 }
 export const PopupRaw = ({

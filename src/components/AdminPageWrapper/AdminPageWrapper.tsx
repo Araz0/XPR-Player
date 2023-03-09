@@ -1,14 +1,27 @@
-import { memo, ReactNode, useCallback, useState } from 'react'
+import { memo, ReactNode, useCallback, useRef, useState } from 'react'
 
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 
-import { AccountTree, Add, Home, Login, Logout } from '@mui/icons-material'
-import { Button, Divider, Typography } from '@mui/material'
+import {
+  AccountTree,
+  Add,
+  Home,
+  Login,
+  Logout,
+  Send,
+} from '@mui/icons-material'
+import {
+  Button,
+  Divider,
+  IconButton,
+  TextField,
+  Typography,
+} from '@mui/material'
 
 import { useSupabase } from '../../hooks'
 import { useAdminStore } from '../../stores'
-import { LoginPopup } from '../LoginPopup'
+import { Popup } from '../Popup'
 
 const StyledPageContainer = styled.div`
   flex: 1;
@@ -67,10 +80,17 @@ export const AdminPageWrapperRaw = ({
   topNavActions,
 }: AdminPageWrapperProps) => {
   const navigate = useNavigate()
-  const { signOut } = useSupabase()
+  const { signOut, signInViaMagicLink } = useSupabase()
   const userIsLoggedIn = useAdminStore((s) => s.userIsLoggedIn)
   const [showLoginPopup, setShowLoginPopup] = useState<boolean>(false)
+  const emailRef = useRef<HTMLInputElement>()
 
+  const handleRequestLogin = useCallback(async () => {
+    if (emailRef.current?.value) {
+      signInViaMagicLink(emailRef.current?.value)
+    }
+    setShowLoginPopup(false)
+  }, [signInViaMagicLink])
   const handleRequestLogout = useCallback(async () => {
     await signOut()
   }, [signOut])
@@ -121,7 +141,20 @@ export const AdminPageWrapperRaw = ({
           </StyledSideButton>
         )}
         {showLoginPopup && (
-          <LoginPopup onClose={() => setShowLoginPopup(false)} />
+          <Popup
+            onClose={() => setShowLoginPopup(false)}
+            header="Login Email"
+            bodyText="We will send you an email with the login magic link"
+          >
+            <TextField
+              inputRef={emailRef}
+              placeholder={'login email'}
+              size="small"
+            />
+            <IconButton onClick={handleRequestLogin}>
+              <Send />
+            </IconButton>
+          </Popup>
         )}
       </StyledSideNav>
       <StyledContentWrapper>

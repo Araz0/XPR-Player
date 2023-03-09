@@ -2,16 +2,14 @@ import { memo, useCallback, useEffect, useRef, useState } from 'react'
 
 import styled from 'styled-components'
 
-import { Check } from '@mui/icons-material'
-import { IconButton } from '@mui/material'
+import { Check, QueuePlayNext } from '@mui/icons-material'
+import { IconButton, TextField } from '@mui/material'
 
 import { useProgram } from '../../hooks'
 import { SegmentMediaType, SegmentType } from '../../types'
 import { generateNewId } from '../../utils'
 import { EditableLabel } from '../EditableLabel'
-import { PasteSegmentIdPopup } from '../PasteSegmentIdPopup'
 import { Popup } from '../Popup'
-import { ScreenFormPopup } from '../ScreenFormPopup'
 import { SegmentScreens } from '../SegmentScreens'
 import { iconTypes, SmallIconButton } from '../SmallIconButton'
 
@@ -59,7 +57,34 @@ export const TreeItemRaw = ({ segmentId }: TreeItemProps) => {
     addMediaToProgram,
     addNewSegment,
     removeSegment,
+    addNextSegmentById,
+    addScreenToMedia,
   } = useProgram()
+
+  const pasteSegmentIdRef = useRef<HTMLInputElement>()
+
+  const handleAddSegmentById = useCallback(() => {
+    const inputValue = pasteSegmentIdRef.current
+      ? parseInt(pasteSegmentIdRef.current.value)
+      : -1
+    addNextSegmentById(segmentId, inputValue)
+    setShowPasteId(false)
+  }, [addNextSegmentById, segmentId])
+
+  const screenTitleRef = useRef<HTMLInputElement>()
+  const handleImportScreen = useCallback(
+    (e: any) => {
+      if (!media) return
+      const screen = {
+        id: generateNewId(),
+        title: screenTitleRef.current?.value || 'screen title',
+        mediaSrc: `/programMedia/${e.target.files[0].name}`,
+      }
+      addScreenToMedia(media.id, screen)
+      setShowAddScreen(false)
+    },
+    [addScreenToMedia, media]
+  )
 
   useEffect(() => {
     const foundSegment = getSegmentById(segmentId)
@@ -192,16 +217,42 @@ export const TreeItemRaw = ({ segmentId }: TreeItemProps) => {
                 />
               )}
               {media && showAddScreen && (
-                <ScreenFormPopup
-                  mediatId={media.id}
+                <Popup
                   onClose={() => setShowAddScreen(false)}
-                />
+                  header="Add screen"
+                  bodyText="First give it a title, and then select the video file:"
+                >
+                  <TextField
+                    inputRef={screenTitleRef}
+                    placeholder={'screen title'}
+                    size="small"
+                  />
+                  <IconButton component="label">
+                    <input
+                      hidden
+                      accept="video/mp4"
+                      type="file"
+                      onChange={handleImportScreen}
+                    />
+                    <QueuePlayNext />
+                  </IconButton>
+                </Popup>
               )}
               {showPasteId && (
-                <PasteSegmentIdPopup
-                  segmentId={segment ? segment.id : undefined}
+                <Popup
                   onClose={() => setShowPasteId(false)}
-                />
+                  header="Paste Segment"
+                  bodyText="Paste The Segment ID here:"
+                >
+                  <TextField
+                    inputRef={pasteSegmentIdRef}
+                    placeholder={'Segment Id'}
+                    size="small"
+                  />
+                  <IconButton onClick={handleAddSegmentById}>
+                    <Check />
+                  </IconButton>
+                </Popup>
               )}
 
               {showDeleteSegment && (
