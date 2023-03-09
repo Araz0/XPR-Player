@@ -31,6 +31,12 @@ const StyledActionsContainer = styled.div`
   display: flex;
   justify-content: space-evenly;
 `
+const StyledHeaderActions = styled.div`
+  display: flex;
+  justify-content: space-between;
+`
+const StyledLeftHeaderActions = styled.div``
+const StyledRightHeaderActions = styled.div``
 
 export type TreeItemProps = {
   segmentId: number
@@ -112,6 +118,24 @@ export const TreeItemRaw = ({ segmentId }: TreeItemProps) => {
   return (
     <StyledListItemContainer>
       <article>
+        <StyledHeaderActions>
+          <StyledLeftHeaderActions>
+            <SmallIconButton
+              tooltip="Copy Segment Id"
+              onClick={handleCopyId}
+              icon={iconTypes.COPY_ALL}
+            />
+          </StyledLeftHeaderActions>
+          <StyledRightHeaderActions>
+            {canEdit && (
+              <SmallIconButton
+                tooltip="Delete Segment"
+                onClick={() => setShowDeleteSegment(true)}
+                icon={iconTypes.DELETE}
+              />
+            )}
+          </StyledRightHeaderActions>
+        </StyledHeaderActions>
         <StyledVerticalContainer>
           <EditableLabel
             inputRef={titleRef}
@@ -127,7 +151,6 @@ export const TreeItemRaw = ({ segmentId }: TreeItemProps) => {
             placeHolder={'media description'}
             typographyVariant={'body2'}
           />
-
           {showMore && media && (
             <SegmentScreens media={media} canEdit={canEdit} />
           )}
@@ -146,11 +169,7 @@ export const TreeItemRaw = ({ segmentId }: TreeItemProps) => {
                 onClick={handleSave}
                 icon={iconTypes.CHECK}
               />
-              <SmallIconButton
-                tooltip="Delete Segment"
-                onClick={() => setShowDeleteSegment(true)}
-                icon={iconTypes.DELETE}
-              />
+
               <SmallIconButton
                 tooltip="Add Segment"
                 onClick={() =>
@@ -205,12 +224,6 @@ export const TreeItemRaw = ({ segmentId }: TreeItemProps) => {
               icon={showMore ? iconTypes.EXPAND_LESS : iconTypes.EXPAND_MORE}
             />
           )}
-
-          <SmallIconButton
-            tooltip="Copy Segment Id"
-            onClick={handleCopyId}
-            icon={iconTypes.COPY_ALL}
-          />
         </StyledActionsContainer>
       </article>
       {segment?.nextSegmentIds && segment?.nextSegmentIds.length > 0 && (
