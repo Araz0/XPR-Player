@@ -2,7 +2,7 @@ import { memo, useCallback } from 'react'
 
 import styled from 'styled-components'
 
-import { Typography } from '@mui/material'
+import { Tooltip, Typography } from '@mui/material'
 
 import { useProgram } from '../../hooks'
 import { SegmentMediaType } from '../../types'
@@ -20,9 +20,16 @@ const StyledContainer = styled.div`
   display: flex;
   gap: 3px;
 `
-const StyledActionsContainer = styled.div`
+const StyledRightActionsContainer = styled.div`
   position: absolute;
   right: 0;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 3px;
+`
+const StyledActionsContainer = styled.div`
+  position: absolute;
+  display: flex;
+  align-items: center;
   background: rgba(255, 255, 255, 0.5);
   border-radius: 3px;
 `
@@ -57,6 +64,11 @@ export const SegmentScreensRaw = ({
                   onClick={() => alert(screen.title)}
                   icon={iconTypes.INFO}
                 />
+                <Tooltip title="Screen Number">
+                  <Typography>{`#${idx + 1}`}</Typography>
+                </Tooltip>
+              </StyledActionsContainer>
+              <StyledRightActionsContainer>
                 {canEdit && (
                   <SmallIconButton
                     tooltip="Delete Screen"
@@ -78,7 +90,7 @@ export const SegmentScreensRaw = ({
                     icon={iconTypes.NavigateNext}
                   />
                 )}
-              </StyledActionsContainer>
+              </StyledRightActionsContainer>
 
               <StyledScreenVideo src={screen.mediaSrc} controls />
             </StyledVideoContainer>
