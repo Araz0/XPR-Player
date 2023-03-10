@@ -2,12 +2,13 @@ import { memo, useCallback } from 'react'
 
 import styled from 'styled-components'
 
+import { Delete, Info, NavigateBefore, NavigateNext } from '@mui/icons-material'
 import { Tooltip, Typography } from '@mui/material'
 
 import { useProgram } from '../../hooks'
 import { SegmentMediaType } from '../../types'
 import { shiftItemLeftByIndex, shiftItemRightByIndex } from '../../utils'
-import { iconTypes, SmallIconButton } from '../SmallIconButton'
+import { SmallIconButton } from '../SmallIconButton'
 
 const StyledScreenVideo = styled.video`
   width: 150px;
@@ -62,7 +63,7 @@ export const SegmentScreensRaw = ({
                 <SmallIconButton
                   tooltip="More Info"
                   onClick={() => alert(screen.title)}
-                  icon={iconTypes.INFO}
+                  icon={<Info fontSize="small" />}
                 />
                 <Tooltip title="Screen Number">
                   <Typography>{`#${idx + 1}`}</Typography>
@@ -73,21 +74,21 @@ export const SegmentScreensRaw = ({
                   <SmallIconButton
                     tooltip="Delete Screen"
                     onClick={() => handleDeleteScreen(screen.id)}
-                    icon={iconTypes.DELETE}
+                    icon={<Delete fontSize="small" />}
                   />
                 )}
                 {idx > 0 && (
                   <SmallIconButton
                     tooltip="shift left"
                     onClick={() => shiftItemLeftByIndex(media.screens, idx)}
-                    icon={iconTypes.NavigateBefore}
+                    icon={<NavigateBefore fontSize="small" />}
                   />
                 )}
                 {idx < media.screens.length - 1 && (
                   <SmallIconButton
                     tooltip="shift right"
                     onClick={() => shiftItemRightByIndex(media.screens, idx)}
-                    icon={iconTypes.NavigateNext}
+                    icon={<NavigateNext fontSize="small" />}
                   />
                 )}
               </StyledRightActionsContainer>

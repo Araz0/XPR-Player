@@ -2,7 +2,18 @@ import { memo, useCallback, useEffect, useRef, useState } from 'react'
 
 import styled from 'styled-components'
 
-import { Check, QueuePlayNext } from '@mui/icons-material'
+import {
+  Add,
+  Check,
+  ContentPaste,
+  CopyAll,
+  Delete,
+  Edit,
+  EditOff,
+  ExpandLess,
+  ExpandMore,
+  QueuePlayNext,
+} from '@mui/icons-material'
 import { IconButton, TextField } from '@mui/material'
 
 import { useProgram } from '../../hooks'
@@ -11,7 +22,7 @@ import { generateNewId } from '../../utils'
 import { EditableLabel } from '../EditableLabel'
 import { Popup } from '../Popup'
 import { SegmentScreens } from '../SegmentScreens'
-import { iconTypes, SmallIconButton } from '../SmallIconButton'
+import { SmallIconButton } from '../SmallIconButton'
 
 const StyledListItemContainer = styled.li`
   display: inline-table;
@@ -148,7 +159,7 @@ export const TreeItemRaw = ({ segmentId }: TreeItemProps) => {
             <SmallIconButton
               tooltip="Copy Segment Id"
               onClick={handleCopyId}
-              icon={iconTypes.COPY_ALL}
+              icon={<CopyAll fontSize="small" />}
             />
           </StyledLeftHeaderActions>
           <StyledRightHeaderActions>
@@ -156,7 +167,7 @@ export const TreeItemRaw = ({ segmentId }: TreeItemProps) => {
               <SmallIconButton
                 tooltip="Delete Segment"
                 onClick={() => setShowDeleteSegment(true)}
-                icon={iconTypes.DELETE}
+                icon={<Delete fontSize="small" />}
               />
             )}
           </StyledRightHeaderActions>
@@ -184,7 +195,9 @@ export const TreeItemRaw = ({ segmentId }: TreeItemProps) => {
         <StyledActionsContainer>
           <SmallIconButton
             onClick={handleToggleEdit}
-            icon={canEdit ? iconTypes.EDIT_OFF : iconTypes.EDIT}
+            icon={
+              canEdit ? <EditOff fontSize="small" /> : <Edit fontSize="small" />
+            }
             tooltip={canEdit ? 'Cancel' : 'Edit'}
           />
           {canEdit && (
@@ -192,7 +205,7 @@ export const TreeItemRaw = ({ segmentId }: TreeItemProps) => {
               <SmallIconButton
                 tooltip="Save"
                 onClick={handleSave}
-                icon={iconTypes.CHECK}
+                icon={<Check fontSize="small" />}
               />
 
               <SmallIconButton
@@ -202,18 +215,18 @@ export const TreeItemRaw = ({ segmentId }: TreeItemProps) => {
                     ? addNewSegment(segment, generateNewId())
                     : alert('No segment found')
                 }
-                icon={iconTypes.ADD}
+                icon={<Add fontSize="small" />}
               />
               <SmallIconButton
                 tooltip="Paste Segment ID"
                 onClick={() => setShowPasteId(true)}
-                icon={iconTypes.CONTENT_PASTE}
+                icon={<ContentPaste fontSize="small" />}
               />
               {media && (
                 <SmallIconButton
                   tooltip="Add Screen"
                   onClick={() => setShowAddScreen(true)}
-                  icon={iconTypes.QUEUE_PLAY_NEXT}
+                  icon={<QueuePlayNext fontSize="small" />}
                 />
               )}
               {media && showAddScreen && (
@@ -272,7 +285,13 @@ export const TreeItemRaw = ({ segmentId }: TreeItemProps) => {
             <SmallIconButton
               tooltip={showMore ? 'Hide More' : 'Show More'}
               onClick={handleToggleShowMore}
-              icon={showMore ? iconTypes.EXPAND_LESS : iconTypes.EXPAND_MORE}
+              icon={
+                showMore ? (
+                  <ExpandLess fontSize="small" />
+                ) : (
+                  <ExpandMore fontSize="small" />
+                )
+              }
             />
           )}
         </StyledActionsContainer>
