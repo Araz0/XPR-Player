@@ -6,6 +6,7 @@ import { Typography } from '@mui/material'
 
 import { useProgram } from '../../hooks'
 import { SegmentMediaType } from '../../types'
+import { shiftItemLeftByIndex, shiftItemRightByIndex } from '../../utils'
 import { iconTypes, SmallIconButton } from '../SmallIconButton'
 
 const StyledScreenVideo = styled.video`
@@ -61,6 +62,20 @@ export const SegmentScreensRaw = ({
                     tooltip="Delete Screen"
                     onClick={() => handleDeleteScreen(screen.id)}
                     icon={iconTypes.DELETE}
+                  />
+                )}
+                {idx > 0 && (
+                  <SmallIconButton
+                    tooltip="shift left"
+                    onClick={() => shiftItemLeftByIndex(media.screens, idx)}
+                    icon={iconTypes.NavigateBefore}
+                  />
+                )}
+                {idx < media.screens.length - 1 && (
+                  <SmallIconButton
+                    tooltip="shift right"
+                    onClick={() => shiftItemRightByIndex(media.screens, idx)}
+                    icon={iconTypes.NavigateNext}
                   />
                 )}
               </StyledActionsContainer>

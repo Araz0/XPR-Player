@@ -11,6 +11,8 @@ import {
   ExpandLess,
   ExpandMore,
   Info,
+  NavigateBefore,
+  NavigateNext,
   QueuePlayNext,
   Save,
 } from '@mui/icons-material'
@@ -28,6 +30,8 @@ export enum iconTypes {
   EXPAND_LESS = 'ExpandLess',
   CHECK = 'Check',
   CONTENT_PASTE = 'ContentPaste',
+  NavigateBefore = 'NavigateBefore',
+  NavigateNext = 'NavigateNext',
 }
 export type SmallIconButtonProps = {
   icon: iconTypes
@@ -56,6 +60,10 @@ export const SmallIconButtonRaw = ({
         {icon === iconTypes.EXPAND_LESS && <ExpandLess fontSize="small" />}
         {icon === iconTypes.CHECK && <Check fontSize="small" />}
         {icon === iconTypes.CONTENT_PASTE && <ContentPaste fontSize="small" />}
+        {icon === iconTypes.NavigateBefore && (
+          <NavigateBefore fontSize="small" />
+        )}
+        {icon === iconTypes.NavigateNext && <NavigateNext fontSize="small" />}
       </IconButton>
     </Tooltip>
   )
