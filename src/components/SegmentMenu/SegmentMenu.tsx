@@ -105,6 +105,7 @@ export const SegmentMenuRaw = ({ segmentId, media }: SegmentMenuProps) => {
         aria-haspopup="true"
         aria-expanded={menuOpen ? 'true' : undefined}
         onClick={handleClick}
+        size="small"
       >
         <MoreVert fontSize="small" />
       </IconButton>
