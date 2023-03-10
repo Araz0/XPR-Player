@@ -1,13 +1,20 @@
-import { memo, useCallback } from 'react'
+import { memo, useCallback, useState } from 'react'
 
 import styled from 'styled-components'
 
-import { Delete, Info, NavigateBefore, NavigateNext } from '@mui/icons-material'
-import { Tooltip, Typography } from '@mui/material'
+import {
+  Check,
+  Delete,
+  Info,
+  NavigateBefore,
+  NavigateNext,
+} from '@mui/icons-material'
+import { IconButton, Tooltip, Typography } from '@mui/material'
 
 import { useProgram } from '../../hooks'
 import { SegmentMediaType } from '../../types'
 import { shiftItemLeftByIndex, shiftItemRightByIndex } from '../../utils'
+import { Popup } from '../Popup'
 import { SmallIconButton } from '../SmallIconButton'
 
 const StyledScreenVideo = styled.video`
@@ -24,32 +31,32 @@ const StyledContainer = styled.div`
 const StyledRightActionsContainer = styled.div`
   position: absolute;
   right: 0;
-  background: rgba(255, 255, 255, 0.5);
+  background: rgba(0, 0, 0, 0.5);
   border-radius: 3px;
 `
-const StyledActionsContainer = styled.div`
+const StyledLeftActionsContainer = styled.div`
   position: absolute;
   display: flex;
   align-items: center;
-  background: rgba(255, 255, 255, 0.5);
+  background: rgba(0, 0, 0, 0.5);
   border-radius: 3px;
 `
 
 export type SegmentScreensProps = {
   media: SegmentMediaType
-  canEdit: boolean
 }
-export const SegmentScreensRaw = ({
-  media,
-  canEdit = false,
-}: SegmentScreensProps) => {
+export const SegmentScreensRaw = ({ media }: SegmentScreensProps) => {
   const { removeMediaScreen } = useProgram()
-  const handleDeleteScreen = useCallback(
-    (screenId: number) => {
-      removeMediaScreen(media, screenId)
-    },
-    [removeMediaScreen, media]
-  )
+  const [screenToBeDeletedId, setScreenToBeDeletedId] = useState<
+    number | undefined
+  >(undefined)
+
+  const handleDeleteScreen = useCallback(() => {
+    if (!screenToBeDeletedId) return
+    removeMediaScreen(media, screenToBeDeletedId)
+    setScreenToBeDeletedId(undefined)
+  }, [media, removeMediaScreen, screenToBeDeletedId])
+
   return (
     <>
       <Typography variant="overline" lineHeight={1} gutterBottom>
@@ -59,7 +66,7 @@ export const SegmentScreensRaw = ({
         {media.screens.map((screen, idx) => {
           return (
             <StyledVideoContainer key={idx}>
-              <StyledActionsContainer>
+              <StyledLeftActionsContainer>
                 <SmallIconButton
                   tooltip="More Info"
                   onClick={() => alert(screen.title)}
@@ -68,15 +75,8 @@ export const SegmentScreensRaw = ({
                 <Tooltip title="Screen Number">
                   <Typography>{`#${idx + 1}`}</Typography>
                 </Tooltip>
-              </StyledActionsContainer>
+              </StyledLeftActionsContainer>
               <StyledRightActionsContainer>
-                {canEdit && (
-                  <SmallIconButton
-                    tooltip="Delete Screen"
-                    onClick={() => handleDeleteScreen(screen.id)}
-                    icon={<Delete fontSize="small" />}
-                  />
-                )}
                 {idx > 0 && (
                   <SmallIconButton
                     tooltip="shift left"
@@ -91,6 +91,11 @@ export const SegmentScreensRaw = ({
                     icon={<NavigateNext fontSize="small" />}
                   />
                 )}
+                <SmallIconButton
+                  tooltip="Delete Screen"
+                  onClick={() => setScreenToBeDeletedId(screen.id)}
+                  icon={<Delete fontSize="small" />}
+                />
               </StyledRightActionsContainer>
 
               <StyledScreenVideo src={screen.mediaSrc} controls />
@@ -98,6 +103,17 @@ export const SegmentScreensRaw = ({
           )
         })}
       </StyledContainer>
+      {screenToBeDeletedId && (
+        <Popup
+          onClose={() => setScreenToBeDeletedId(undefined)}
+          header="Delete Segment"
+          bodyText="Are you sure you want to delete this segment?"
+        >
+          <IconButton onClick={handleDeleteScreen}>
+            <Check />
+          </IconButton>
+        </Popup>
+      )}
     </>
   )
 }

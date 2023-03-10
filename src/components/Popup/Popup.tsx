@@ -32,7 +32,7 @@ const StyledHeaderContainer = styled.div`
 const StyledActionsContainer = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  width: fit-content;
 `
 
 export type PopupProps = {
