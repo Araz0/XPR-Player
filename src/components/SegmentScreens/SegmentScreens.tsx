@@ -1,4 +1,4 @@
-import { memo, useCallback, useState } from 'react'
+import { memo, useCallback, useRef, useState } from 'react'
 
 import styled from 'styled-components'
 
@@ -8,12 +8,17 @@ import {
   Info,
   NavigateBefore,
   NavigateNext,
+  QueuePlayNext,
 } from '@mui/icons-material'
-import { IconButton, Tooltip, Typography } from '@mui/material'
+import { Button, IconButton, TextField, Typography } from '@mui/material'
 
 import { useProgram } from '../../hooks'
 import { SegmentMediaType } from '../../types'
-import { shiftItemLeftByIndex, shiftItemRightByIndex } from '../../utils'
+import {
+  generateNewId,
+  shiftItemLeftByIndex,
+  shiftItemRightByIndex,
+} from '../../utils'
 import { Popup } from '../Popup'
 import { SmallIconButton } from '../SmallIconButton'
 
@@ -46,7 +51,10 @@ export type SegmentScreensProps = {
   media: SegmentMediaType
 }
 export const SegmentScreensRaw = ({ media }: SegmentScreensProps) => {
-  const { removeMediaScreen } = useProgram()
+  const [showAddScreen, setShowAddScreen] = useState<boolean>(false)
+
+  const screenTitleRef = useRef<HTMLInputElement>()
+  const { removeMediaScreen, addScreenToMedia } = useProgram()
   const [screenToBeDeletedId, setScreenToBeDeletedId] = useState<
     number | undefined
   >(undefined)
@@ -56,6 +64,24 @@ export const SegmentScreensRaw = ({ media }: SegmentScreensProps) => {
     removeMediaScreen(media, screenToBeDeletedId)
     setScreenToBeDeletedId(undefined)
   }, [media, removeMediaScreen, screenToBeDeletedId])
+
+  const handleAddScreen = useCallback(
+    (e: any) => {
+      if (!media) return
+      const screen = {
+        id: generateNewId(),
+        title: screenTitleRef.current?.value || 'screen title',
+        mediaSrc: `/programMedia/${e.target.files[0].name}`,
+      }
+      addScreenToMedia(media.id, screen)
+      setShowAddScreen(false)
+    },
+    [addScreenToMedia, media]
+  )
+
+  const handleShowAddScreen = useCallback(() => {
+    setShowAddScreen(true)
+  }, [])
 
   return (
     <>
@@ -72,9 +98,6 @@ export const SegmentScreensRaw = ({ media }: SegmentScreensProps) => {
                   onClick={() => alert(screen.title)}
                   icon={<Info fontSize="small" />}
                 />
-                <Tooltip title="Screen Number">
-                  <Typography>{`#${idx + 1}`}</Typography>
-                </Tooltip>
               </StyledLeftActionsContainer>
               <StyledRightActionsContainer>
                 {idx > 0 && (
@@ -103,6 +126,13 @@ export const SegmentScreensRaw = ({ media }: SegmentScreensProps) => {
           )
         })}
       </StyledContainer>
+      <Button
+        variant="outlined"
+        onClick={handleShowAddScreen}
+        startIcon={<QueuePlayNext fontSize="small" />}
+      >
+        Add Screen
+      </Button>
       {screenToBeDeletedId && (
         <Popup
           onClose={() => setScreenToBeDeletedId(undefined)}
@@ -111,6 +141,28 @@ export const SegmentScreensRaw = ({ media }: SegmentScreensProps) => {
         >
           <IconButton onClick={handleDeleteScreen}>
             <Check />
+          </IconButton>
+        </Popup>
+      )}
+      {showAddScreen && (
+        <Popup
+          onClose={() => setShowAddScreen(false)}
+          header="Add screen"
+          bodyText="First give it a title, and then select the video file:"
+        >
+          <TextField
+            inputRef={screenTitleRef}
+            placeholder={'screen title'}
+            size="small"
+          />
+          <IconButton component="label">
+            <input
+              hidden
+              accept="video/mp4"
+              type="file"
+              onChange={handleAddScreen}
+            />
+            <QueuePlayNext />
           </IconButton>
         </Popup>
       )}
