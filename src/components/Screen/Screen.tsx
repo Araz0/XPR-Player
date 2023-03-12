@@ -42,9 +42,9 @@ export const ScreenRaw = ({ screenId }: ScreenProps) => {
   useDoubleKeyPress('c', () => requestShowControls())
 
   useEffect(() => {
-    if (!screenId) return
     init(screenId, playerContainerRef, videoRef1, videoRef2)
-  }, [init, screenId])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   useEffect(() => {
     forceDisplayOnePlayer()
