@@ -52,6 +52,7 @@ export type SegmentScreensProps = {
 }
 export const SegmentScreensRaw = ({ media }: SegmentScreensProps) => {
   const [showAddScreen, setShowAddScreen] = useState<boolean>(false)
+  const [, forceUpdateComponent] = useState<any>()
 
   const screenTitleRef = useRef<HTMLInputElement>()
   const { removeMediaScreen, addScreenToMedia } = useProgram()
@@ -63,6 +64,7 @@ export const SegmentScreensRaw = ({ media }: SegmentScreensProps) => {
     if (!screenToBeDeletedId) return
     removeMediaScreen(media, screenToBeDeletedId)
     setScreenToBeDeletedId(undefined)
+    forceUpdateComponent({})
   }, [media, removeMediaScreen, screenToBeDeletedId])
 
   const handleAddScreen = useCallback(
