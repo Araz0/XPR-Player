@@ -1,6 +1,5 @@
 import { memo, useEffect, useRef } from 'react'
 
-import { useParams } from 'react-router-dom'
 import styled from 'styled-components'
 
 import { Typography, CircularProgress } from '@mui/material'
@@ -20,12 +19,14 @@ const StyledScreenPlayerContainer = styled.div`
     position: absolute;
   }
 `
+export type ScreenProps = {
+  screenId: number
+}
 
-export const ScreenRaw = () => {
+export const ScreenRaw = ({ screenId }: ScreenProps) => {
   const programStarted = useScreenStore((s) => s.programStarted)
   const standByMode = useScreenStore((s) => s.standByMode)
   const program = useScreenStore((s) => s.program)
-  const { screenId } = useParams()
   const playerContainerRef = useRef<any>()
   const videoRef1 = useRef<any>()
   const videoRef2 = useRef<any>()
@@ -42,7 +43,7 @@ export const ScreenRaw = () => {
 
   useEffect(() => {
     if (!screenId) return
-    init(parseInt(screenId), playerContainerRef, videoRef1, videoRef2)
+    init(screenId, playerContainerRef, videoRef1, videoRef2)
   }, [init, screenId])
 
   useEffect(() => {
