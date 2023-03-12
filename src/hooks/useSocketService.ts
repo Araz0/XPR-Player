@@ -14,57 +14,65 @@ export function useSocketService() {
 
   const emmitProgram = useCallback(
     (program: ProgramType) => {
-      emmit(EventNames.ADMIN_BRODCAST_PROGRAM, program)
+      emmit(EventNames.SET_PROGRAM, program)
     },
     [emmit]
   )
 
   const emmitStartProgram = useCallback(() => {
-    emmit(EventNames.ADMIN_BRODCAST_START, 'admin requested program start')
+    emmit(EventNames.START_PROGRAM, 'admin requested program start')
   }, [emmit])
 
   const emmitRequestFullscreen = useCallback(() => {
-    emmit(EventNames.ADMIN_BRODCAST_FULLSCREEN, 'admin requested full screen')
+    emmit(EventNames.REQUEST_FULLSCREEN, 'admin requested full screen')
   }, [emmit])
 
   const emmitStopProgram = useCallback(() => {
-    emmit(EventNames.ADMIN_BRODCAST_STOP, 'admin requested program stop')
+    emmit(EventNames.STOP_PROGRAM, 'admin requested program stop')
   }, [emmit])
 
   const emmitPauseProgram = useCallback(() => {
-    emmit(EventNames.ADMIN_BRODCAST_PAUSE, 'admin requested program pause')
+    emmit(EventNames.PAUSE_PROGRAM, 'admin requested program pause')
   }, [emmit])
 
   const emmitResetProgram = useCallback(() => {
-    emmit(EventNames.ADMIN_BRODCAST_RESET, 'admin requested program reset')
+    emmit(EventNames.RESET_PROGRAM, 'admin requested program reset')
   }, [emmit])
 
   const emmitShowControls = useCallback(() => {
-    emmit(
-      EventNames.ADMIN_BRODCAST_SHOW_CONTROLS,
-      'admin requested show controls'
-    )
+    emmit(EventNames.SHOW_CONTROLS, 'admin requested show controls')
   }, [emmit])
 
   const emmitHideControls = useCallback(() => {
-    emmit(
-      EventNames.ADMIN_BRODCAST_HIDE_CONTROLS,
-      'admin requested hide controls'
-    )
+    emmit(EventNames.HIDE_CONTROLS, 'admin requested hide controls')
   }, [emmit])
 
   const emmitToggleShowControls = useCallback(() => {
     emmit(
-      EventNames.ADMIN_BRODCAST_TOGGLE_SHOW_CONTROLS,
+      EventNames.TOGGLE_SHOW_CONTROLS,
       'admin requested toggle show controls'
     )
   }, [emmit])
 
   const emmitSelectedScreenIndex = useCallback(
     (index: number) => {
-      emmit(EventNames.USER_SENT_SELECTED_SEGMENT, index)
+      emmit(EventNames.USER_SELECTED_SEGMENT, index)
     },
     [emmit]
+  )
+
+  const onSetProgram = useCallback(
+    (exicute: (program: ProgramType) => void) => {
+      socket.on(EventNames.SET_PROGRAM, (program: ProgramType) => {
+        // eslint-disable-next-line no-console
+        console.log(
+          `Received command (set-program): `,
+          new Date().getMilliseconds()
+        )
+        exicute(program)
+      })
+    },
+    []
   )
 
   const onStart = useCallback((exicute: () => void) => {
@@ -110,20 +118,6 @@ export function useSocketService() {
       exicute()
     })
   }, [])
-
-  const onSetProgram = useCallback(
-    (exicute: (program: ProgramType) => void) => {
-      socket.on(EventNames.SET_PROGRAM, (program: ProgramType) => {
-        // eslint-disable-next-line no-console
-        console.log(
-          `Received command (set-program): `,
-          new Date().getMilliseconds()
-        )
-        exicute(program)
-      })
-    },
-    []
-  )
 
   const onShowControls = useCallback((exicute: () => void) => {
     socket.on(EventNames.SHOW_CONTROLS, () => {
