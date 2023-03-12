@@ -1,6 +1,7 @@
 import { useCallback } from 'react'
 
 import { ScreenService } from './Screen.service'
+import { useSocketService } from '../../hooks'
 import { useScreenStore } from '../../stores'
 import {
   PlayerContainerType,
@@ -13,6 +14,14 @@ const screenPlayer = new ScreenService()
 export function useScreenService() {
   const setProgram = useScreenStore((s) => s.setProgram)
   const setProgramStarted = useScreenStore((s) => s.setProgramStarted)
+  const {
+    onStart,
+    onPause,
+    onReset,
+    onSetProgram,
+    onToggleShowControls,
+    onUserSelectedNextSegment,
+  } = useSocketService()
 
   const playPauseScreen = useCallback(() => {
     screenPlayer.playPause()
@@ -70,6 +79,17 @@ export function useScreenService() {
     screenPlayer.setNextSelectedSegmentIndex(index)
   }
 
+  const setScerenListeners = useCallback(() => {
+    onStart(startProgram)
+    onPause(pauseProgram)
+    onReset(resetProgram)
+    onSetProgram(setScreenProgram)
+    onToggleShowControls(toggleShowingControls)
+    onUserSelectedNextSegment(setSelectedNextSegment)
+    // force no rerenders on this hook
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   const init = useCallback(
     (
       screenId: number,
@@ -100,5 +120,6 @@ export function useScreenService() {
     toggleShowingControls,
     forceDisplayOnePlayer,
     setSelectedNextSegment,
+    setScerenListeners,
   }
 }
