@@ -16,6 +16,7 @@ import {
   AdminPageWrapper,
   LoadingAnimation,
   LoadLocalProgramButton,
+  ProgramScreens,
   ProgramsList,
 } from '../../components'
 import { useSocketService } from '../../hooks'
@@ -98,6 +99,7 @@ export const AdminPageRaw = () => {
               Reset Program
             </Button>
           </StyledActionsContainer>
+          <ProgramScreens />
         </>
       ) : !loadedPrograms ? (
         <LoadingAnimation />

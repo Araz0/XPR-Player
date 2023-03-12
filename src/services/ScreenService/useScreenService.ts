@@ -80,10 +80,10 @@ export function useScreenService() {
   }
 
   const setScerenListeners = useCallback(() => {
+    onSetProgram(setScreenProgram)
     onStart(startProgram)
     onPause(pauseProgram)
     onReset(resetProgram)
-    onSetProgram(setScreenProgram)
     onToggleShowControls(toggleShowingControls)
     onUserSelectedNextSegment(setSelectedNextSegment)
     // force no rerenders on this hook
@@ -100,7 +100,7 @@ export function useScreenService() {
       screenPlayer.setRefs(screenId, container, videoRef1, videoRef2)
 
       // eslint-disable-next-line no-console
-      console.log('📺 useScreenService init')
+      console.log('📺 useScreenService init', screenId)
     },
     []
   )

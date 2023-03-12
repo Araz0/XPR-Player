@@ -55,8 +55,10 @@ export const ScreenRaw = ({ screenId }: ScreenProps) => {
         <StandbyOverlay>
           {standByMode === StandByMods.TEXT && (
             <Typography>
-              Program ({program?.title}) is set, waiting on your command to
-              start!
+              {program?.media[screenId]
+                ? `Program (${program.title}) is set, waiting on your command to
+              start!`
+                : `No media found on screen id ${screenId}`}
             </Typography>
           )}
           {standByMode === StandByMods.ANIMATION && <CircularProgress />}
