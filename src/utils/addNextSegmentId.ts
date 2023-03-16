@@ -1,4 +1,4 @@
-import { ProgramType } from '../types'
+import { ProgramType } from 'types'
 
 export function addNextSegmentId(
   program: ProgramType,

@@ -1,4 +1,4 @@
-import { ProgramType } from '../types'
+import { ProgramType } from 'types'
 
 export function saveProgramAsJson(program: ProgramType) {
   const json = JSON.stringify(program, null, 2)

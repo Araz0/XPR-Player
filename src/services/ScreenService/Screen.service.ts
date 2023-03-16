@@ -1,11 +1,12 @@
+import { VideoService } from 'services/VideoService'
+
 import {
   VideoRefElementType,
   PlayerContainerType,
   ProgramType,
   SegmentType,
-} from '../../types'
-import { getIntroSegment, getMediaById, getSegmentById } from '../../utils'
-import { VideoService } from '../VideoService'
+} from 'types'
+import { getIntroSegment, getMediaById, getSegmentById } from 'utils'
 
 export class ScreenService {
   private _id = 0

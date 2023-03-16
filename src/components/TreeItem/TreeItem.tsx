@@ -10,14 +10,14 @@ import {
   ExpandLess,
   ExpandMore,
 } from '@mui/icons-material'
+import { EditableLabel } from 'components/EditableLabel'
+import { SegmentMenu } from 'components/SegmentMenu'
+import { SegmentScreens } from 'components/SegmentScreens'
+import { SmallIconButton } from 'components/SmallIconButton'
 
-import { useProgram } from '../../hooks'
-import { SegmentMediaType, SegmentType } from '../../types'
-import { generateNewId } from '../../utils'
-import { EditableLabel } from '../EditableLabel'
-import { SegmentMenu } from '../SegmentMenu'
-import { SegmentScreens } from '../SegmentScreens'
-import { SmallIconButton } from '../SmallIconButton'
+import { useProgram } from 'hooks'
+import { SegmentMediaType, SegmentType } from 'types'
+import { generateNewId } from 'utils'
 
 const StyledListItemContainer = styled.li`
   display: inline-table;

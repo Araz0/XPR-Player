@@ -12,16 +12,15 @@ import {
 } from '@mui/icons-material'
 import { Button, IconButton, Tooltip, Typography } from '@mui/material'
 
-import { useSocketService } from 'services'
-
 import {
   AdminPageWrapper,
   LoadingAnimation,
   LoadLocalProgramButton,
   ProgramScreens,
   ProgramsList,
-} from '../../components'
-import { useAdminStore } from '../../stores'
+} from 'components'
+import { useSocketService } from 'services'
+import { useAdminStore } from 'stores'
 
 const StyledActionsContainer = styled.div`
   display: flex;

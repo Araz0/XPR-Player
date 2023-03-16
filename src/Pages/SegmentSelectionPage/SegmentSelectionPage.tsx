@@ -5,8 +5,8 @@ import styled from 'styled-components'
 import { ThumbUp, ThumbDown } from '@mui/icons-material'
 import { Button } from '@mui/material'
 
-import { CenterdContainer } from '../../components'
-import { useSocketService } from '../../services'
+import { CenterdContainer } from 'components'
+import { useSocketService } from 'services'
 
 const StyledButtonsContainer = styled.div`
   display: flex;

@@ -3,12 +3,13 @@ import { memo, useEffect, useRef } from 'react'
 import styled from 'styled-components'
 
 import { Typography, CircularProgress } from '@mui/material'
+import { StandbyOverlay } from 'components/StandbyOverlay'
+import { VideoPlayer } from 'components/VideoPlayer'
 
-import { StandbyOverlay, VideoPlayer } from '../../components'
-import { useDoubleKeyPress } from '../../hooks'
-import { ScreenService, useScreenService } from '../../services'
-import { useScreenStore } from '../../stores'
-import { StandByMods } from '../../types'
+import { useDoubleKeyPress } from 'hooks'
+import { ScreenService, useScreenService } from 'services'
+import { useScreenStore } from 'stores'
+import { StandByMods } from 'types'
 
 const StyledScreenPlayerContainer = styled.div`
   position: relative;

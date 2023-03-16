@@ -5,8 +5,8 @@ import {
   LoadingAnimation,
   LoadLocalProgramButton,
   ProgramsList,
-} from '../../components'
-import { useAdminStore } from '../../stores'
+} from 'components'
+import { useAdminStore } from 'stores'
 
 export const ProgramsPageRaw = () => {
   const loadedPrograms = useAdminStore((s) => s.loadedPrograms)

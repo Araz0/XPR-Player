@@ -2,7 +2,7 @@ import { memo } from 'react'
 
 import styled from 'styled-components'
 
-import { Screen } from '../../components'
+import { Screen } from 'components'
 
 const StyledScreensContainer = styled.div`
   display: flex;

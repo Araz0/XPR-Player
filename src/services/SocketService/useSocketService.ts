@@ -1,4 +1,4 @@
-import { SocketService } from './socketService.service'
+import { SocketService } from 'services/SocketService/socketService.service'
 
 const socketService = new SocketService()
 

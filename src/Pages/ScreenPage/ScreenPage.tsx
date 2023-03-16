@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom'
 
 import { Typography } from '@mui/material'
 
-import { CenterdContainer, Screen } from '../../components'
+import { CenterdContainer, Screen } from 'components'
 
 export const ScreenPageRaw = () => {
   const { screenId } = useParams()

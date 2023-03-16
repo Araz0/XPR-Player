@@ -1,13 +1,8 @@
 import { useCallback } from 'react'
 
 import { ScreenService, useSocketService } from 'services'
-
-import { useScreenStore } from '../../stores'
-import {
-  PlayerContainerType,
-  ProgramType,
-  VideoRefElementType,
-} from '../../types'
+import { useScreenStore } from 'stores'
+import { PlayerContainerType, ProgramType, VideoRefElementType } from 'types'
 
 export function useScreenService(screenPlayerService: ScreenService) {
   const setProgram = useScreenStore((s) => s.setProgram)

@@ -1,4 +1,4 @@
-import { VideoRefElementType } from '../../types'
+import { VideoRefElementType } from 'types'
 
 export class VideoService {
   private _videoElement: VideoRefElementType

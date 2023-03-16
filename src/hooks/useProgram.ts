@@ -2,14 +2,9 @@ import { useCallback } from 'react'
 
 import { useNavigate } from 'react-router-dom'
 
-import { useAdminStore } from '../stores'
-import {
-  ProgramType,
-  ScreenType,
-  SegmentMediaType,
-  SegmentType,
-} from '../types'
-import { generateNewId, loadJsonFile } from '../utils'
+import { useAdminStore } from 'stores'
+import { ProgramType, ScreenType, SegmentMediaType, SegmentType } from 'types'
+import { generateNewId, loadJsonFile } from 'utils'
 
 export function useProgram() {
   const program = useAdminStore((s) => s.program)

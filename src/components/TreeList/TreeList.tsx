@@ -4,11 +4,11 @@ import styled from 'styled-components'
 
 import { Edit, EditOff, Save } from '@mui/icons-material'
 import { Divider, IconButton } from '@mui/material'
+import { EditableLabel } from 'components/EditableLabel'
+import { TreeItem } from 'components/TreeItem'
 
-import { useProgram } from '../../hooks'
-import { ProgramType, SegmentType } from '../../types'
-import { EditableLabel } from '../EditableLabel'
-import { TreeItem } from '../TreeItem'
+import { useProgram } from 'hooks'
+import { ProgramType, SegmentType } from 'types'
 
 import './style.css'
 
