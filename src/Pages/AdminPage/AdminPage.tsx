@@ -12,6 +12,8 @@ import {
 } from '@mui/icons-material'
 import { Button, IconButton, Tooltip, Typography } from '@mui/material'
 
+import { useSocketService } from 'services'
+
 import {
   AdminPageWrapper,
   LoadingAnimation,
@@ -19,7 +21,6 @@ import {
   ProgramScreens,
   ProgramsList,
 } from '../../components'
-import { useSocketService } from '../../hooks'
 import { useAdminStore } from '../../stores'
 
 const StyledActionsContainer = styled.div`
@@ -32,18 +33,12 @@ export const AdminPageRaw = () => {
   const selectedProgram = useAdminStore((s) => s.selectedProgram)
   const setSelectedProgram = useAdminStore((s) => s.setSelectedProgram)
   const loadedPrograms = useAdminStore((s) => s.loadedPrograms)
-  const {
-    emmitProgram,
-    emmitStartProgram,
-    emmitPauseProgram,
-    emmitResetProgram,
-    emmitToggleShowControls,
-  } = useSocketService()
+  const { socketService } = useSocketService()
 
   const handelSendProgram = useCallback(() => {
     if (!selectedProgram) return
-    emmitProgram(selectedProgram)
-  }, [emmitProgram, selectedProgram])
+    socketService.emmitProgram(selectedProgram)
+  }, [selectedProgram, socketService])
 
   return (
     <AdminPageWrapper
@@ -72,28 +67,28 @@ export const AdminPageRaw = () => {
 
             <Button
               variant="contained"
-              onClick={emmitToggleShowControls}
+              onClick={socketService.emmitToggleShowControls}
               startIcon={<ControlCamera />}
             >
               Toggle Show Controls
             </Button>
             <Button
               variant="contained"
-              onClick={emmitStartProgram}
+              onClick={socketService.emmitStartProgram}
               startIcon={<PlayArrow />}
             >
               Start Program
             </Button>
             <Button
               variant="contained"
-              onClick={emmitPauseProgram}
+              onClick={socketService.emmitPauseProgram}
               startIcon={<Pause />}
             >
               Pause Program
             </Button>
             <Button
               variant="contained"
-              onClick={emmitResetProgram}
+              onClick={socketService.emmitResetProgram}
               startIcon={<RestartAlt />}
             >
               Reset Program

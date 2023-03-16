@@ -8,31 +8,23 @@ import { getIntroSegment, getMediaById, getSegmentById } from '../../utils'
 import { VideoService } from '../VideoService'
 
 export class ScreenService {
-  private _id: number
+  private _id = 0
   private _player1: VideoService
   private _player2: VideoService
-  private _containerRef: PlayerContainerType
+  private _containerRef: PlayerContainerType | undefined
   private _selectedPID: string
   private _program: ProgramType | undefined
   private _IntroSegment: SegmentType | undefined
-  private _isShowingControls: boolean
+  private _isShowingControls = false
   private _currentSegment: SegmentType | undefined
   private _nextSegment: SegmentType | undefined
-  private _nextSelectedSegmentIndex: number
+  private _nextSelectedSegmentIndex = 0
 
-  constructor(
-    screenId?: number,
-    container?: PlayerContainerType,
-    ref1?: VideoRefElementType,
-    ref2?: VideoRefElementType
-  ) {
-    this._isShowingControls = false
-    this._id = screenId ? screenId : 0
-    this._containerRef = container || undefined
-    this._player1 = new VideoService('A', ref1 || undefined)
-    this._player2 = new VideoService('B', ref2 || undefined)
+  constructor() {
+    console.log('ScreenService: constructor')
+    this._player1 = new VideoService('A', undefined)
+    this._player2 = new VideoService('B', undefined)
     this._selectedPID = this._player1.id
-    this._nextSelectedSegmentIndex = 0
   }
   public setRefs = (
     screenId: number,
@@ -46,6 +38,7 @@ export class ScreenService {
     this._player2.videoElement = ref2
     this.nextPlayer().hide()
   }
+
   public setAllListners = () => {
     this.setListners(this._player1)
     this.setListners(this._player2)
@@ -94,9 +87,9 @@ export class ScreenService {
       this._containerRef.current.requestFullscreen()
   }
   public playNext = () => {
-    this.currentPlayer().pause()
     this.nextPlayer().show()
     this.nextPlayer().play()
+    this.currentPlayer().pause()
     this.currentPlayer().hide()
     this.currentPlayer().resetPlayer()
     this.setCurrentAsNextPlayer()

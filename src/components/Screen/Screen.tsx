@@ -6,7 +6,7 @@ import { Typography, CircularProgress } from '@mui/material'
 
 import { StandbyOverlay, VideoPlayer } from '../../components'
 import { useDoubleKeyPress } from '../../hooks'
-import { useScreenService } from '../../services'
+import { ScreenService, useScreenService } from '../../services'
 import { useScreenStore } from '../../stores'
 import { StandByMods } from '../../types'
 
@@ -24,6 +24,8 @@ export type ScreenProps = {
 }
 
 export const ScreenRaw = ({ screenId }: ScreenProps) => {
+  const screenPlayerService = new ScreenService()
+
   const programStarted = useScreenStore((s) => s.programStarted)
   const standByMode = useScreenStore((s) => s.standByMode)
   const program = useScreenStore((s) => s.program)
@@ -31,23 +33,16 @@ export const ScreenRaw = ({ screenId }: ScreenProps) => {
   const videoRef1 = useRef<any>()
   const videoRef2 = useRef<any>()
 
-  const {
-    init,
-    requestFullScreen,
-    requestShowControls,
-    forceDisplayOnePlayer,
-  } = useScreenService()
+  const { init, requestFullScreen, requestShowControls, setScerenListeners } =
+    useScreenService(screenPlayerService)
 
   useDoubleKeyPress('f', () => requestFullScreen())
   useDoubleKeyPress('c', () => requestShowControls())
 
   useEffect(() => {
     init(screenId, playerContainerRef, videoRef1, videoRef2)
-  }, [init, screenId])
-
-  useEffect(() => {
-    forceDisplayOnePlayer()
-  }, [forceDisplayOnePlayer])
+    setScerenListeners()
+  }, [init, screenId, setScerenListeners])
 
   return (
     <StyledScreenPlayerContainer ref={playerContainerRef}>
