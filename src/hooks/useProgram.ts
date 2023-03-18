@@ -21,6 +21,21 @@ export function useProgram() {
     [navigate, setProgram]
   )
 
+  const segmentIsReferenced = useCallback(
+    (segmentId: number) => {
+      if (!program) return false
+      let counter = 0
+      for (let i = 0; i < program.segments.length; i++) {
+        if (program.segments[i].nextSegmentIds?.includes(segmentId)) {
+          counter++
+        }
+        if (counter > 1) return true
+      }
+      return false
+    },
+    [program]
+  )
+
   const updateProgramTitle = useCallback(
     (newTitle: string) => {
       if (!program) return
@@ -260,5 +275,6 @@ export function useProgram() {
     addNextSegmentById,
     getMediaById,
     createNewProgram,
+    segmentIsReferenced,
   }
 }
