@@ -136,9 +136,11 @@ export const SegmentMenuRaw = ({ segmentId, media }: SegmentMenuProps) => {
             placeholder={'Segment Id'}
             size="small"
           />
-          <IconButton onClick={handleAddSegmentById}>
-            <Check />
-          </IconButton>
+          <div>
+            <IconButton onClick={handleAddSegmentById}>
+              <Check />
+            </IconButton>
+          </div>
         </Popup>
       )}
     </div>
