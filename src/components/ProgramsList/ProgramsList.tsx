@@ -13,9 +13,10 @@ import {
   Tooltip,
 } from '@mui/material'
 
-import { useSupabase } from '../../hooks'
-import { useAdminStore } from '../../stores'
-import { DbProgram, ProgramType } from '../../types'
+import { useSupabase } from 'hooks'
+import { useAdminStore } from 'stores'
+import { DbProgram, ProgramType } from 'types'
+
 import { Popup } from '../Popup'
 
 const StyledProgramsListContainer = styled(List)`

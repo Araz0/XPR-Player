@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 
-import { ProgramType, StandByMods } from '../../types'
+import { ProgramType, StandByMods } from 'types'
 
 export type ScreenState = {
   program: ProgramType | undefined

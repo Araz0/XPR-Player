@@ -1,73 +1,90 @@
 import { useCallback } from 'react'
 
-import { ScreenService } from './Screen.service'
-import { useScreenStore } from '../../stores'
-import {
-  PlayerContainerType,
-  ProgramType,
-  VideoRefElementType,
-} from '../../types'
+import { ScreenService, useSocketService } from 'services'
+import { useScreenStore } from 'stores'
+import { PlayerContainerType, ProgramType, VideoRefElementType } from 'types'
 
-const screenPlayer = new ScreenService()
-
-export function useScreenService() {
+export function useScreenService(screenPlayerService: ScreenService) {
   const setProgram = useScreenStore((s) => s.setProgram)
   const setProgramStarted = useScreenStore((s) => s.setProgramStarted)
+  const { socketService } = useSocketService()
 
   const playPauseScreen = useCallback(() => {
-    screenPlayer.playPause()
-  }, [])
+    screenPlayerService.playPause()
+  }, [screenPlayerService])
 
   const startProgram = useCallback(() => {
-    screenPlayer.play()
+    screenPlayerService.play()
     setProgramStarted(true)
-  }, [setProgramStarted])
+  }, [setProgramStarted, screenPlayerService])
 
   const pauseProgram = useCallback(() => {
-    screenPlayer.pause()
+    screenPlayerService.pause()
     setProgramStarted(false)
-  }, [setProgramStarted])
+  }, [setProgramStarted, screenPlayerService])
 
   const resetProgram = useCallback(() => {
-    screenPlayer.reset()
+    screenPlayerService.reset()
     setProgramStarted(false)
-  }, [setProgramStarted])
+  }, [setProgramStarted, screenPlayerService])
 
-  const setCurrentSource = useCallback((src: string) => {
-    screenPlayer.setCurrentSource(src)
-  }, [])
+  const setCurrentSource = useCallback(
+    (src: string) => {
+      screenPlayerService.setCurrentSource(src)
+    },
+    [screenPlayerService]
+  )
 
-  const setNextSource = useCallback((src: string) => {
-    screenPlayer.setNextSource(src)
-  }, [])
+  const setNextSource = useCallback(
+    (src: string) => {
+      screenPlayerService.setNextSource(src)
+    },
+    [screenPlayerService]
+  )
 
   const requestFullScreen = useCallback(() => {
-    screenPlayer.requestFullScreen()
-  }, [])
+    screenPlayerService.requestFullScreen()
+  }, [screenPlayerService])
 
-  const requestShowControls = useCallback(() => screenPlayer.showControls(), [])
-  const requestHideControls = useCallback(() => screenPlayer.hideControls(), [])
+  const requestShowControls = useCallback(
+    () => screenPlayerService.showControls(),
+    [screenPlayerService]
+  )
+  const requestHideControls = useCallback(
+    () => screenPlayerService.hideControls(),
+    [screenPlayerService]
+  )
 
   const toggleShowingControls = useCallback(
-    () => screenPlayer.toggleControls(),
-    []
+    () => screenPlayerService.toggleControls(),
+    [screenPlayerService]
   )
 
   const setScreenProgram = useCallback(
     (program: ProgramType) => {
-      screenPlayer.setProgram(program)
+      screenPlayerService.setProgram(program)
       setProgram(program)
+
+      screenPlayerService.nextPlayer().hide()
+      screenPlayerService.setAllListners()
+      screenPlayerService.setSrcToIntro()
     },
-    [setProgram]
+    [setProgram, screenPlayerService]
   )
-  const forceDisplayOnePlayer = useCallback(() => {
-    screenPlayer.nextPlayer().hide()
-    screenPlayer.setAllListners()
-    screenPlayer.setSrcToIntro()
+
+  const setScerenListeners = useCallback(() => {
+    socketService.onSetProgram(setScreenProgram)
+    socketService.onStart(startProgram)
+    socketService.onPause(pauseProgram)
+    socketService.onReset(resetProgram)
+    socketService.onToggleShowControls(toggleShowingControls)
+    socketService.onUserSelectedNextSegment(setSelectedNextSegment)
+    // force no rerenders on this hook
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const setSelectedNextSegment = (index: number) => {
-    screenPlayer.setNextSelectedSegmentIndex(index)
+    screenPlayerService.setNextSelectedSegmentIndex(index)
   }
 
   const init = useCallback(
@@ -77,12 +94,11 @@ export function useScreenService() {
       videoRef1: VideoRefElementType,
       videoRef2: VideoRefElementType
     ) => {
-      screenPlayer.setRefs(screenId, container, videoRef1, videoRef2)
-
+      screenPlayerService.setRefs(screenId, container, videoRef1, videoRef2)
       // eslint-disable-next-line no-console
-      console.log('📺 useScreenService init')
+      console.log('📺 useScreenService init', screenId)
     },
-    []
+    [screenPlayerService]
   )
 
   return {
@@ -98,7 +114,7 @@ export function useScreenService() {
     requestShowControls,
     requestHideControls,
     toggleShowingControls,
-    forceDisplayOnePlayer,
     setSelectedNextSegment,
+    setScerenListeners,
   }
 }

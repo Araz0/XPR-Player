@@ -8,7 +8,7 @@ import {
   CreatePage,
   ProgramMapPage,
   SegmentSelectionPage,
-} from './Pages'
+} from 'Pages'
 
 function App() {
   return (

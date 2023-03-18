@@ -11,16 +11,16 @@ import {
   QueuePlayNext,
 } from '@mui/icons-material'
 import { Button, IconButton, TextField, Typography } from '@mui/material'
+import { Popup } from 'components/Popup'
+import { SmallIconButton } from 'components/SmallIconButton'
 
-import { useProgram } from '../../hooks'
-import { SegmentMediaType } from '../../types'
+import { useProgram } from 'hooks'
+import { SegmentMediaType } from 'types'
 import {
   generateNewId,
   shiftItemLeftByIndex,
   shiftItemRightByIndex,
-} from '../../utils'
-import { Popup } from '../Popup'
-import { SmallIconButton } from '../SmallIconButton'
+} from 'utils'
 
 const StyledScreenVideo = styled.video`
   width: 150px;

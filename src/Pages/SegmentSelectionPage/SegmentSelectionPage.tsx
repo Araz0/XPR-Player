@@ -5,8 +5,8 @@ import styled from 'styled-components'
 import { ThumbUp, ThumbDown } from '@mui/icons-material'
 import { Button } from '@mui/material'
 
-import { CenterdContainer } from '../../components'
-import { useSocketService } from '../../hooks'
+import { CenterdContainer } from 'components'
+import { useSocketService } from 'services'
 
 const StyledButtonsContainer = styled.div`
   display: flex;
@@ -14,14 +14,14 @@ const StyledButtonsContainer = styled.div`
 `
 
 export const SegmentSelectionPageRaw = () => {
-  const { emmitSelectedScreenIndex } = useSocketService()
+  const { socketService } = useSocketService()
   const handleClickedYes = useCallback(() => {
-    emmitSelectedScreenIndex(1)
-  }, [emmitSelectedScreenIndex])
+    socketService.emmitSelectedScreenIndex(1)
+  }, [socketService])
 
   const handleClickedNo = useCallback(() => {
-    emmitSelectedScreenIndex(0)
-  }, [emmitSelectedScreenIndex])
+    socketService.emmitSelectedScreenIndex(0)
+  }, [socketService])
 
   return (
     <CenterdContainer>

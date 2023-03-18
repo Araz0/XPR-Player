@@ -2,7 +2,7 @@ import { create } from 'zustand'
 
 import { User } from '@supabase/supabase-js'
 
-import { DbProgram, ProgramType } from '../../types'
+import { DbProgram, ProgramType } from 'types'
 
 export type AdminState = {
   canEditTreeMap: boolean

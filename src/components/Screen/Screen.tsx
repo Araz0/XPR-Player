@@ -1,15 +1,15 @@
 import { memo, useEffect, useRef } from 'react'
 
-import { useParams } from 'react-router-dom'
 import styled from 'styled-components'
 
 import { Typography, CircularProgress } from '@mui/material'
+import { StandbyOverlay } from 'components/StandbyOverlay'
+import { VideoPlayer } from 'components/VideoPlayer'
 
-import { StandbyOverlay, VideoPlayer } from '../../components'
-import { useDoubleKeyPress } from '../../hooks'
-import { useScreenService } from '../../services'
-import { useScreenStore } from '../../stores'
-import { StandByMods } from '../../types'
+import { useDoubleKeyPress } from 'hooks'
+import { ScreenService, useScreenService } from 'services'
+import { useScreenStore } from 'stores'
+import { StandByMods } from 'types'
 
 const StyledScreenPlayerContainer = styled.div`
   position: relative;
@@ -20,34 +20,30 @@ const StyledScreenPlayerContainer = styled.div`
     position: absolute;
   }
 `
+export type ScreenProps = {
+  screenId: number
+}
 
-export const ScreenRaw = () => {
+export const ScreenRaw = ({ screenId }: ScreenProps) => {
+  const screenPlayerService = new ScreenService()
+
   const programStarted = useScreenStore((s) => s.programStarted)
   const standByMode = useScreenStore((s) => s.standByMode)
   const program = useScreenStore((s) => s.program)
-  const { screenId } = useParams()
   const playerContainerRef = useRef<any>()
   const videoRef1 = useRef<any>()
   const videoRef2 = useRef<any>()
 
-  const {
-    init,
-    requestFullScreen,
-    requestShowControls,
-    forceDisplayOnePlayer,
-  } = useScreenService()
+  const { init, requestFullScreen, requestShowControls, setScerenListeners } =
+    useScreenService(screenPlayerService)
 
   useDoubleKeyPress('f', () => requestFullScreen())
   useDoubleKeyPress('c', () => requestShowControls())
 
   useEffect(() => {
-    if (!screenId) return
-    init(parseInt(screenId), playerContainerRef, videoRef1, videoRef2)
-  }, [init, screenId])
-
-  useEffect(() => {
-    forceDisplayOnePlayer()
-  }, [forceDisplayOnePlayer])
+    init(screenId, playerContainerRef, videoRef1, videoRef2)
+    setScerenListeners()
+  }, [init, screenId, setScerenListeners])
 
   return (
     <StyledScreenPlayerContainer ref={playerContainerRef}>
@@ -55,8 +51,10 @@ export const ScreenRaw = () => {
         <StandbyOverlay>
           {standByMode === StandByMods.TEXT && (
             <Typography>
-              Program ({program?.title}) is set, waiting on your command to
-              start!
+              {program?.media[screenId]
+                ? `Program (${program.title}) is set, waiting on your command to
+              start!`
+                : `No media found on screen id ${screenId}`}
             </Typography>
           )}
           {standByMode === StandByMods.ANIMATION && <CircularProgress />}

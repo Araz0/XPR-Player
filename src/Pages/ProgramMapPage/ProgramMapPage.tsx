@@ -5,10 +5,10 @@ import { useNavigate } from 'react-router-dom'
 import { Beenhere, Check, Delete, Save, SaveAlt } from '@mui/icons-material'
 import { IconButton, Tooltip } from '@mui/material'
 
-import { AdminPageWrapper, Popup, TreeList } from '../../components'
-import { useSupabase } from '../../hooks'
-import { useAdminStore } from '../../stores'
-import { saveProgramAsJson } from '../../utils'
+import { AdminPageWrapper, Popup, TreeList } from 'components'
+import { useSupabase } from 'hooks'
+import { useAdminStore } from 'stores'
+import { saveProgramAsJson } from 'utils'
 
 export const ProgramMapPageRaw = () => {
   const navigate = useNavigate()

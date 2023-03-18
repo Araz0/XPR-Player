@@ -19,8 +19,9 @@ import {
   Typography,
 } from '@mui/material'
 
-import { useSupabase } from '../../hooks'
-import { useAdminStore } from '../../stores'
+import { useSupabase } from 'hooks'
+import { useAdminStore } from 'stores'
+
 import { Popup } from '../Popup'
 
 const StyledPageContainer = styled.div`

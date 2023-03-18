@@ -16,10 +16,10 @@ import {
   MenuItem,
   TextField,
 } from '@mui/material'
+import { Popup } from 'components/Popup'
 
-import { useProgram } from '../../hooks'
-import { SegmentMediaType } from '../../types'
-import { Popup } from '../Popup'
+import { useProgram } from 'hooks'
+import { SegmentMediaType } from 'types'
 
 export type SegmentMenuProps = {
   segmentId: number

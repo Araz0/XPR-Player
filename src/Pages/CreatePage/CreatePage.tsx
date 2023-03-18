@@ -5,8 +5,8 @@ import styled from 'styled-components'
 import { NoteAdd } from '@mui/icons-material'
 import { Typography, Divider, TextField, Slider, Button } from '@mui/material'
 
-import { AdminPageWrapper } from '../../components'
-import { useProgram } from '../../hooks'
+import { AdminPageWrapper } from 'components'
+import { useProgram } from 'hooks'
 
 const StyledActionsContainer = styled.div`
   max-width: 720px;

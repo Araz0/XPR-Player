@@ -3,7 +3,7 @@ import { memo, useCallback } from 'react'
 import { FileOpen } from '@mui/icons-material'
 import { IconButton, Tooltip } from '@mui/material'
 
-import { useProgram } from '../../hooks'
+import { useProgram } from 'hooks'
 
 export const LoadLocalProgramButtonRaw = () => {
   const { loadJsonProgram } = useProgram()
