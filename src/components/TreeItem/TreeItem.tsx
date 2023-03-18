@@ -17,14 +17,23 @@ import { SmallIconButton } from 'components/SmallIconButton'
 
 import { useProgram } from 'hooks'
 import { SegmentMediaType, SegmentType } from 'types'
-import { generateNewId } from 'utils'
+import { generateNewId, getRandomColor } from 'utils'
 
-const StyledListItemContainer = styled.li`
+const StyledListItemContainer = styled.li<{
+  isRefed: boolean
+  uniqueColor: number
+}>`
   display: inline-table;
   text-align: center;
   list-style-type: none;
   position: relative;
   padding: 20px 5px 0 5px;
+
+  article {
+    --uniqueColor: ${(props) => getRandomColor(props.uniqueColor)};
+    ${(props) =>
+      props.isRefed && 'border: 1px dashed var(--uniqueColor) !important;'};
+  }
 `
 const StyledVerticalContainer = styled.div`
   display: flex;
@@ -44,6 +53,7 @@ export const TreeItemRaw = ({ segmentId }: TreeItemProps) => {
   const descriptionRef = useRef<HTMLInputElement>()
   const [canEdit, setCanEdit] = useState<boolean>(false)
   const [showMore, setShowMore] = useState<boolean>(false)
+  const [isReferenced, setIsReferenced] = useState<boolean>(false)
 
   const [segment, setSegment] = useState<SegmentType | undefined>(undefined)
   const [media, setMedia] = useState<SegmentMediaType | undefined>(undefined)
@@ -54,6 +64,7 @@ export const TreeItemRaw = ({ segmentId }: TreeItemProps) => {
     setMediaIdInSegment,
     addMediaToProgram,
     addNewSegment,
+    segmentIsReferenced,
   } = useProgram()
 
   useEffect(() => {
@@ -65,6 +76,12 @@ export const TreeItemRaw = ({ segmentId }: TreeItemProps) => {
     if (!foundMedia) return
     setMedia(foundMedia)
   }, [getMediaById, getSegmentById, segmentId])
+
+  useEffect(() => {
+    if (!segment) return
+    const segmentIsReferencedMuiltipletimes = segmentIsReferenced(segment.id)
+    setIsReferenced(segmentIsReferencedMuiltipletimes)
+  }, [segment, segmentIsReferenced])
 
   const handleToggleShowMore = useCallback(() => {
     setShowMore(!showMore)
@@ -102,7 +119,10 @@ export const TreeItemRaw = ({ segmentId }: TreeItemProps) => {
 
   // if (!segment) return null
   return (
-    <StyledListItemContainer>
+    <StyledListItemContainer
+      isRefed={isReferenced}
+      uniqueColor={segment?.id || -1}
+    >
       <article>
         <StyledVerticalContainer>
           <EditableLabel
