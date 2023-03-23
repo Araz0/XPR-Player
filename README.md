@@ -21,6 +21,11 @@ This project should be able to:
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Production Requirements
+
+1. Install `node.js`
+2. Install `serve` with this command: `npm i -g serve`
+   
 ## Available Scripts
 
 In the project directory, you can run:
