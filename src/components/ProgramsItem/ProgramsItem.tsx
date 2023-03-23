@@ -1,4 +1,4 @@
-import { memo, useRef } from 'react'
+import { memo, useCallback, useRef } from 'react'
 
 import styled from 'styled-components'
 
@@ -51,6 +51,7 @@ export type ProgramsItemProps = {
   onCopy: () => void
   onDownload: () => void
   onDelete: () => void
+  onClick: () => void
 }
 
 export const ProgramsItemRaw = ({
@@ -62,12 +63,17 @@ export const ProgramsItemRaw = ({
   onCopy,
   onDownload,
   onDelete,
+  onClick,
 }: ProgramsItemProps) => {
   const btnsRef = useRef<HTMLDivElement>(null)
 
+  const handleOnClick = useCallback((e: any) => {
+    e.stopPropagation()
+  }, [])
+
   return (
     <BorderdContainer hotRef={btnsRef}>
-      <StyledChildrenContainer>
+      <StyledChildrenContainer onClick={onClick}>
         <StyledThumbnail src={thumbnail} alt={`${title} thumbnail`} />
         <StyledTitle>{title}</StyledTitle>
         <p>{description}</p>
@@ -76,7 +82,7 @@ export const ProgramsItemRaw = ({
             return <Chip label={tag} />
           })}
         </StyledTagsContainer>
-        <StyledActionsContainer ref={btnsRef}>
+        <StyledActionsContainer ref={btnsRef} onClick={handleOnClick}>
           <IconButton onClick={onEdit} style={{ color: WHITE_COLOR }}>
             <EditOutlined />
           </IconButton>

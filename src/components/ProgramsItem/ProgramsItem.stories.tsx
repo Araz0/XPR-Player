@@ -14,6 +14,7 @@ export const Default: Story = (args) => {
       onCopy={() => alert('onCopy')}
       onDownload={() => alert('onDownload')}
       onDelete={() => alert('onDelete')}
+      onClick={() => alert('onClick')}
     />
   )
 }

@@ -31,7 +31,12 @@ export const CreatePageRaw = () => {
 
   const handleCreateProgram = useCallback(() => {
     if (!titleRef.current?.value) return
-    createNewProgram(titleRef.current?.value, screensAmount)
+    createNewProgram(
+      titleRef.current?.value,
+      'discription Place holder',
+      'somefile.png',
+      screensAmount
+    )
   }, [createNewProgram, screensAmount])
 
   return (

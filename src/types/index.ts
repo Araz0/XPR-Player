@@ -2,6 +2,8 @@ export * from './eventNames'
 
 export type ProgramType = {
   id: number
+  discription: string
+  thumbnail: string
   title: string
   segments: SegmentType[]
   media: SegmentMediaType[]

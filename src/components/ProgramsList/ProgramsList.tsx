@@ -2,28 +2,22 @@ import { memo, useCallback, useState } from 'react'
 
 import { useNavigate } from 'react-router-dom'
 
-import { Delete, AccountTree, Check } from '@mui/icons-material'
-import {
-  IconButton,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemText,
-  styled,
-  Tooltip,
-} from '@mui/material'
+import { Check } from '@mui/icons-material'
+import { IconButton, List, styled } from '@mui/material'
+import { ProgramsItem } from 'components/ProgramsItem'
 
 import { useSupabase } from 'hooks'
 import { useAdminStore } from 'stores'
 import { DbProgram, ProgramType } from 'types'
+import { saveProgramAsJson } from 'utils'
 
 import { Popup } from '../Popup'
 
 const StyledProgramsListContainer = styled(List)`
-  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
   margin: 0 auto;
-  border: 1px dashed rgba(255, 255, 255, 0.5);
-  border-radius: 5px;
 `
 
 export type ProgramsListProps = {
@@ -61,6 +55,10 @@ export const ProgramsListRaw = ({ programs }: ProgramsListProps) => {
     [navigate, setProgram]
   )
 
+  const handleSaveProgramAsJson = useCallback((program: ProgramType) => {
+    saveProgramAsJson(program)
+  }, [])
+
   if (programs.length === 0)
     return (
       <h3>
@@ -72,43 +70,23 @@ export const ProgramsListRaw = ({ programs }: ProgramsListProps) => {
     <StyledProgramsListContainer>
       {programs.map((program: DbProgram) => {
         return (
-          <Tooltip
-            key={program.id}
-            title={new Date(program.internal_id).toLocaleString()}
-            placement="left"
-          >
-            <ListItem
-              secondaryAction={
-                <>
-                  <Tooltip title="Open Program Map">
-                    <IconButton
-                      edge="end"
-                      onClick={() => handleOpenProgram(program)}
-                    >
-                      <AccountTree />
-                    </IconButton>
-                  </Tooltip>
-                  <Tooltip title="Delete Program">
-                    <IconButton
-                      edge="end"
-                      onClick={() => setDeleteProgramId(program.program.id)}
-                    >
-                      <Delete />
-                    </IconButton>
-                  </Tooltip>
-                </>
-              }
-              disablePadding
-            >
-              <ListItemButton
-                role={undefined}
-                onClick={() => handleSetAsSelectedProgram(program.program)}
-                dense
-              >
-                <ListItemText primary={program.program.title} />
-              </ListItemButton>
-            </ListItem>
-          </Tooltip>
+          <>
+            <ProgramsItem
+              key={program.id}
+              title={program.program.title}
+              description={program.program.discription}
+              tags={[
+                `${program.program.amountOfScreens} screens`,
+                '7-12 Minutes',
+              ]}
+              thumbnail={program.program.thumbnail}
+              onClick={() => handleSetAsSelectedProgram(program.program)}
+              onEdit={() => handleOpenProgram(program)}
+              onCopy={() => alert('onCopy')}
+              onDownload={() => handleSaveProgramAsJson(program.program)}
+              onDelete={() => setDeleteProgramId(program.program.id)}
+            />
+          </>
         )
       })}
       {deleteProgramId && (

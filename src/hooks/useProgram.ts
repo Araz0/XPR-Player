@@ -81,11 +81,18 @@ export function useProgram() {
   }, [program, setProgram])
 
   const createNewProgram = useCallback(
-    (title: string, amountOfScreens: number) => {
+    (
+      title: string,
+      discription: string,
+      thumbnail: string,
+      amountOfScreens: number
+    ) => {
       const newProgram = {
         id: generateNewId(),
         title: title,
         amountOfScreens: amountOfScreens,
+        discription: discription,
+        thumbnail: thumbnail,
         segments: [],
         media: [],
       }
