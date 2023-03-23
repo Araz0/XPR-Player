@@ -16,9 +16,8 @@ export const Default: Story = (args) => {
     </BorderdContainer>
   )
 }
-Default.args = {}
-Default.storyName = 'BorderdContainer'
+Default.storyName = 'SpecialContainerBorder'
 
 export default {
-  title: 'BorderdContainers',
+  title: 'SpecialContainerBorder',
 }

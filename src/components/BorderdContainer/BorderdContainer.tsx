@@ -16,10 +16,10 @@ const StyledContainerBorder = styled.div<{ hotBorder: boolean }>`
 
   :hover {
     cursor: pointer;
-    ${(props) => !props.hotBorder && `background: ${PRIMARY_COLOR};`}
     ${(props) =>
-      props.hotBorder &&
-      `background: linear-gradient(160deg, ${PRIMARY_GRADIENT});`}
+      props.hotBorder
+        ? `background: linear-gradient(160deg, ${PRIMARY_GRADIENT});`
+        : `background: ${PRIMARY_COLOR};`}
   }
 `
 const StyledContainer = styled.div`
