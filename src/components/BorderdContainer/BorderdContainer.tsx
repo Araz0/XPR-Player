@@ -4,14 +4,14 @@ import styled from 'styled-components'
 
 import {
   PRIMARY_COLOR,
-  BACKGROUND_COLOR,
+  BACKGROUND_COLOR_SECONDERY,
   PRIMARY_GRADIENT,
 } from 'constants/styles'
 
 const StyledContainerBorder = styled.div<{ hotBorder: boolean }>`
   border-radius: 10px;
   position: relative;
-  background: ${BACKGROUND_COLOR};
+  background: ${BACKGROUND_COLOR_SECONDERY};
   padding: 2px;
 
   :hover {
@@ -23,7 +23,7 @@ const StyledContainerBorder = styled.div<{ hotBorder: boolean }>`
   }
 `
 const StyledContainer = styled.div`
-  background-color: ${BACKGROUND_COLOR};
+  background-color: ${BACKGROUND_COLOR_SECONDERY};
   border-radius: 8px;
   padding: 1rem;
 `
