@@ -54,7 +54,11 @@ export const MainButtonRaw = ({
   onClick,
   variant,
 }: MainButtonProps) => {
-  return <StyledButton variant={variant}>{children}</StyledButton>
+  return (
+    <StyledButton variant={variant} onClick={onClick}>
+      {children}
+    </StyledButton>
+  )
 }
 
 export const MainButton = memo(MainButtonRaw)

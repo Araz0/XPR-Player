@@ -92,6 +92,7 @@ export const AdminPageWrapperRaw = ({
     }
     setShowLoginPopup(false)
   }, [signInViaMagicLink])
+
   const handleRequestLogout = useCallback(async () => {
     await signOut()
   }, [signOut])
