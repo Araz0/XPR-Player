@@ -22,12 +22,12 @@ export const CreatePageRaw = () => {
   const { createNewProgram } = useProgram()
   const [screensAmount, setScreensAmount] = useState<number>(1)
 
-  const handleChangeScreensAmount = (
-    event: Event,
-    newValue: number | number[]
-  ) => {
-    setScreensAmount(newValue as number)
-  }
+  const handleChangeScreensAmount = useCallback(
+    () => (event: Event, newValue: number | number[]) => {
+      setScreensAmount(newValue as number)
+    },
+    []
+  )
 
   const handleCreateProgram = useCallback(() => {
     if (!titleRef.current?.value) return

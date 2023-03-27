@@ -8,11 +8,16 @@ import {
   PRIMARY_GRADIENT,
 } from 'constants/styles'
 
-const StyledContainerBorder = styled.div<{ hotBorder: boolean }>`
+const StyledContainerBorder = styled.div<{
+  hotBorder: boolean
+  isSelected?: boolean
+}>`
   border-radius: 10px;
   position: relative;
   background: ${BACKGROUND_COLOR_SECONDERY};
   padding: 2px;
+
+  ${(props) => props.isSelected && `background: ${PRIMARY_COLOR};`}
 
   :hover {
     cursor: pointer;
@@ -22,8 +27,14 @@ const StyledContainerBorder = styled.div<{ hotBorder: boolean }>`
         : `background: ${PRIMARY_COLOR};`}
   }
 `
-const StyledContainer = styled.div`
-  background-color: ${BACKGROUND_COLOR_SECONDERY};
+const StyledContainer = styled.div<{
+  isSelected?: boolean
+}>`
+  ${(props) =>
+    `background-color: ${
+      props.isSelected ? PRIMARY_COLOR : BACKGROUND_COLOR_SECONDERY
+    };`}
+
   border-radius: 8px;
   padding: 1rem;
 `
@@ -31,10 +42,12 @@ const StyledContainer = styled.div`
 export type BorderdContainerProps = {
   children: React.ReactNode
   hotRef?: React.RefObject<HTMLDivElement>
+  isSelected?: boolean
 }
 export const BorderdContainerRaw = ({
   children,
   hotRef,
+  isSelected,
 }: BorderdContainerProps) => {
   const [hotHoverd, setHotHoverd] = useState<boolean>(false)
 
@@ -57,8 +70,8 @@ export const BorderdContainerRaw = ({
   }, [handleOnHover, handleOnNotHoverd, hotRef])
 
   return (
-    <StyledContainerBorder hotBorder={hotHoverd}>
-      <StyledContainer>{children}</StyledContainer>
+    <StyledContainerBorder hotBorder={hotHoverd} isSelected={isSelected}>
+      <StyledContainer isSelected={isSelected}>{children}</StyledContainer>
     </StyledContainerBorder>
   )
 }
