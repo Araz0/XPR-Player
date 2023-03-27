@@ -11,6 +11,7 @@ import {
   Pause,
 } from '@mui/icons-material'
 import { Button, IconButton, Tooltip, Typography } from '@mui/material'
+import { useCheckUserAuth } from 'hooks/useCheckUserAuth'
 
 import {
   AdminPageWrapper,
@@ -29,6 +30,8 @@ const StyledActionsContainer = styled.div`
 `
 
 export const AdminPageRaw = () => {
+  useCheckUserAuth()
+
   const selectedProgram = useAdminStore((s) => s.selectedProgram)
   const setSelectedProgram = useAdminStore((s) => s.setSelectedProgram)
   const loadedPrograms = useAdminStore((s) => s.loadedPrograms)

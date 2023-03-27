@@ -1,4 +1,4 @@
-import { memo, useCallback, useRef } from 'react'
+import { memo, useCallback, useEffect, useRef } from 'react'
 
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
@@ -7,6 +7,7 @@ import { TextField, Typography } from '@mui/material'
 
 import { CenterdContainer, MainButton, MainButtonVariants } from 'components'
 import { useSupabase } from 'hooks'
+import { useAdminStore } from 'stores'
 
 const StyledButtonscontainer = styled.div`
   display: flex;
@@ -20,6 +21,13 @@ export const LoginPageRaw = () => {
   const navigate = useNavigate()
   const { signInViaMagicLink } = useSupabase()
   const emailRef = useRef<HTMLInputElement>()
+  const userIsLoggedIn = useAdminStore((s) => s.userIsLoggedIn)
+
+  useEffect(() => {
+    if (userIsLoggedIn) {
+      navigate('/')
+    }
+  }, [navigate, userIsLoggedIn])
 
   const handleRequestLogin = useCallback(async () => {
     const value = emailRef.current?.value

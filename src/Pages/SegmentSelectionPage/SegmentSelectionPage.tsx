@@ -4,6 +4,7 @@ import styled from 'styled-components'
 
 import { ThumbUp, ThumbDown } from '@mui/icons-material'
 import { Button } from '@mui/material'
+import { useCheckUserAuth } from 'hooks/useCheckUserAuth'
 
 import { CenterdContainer } from 'components'
 import { useSocketService } from 'services'
@@ -15,6 +16,8 @@ const StyledButtonsContainer = styled.div`
 
 export const SegmentSelectionPageRaw = () => {
   const { socketService } = useSocketService()
+  useCheckUserAuth()
+
   const handleClickedYes = useCallback(() => {
     socketService.emmitSelectedScreenIndex(1)
   }, [socketService])

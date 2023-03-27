@@ -1,5 +1,7 @@
 import { memo } from 'react'
 
+import { useCheckUserAuth } from 'hooks/useCheckUserAuth'
+
 import {
   AdminPageWrapper,
   LoadingAnimation,
@@ -10,6 +12,7 @@ import { useAdminStore } from 'stores'
 
 export const ProgramsPageRaw = () => {
   const loadedPrograms = useAdminStore((s) => s.loadedPrograms)
+  useCheckUserAuth()
 
   return (
     <AdminPageWrapper
