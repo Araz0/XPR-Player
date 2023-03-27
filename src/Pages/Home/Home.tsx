@@ -2,36 +2,30 @@ import { memo } from 'react'
 
 import { useNavigate } from 'react-router-dom'
 
-import { Person, Tv, ThumbsUpDown } from '@mui/icons-material'
-import { Button } from '@mui/material'
-
-import { CenterdContainer } from 'components'
+import { CenterdContainer, MainButton, MainButtonVariants } from 'components'
 
 export const HomeRaw = () => {
   const navigate = useNavigate()
   return (
     <CenterdContainer>
-      <Button
-        variant="outlined"
+      <MainButton
+        variant={MainButtonVariants.PRIMARY}
         onClick={() => navigate('/admin')}
-        startIcon={<Person />}
       >
         Admin Page
-      </Button>
-      <Button
-        variant="outlined"
+      </MainButton>
+      <MainButton
+        variant={MainButtonVariants.PRIMARY}
         onClick={() => navigate('/screen/0')}
-        startIcon={<Tv />}
       >
         Screen
-      </Button>
-      <Button
-        variant="outlined"
+      </MainButton>
+      <MainButton
+        variant={MainButtonVariants.PRIMARY}
         onClick={() => navigate('/selection')}
-        startIcon={<ThumbsUpDown />}
       >
         Screen Selection
-      </Button>
+      </MainButton>
     </CenterdContainer>
   )
 }
