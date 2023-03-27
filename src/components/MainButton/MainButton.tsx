@@ -31,7 +31,7 @@ const StyledButton = styled.button<{ variant?: string }>`
   padding: 6px 32px;
   gap: 10px;
 
-  width: 199px;
+  width: 180px;
   height: 36px;
 
   border: ${(props) =>
@@ -55,7 +55,10 @@ export const MainButtonRaw = ({
   variant,
 }: MainButtonProps) => {
   return (
-    <StyledButton variant={variant} onClick={onClick}>
+    <StyledButton
+      variant={variant ? variant : MainButtonVariants.BASIC}
+      onClick={onClick}
+    >
       {children}
     </StyledButton>
   )
