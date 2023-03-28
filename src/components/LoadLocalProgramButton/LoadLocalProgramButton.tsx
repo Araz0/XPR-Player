@@ -1,12 +1,23 @@
-import { memo, useCallback } from 'react'
+import { memo, useCallback, useRef } from 'react'
 
-import { FileOpen } from '@mui/icons-material'
+import { DownloadOutlined, FileOpen } from '@mui/icons-material'
 import { IconButton, Tooltip } from '@mui/material'
+import { MainButton, MainButtonVariants } from 'components/MainButton'
 
 import { useProgram } from 'hooks'
 
-export const LoadLocalProgramButtonRaw = () => {
+export type LoadLocalProgramButtonProps = {
+  smallVariant?: boolean
+}
+export const LoadLocalProgramButtonRaw = ({
+  smallVariant,
+}: LoadLocalProgramButtonProps) => {
   const { loadJsonProgram } = useProgram()
+  const inputFile = useRef<HTMLInputElement | null>(null)
+
+  const handleOnClick = useCallback(() => {
+    inputFile.current?.click()
+  }, [])
 
   const handleImportJsonProgram = useCallback(
     (e: any) => {
@@ -16,15 +27,34 @@ export const LoadLocalProgramButtonRaw = () => {
   )
   return (
     <Tooltip title="Load program as JSON">
-      <IconButton component="label">
-        <input
-          hidden
-          accept="application/json"
-          type="file"
-          onChange={handleImportJsonProgram}
-        />
-        <FileOpen />
-      </IconButton>
+      {smallVariant ? (
+        <IconButton component="label">
+          <input
+            hidden
+            accept="application/json"
+            type="file"
+            onChange={handleImportJsonProgram}
+          />
+          <FileOpen />
+        </IconButton>
+      ) : (
+        <MainButton
+          onClick={handleOnClick}
+          width={'fit-contnet'}
+          startIcon={<DownloadOutlined />}
+          variant={MainButtonVariants.PRIMARY}
+        >
+          Import Program
+          <input
+            hidden
+            accept="application/json"
+            type="file"
+            onChange={handleImportJsonProgram}
+            ref={inputFile}
+            style={{ display: 'none' }}
+          />
+        </MainButton>
+      )}
     </Tooltip>
   )
 }
