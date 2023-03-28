@@ -2,7 +2,13 @@ import { memo } from 'react'
 
 import styled from 'styled-components'
 
-import { WHITE_COLOR, SECONDARY_COLOR, PRIMARY_COLOR } from 'constants/styles'
+import {
+  WHITE_COLOR,
+  SECONDARY_COLOR,
+  PRIMARY_COLOR,
+  PRIMARY_COLOR_HOVERD,
+  SECONDARY_COLOR_HOVERD,
+} from 'constants/styles'
 
 export enum MainButtonVariants {
   PRIMARY = 'primary',
@@ -42,6 +48,15 @@ const StyledButton = styled.button<{ variant?: string; width?: string }>`
   border-radius: 4px;
 
   cursor: pointer;
+
+  :hover {
+    background-color: ${(props) =>
+      props.variant === MainButtonVariants.PRIMARY
+        ? PRIMARY_COLOR_HOVERD
+        : props.variant === MainButtonVariants.SECONDARY
+        ? SECONDARY_COLOR_HOVERD
+        : 'transparent'};
+  }
 `
 
 export type MainButtonProps = {

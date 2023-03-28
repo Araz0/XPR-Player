@@ -25,7 +25,9 @@ const StyledActionsContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 15px;
-  margin-bottom: 25px;
+  margin-bottom: 20px;
+  margin-top: 25px;
+
   > :last-child {
     margin-left: auto;
   }
