@@ -1,19 +1,16 @@
-import { withRouter } from 'storybook-addon-react-router-v6'
-
 import { Story } from '@storybook/react'
 
 import { DbProgram } from 'types'
 
-import { ProgramsList } from './ProgramsList'
+import { ProgramsListDropdown } from './ProgramsListDropdown'
 
 export const Default: Story = (args) => {
-  return <ProgramsList programs={fakePrograms} />
+  return <ProgramsListDropdown programs={fakePrograms} />
 }
-Default.storyName = 'ProgramsList'
+Default.storyName = 'ProgramsListDropdown'
 
 export default {
-  title: 'ProgramsList',
-  decorators: [withRouter],
+  title: 'ProgramsListDropdown',
 }
 
 const fakePrograms: DbProgram[] = [

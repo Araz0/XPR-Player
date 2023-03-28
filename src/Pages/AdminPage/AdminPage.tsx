@@ -3,14 +3,12 @@ import { memo, useCallback } from 'react'
 import styled from 'styled-components'
 
 import {
-  Backspace,
   Moving,
   PauseOutlined,
   PlayArrowOutlined,
   ReplayOutlined,
   SettingsOutlined,
 } from '@mui/icons-material'
-import { IconButton, Tooltip, Typography } from '@mui/material'
 import { useCheckUserAuth } from 'hooks/useCheckUserAuth'
 
 import {
@@ -18,6 +16,7 @@ import {
   LoadLocalProgramButton,
   MainButton,
   MainButtonVariants,
+  ProgramsListDropdown,
   ScreensList,
 } from 'components'
 import { useSocketService } from 'services'
@@ -37,7 +36,7 @@ export const AdminPageRaw = () => {
   useCheckUserAuth()
 
   const selectedProgram = useAdminStore((s) => s.selectedProgram)
-  const setSelectedProgram = useAdminStore((s) => s.setSelectedProgram)
+  const loadedPrograms = useAdminStore((s) => s.loadedPrograms)
   const { socketService } = useSocketService()
 
   const handelSendProgram = useCallback(() => {
@@ -50,17 +49,10 @@ export const AdminPageRaw = () => {
       topNavHeader="Home"
       topNavActions={<LoadLocalProgramButton />}
     >
+      {loadedPrograms && <ProgramsListDropdown programs={loadedPrograms} />}
+
       {selectedProgram !== undefined && (
         <>
-          <Typography variant="button">
-            {`Selected Program: ${selectedProgram.title}`}
-            <Tooltip title="deselect program">
-              <IconButton onClick={() => setSelectedProgram(undefined)}>
-                <Backspace />
-              </IconButton>
-            </Tooltip>
-          </Typography>
-
           <StyledActionsContainer>
             <MainButton
               variant={MainButtonVariants.PRIMARY}

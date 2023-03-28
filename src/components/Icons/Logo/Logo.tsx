@@ -3,7 +3,7 @@ import { memo } from 'react'
 export const LogoRaw = () => {
   return (
     <svg viewBox="0 0 113 130" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <g clip-path="url(#clip0_14_88)">
+      <g clipPath="url(#clip0_14_88)">
         <path
           d="M0 0.319824V32.5898L56 64.6098V32.4698L0 0.319824Z"
           fill="#0368FF"
