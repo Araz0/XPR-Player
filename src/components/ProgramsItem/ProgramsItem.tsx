@@ -15,7 +15,7 @@ import { WHITE_COLOR } from 'constants/styles'
 
 const StyledChildrenContainer = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr 2fr 2fr 1fr;
+  grid-template-columns: 1fr 2fr 2fr 2fr 1fr;
   align-items: center;
   font-family: 'Roboto', sans-serif;
   font-size: 0.9rem;

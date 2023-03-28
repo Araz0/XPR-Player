@@ -56,33 +56,29 @@ export const ProgramMapPageRaw = () => {
 
   if (!program) return <h1>Something went wrong loading the program</h1>
   return (
-    <AdminPageWrapper
-      topNavHeader="Tree map"
-      topNavActions={
-        <>
-          <Tooltip title="Select Program">
-            <IconButton onClick={handleSettingProgramAsSelected}>
-              <Beenhere />
-            </IconButton>
-          </Tooltip>
-          <Tooltip title="Save Program as JSON">
-            <IconButton onClick={handleSaveProgramAsJson}>
-              <SaveAlt />
-            </IconButton>
-          </Tooltip>
-          <Tooltip title="Save Changes in Database">
-            <IconButton onClick={handleUpdateProgramInDb}>
-              <Save />
-            </IconButton>
-          </Tooltip>
-          <Tooltip title="Delete Program">
-            <IconButton onClick={() => setShowDeleteProgram(true)}>
-              <Delete />
-            </IconButton>
-          </Tooltip>
-        </>
-      }
-    >
+    <AdminPageWrapper>
+      <>
+        <Tooltip title="Select Program">
+          <IconButton onClick={handleSettingProgramAsSelected}>
+            <Beenhere />
+          </IconButton>
+        </Tooltip>
+        <Tooltip title="Save Program as JSON">
+          <IconButton onClick={handleSaveProgramAsJson}>
+            <SaveAlt />
+          </IconButton>
+        </Tooltip>
+        <Tooltip title="Save Changes in Database">
+          <IconButton onClick={handleUpdateProgramInDb}>
+            <Save />
+          </IconButton>
+        </Tooltip>
+        <Tooltip title="Delete Program">
+          <IconButton onClick={() => setShowDeleteProgram(true)}>
+            <Delete />
+          </IconButton>
+        </Tooltip>
+      </>
       <TreeList program={program} />
       {showDeleteProgram && (
         <Popup

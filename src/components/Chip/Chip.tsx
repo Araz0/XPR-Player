@@ -8,7 +8,7 @@ const StyledSpan = styled.span`
   background-color: ${WHITE_COLOR};
   color: ${BACKGROUND_COLOR_PRIMERY};
   border-radius: 15px;
-  padding: 3px 7px;
+  padding: 3px 15px;
 `
 
 export type ChipProps = {

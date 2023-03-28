@@ -18,6 +18,7 @@ const StyledProgramsListContainer = styled(List)`
   flex-direction: column;
   gap: 10px;
   margin: 0 auto;
+  align-items: center;
 `
 
 export type ProgramsListProps = {
@@ -70,23 +71,21 @@ export const ProgramsListRaw = ({ programs }: ProgramsListProps) => {
     <StyledProgramsListContainer>
       {programs.map((program: DbProgram) => {
         return (
-          <>
-            <ProgramsItem
-              key={program.id}
-              title={program.program.title}
-              description={program.program.discription}
-              tags={[
-                `${program.program.amountOfScreens} screens`,
-                '7-12 Minutes',
-              ]}
-              thumbnail={program.program.thumbnail}
-              onClick={() => handleSetAsSelectedProgram(program.program)}
-              onEdit={() => handleOpenProgram(program)}
-              onCopy={() => alert('onCopy')}
-              onDownload={() => handleSaveProgramAsJson(program.program)}
-              onDelete={() => setDeleteProgramId(program.program.id)}
-            />
-          </>
+          <ProgramsItem
+            key={program.id}
+            title={program.program.title}
+            description={program.program.discription}
+            tags={[
+              `${program.program.amountOfScreens} screens`,
+              '7-12 Minutes',
+            ]}
+            thumbnail={program.program.thumbnail}
+            onClick={() => handleSetAsSelectedProgram(program.program)}
+            onEdit={() => handleOpenProgram(program)}
+            onCopy={() => alert('onCopy')}
+            onDownload={() => handleSaveProgramAsJson(program.program)}
+            onDelete={() => setDeleteProgramId(program.program.id)}
+          />
         )
       })}
       {deleteProgramId && (

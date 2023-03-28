@@ -13,7 +13,6 @@ import { useCheckUserAuth } from 'hooks/useCheckUserAuth'
 
 import {
   AdminPageWrapper,
-  LoadLocalProgramButton,
   MainButton,
   MainButtonVariants,
   ProgramsListDropdown,
@@ -45,10 +44,7 @@ export const AdminPageRaw = () => {
   }, [selectedProgram, socketService])
 
   return (
-    <AdminPageWrapper
-      topNavHeader="Home"
-      topNavActions={<LoadLocalProgramButton />}
-    >
+    <AdminPageWrapper>
       {loadedPrograms && <ProgramsListDropdown programs={loadedPrograms} />}
 
       {selectedProgram !== undefined && (

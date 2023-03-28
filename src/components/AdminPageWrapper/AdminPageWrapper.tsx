@@ -53,8 +53,6 @@ const StyledRightActionsContainer = styled.div`
 
 export type AdminPageWrapperProps = {
   children: ReactNode
-  topNavActions?: ReactNode
-  topNavHeader?: string
 }
 export const AdminPageWrapperRaw = ({ children }: AdminPageWrapperProps) => {
   const navigate = useNavigate()
