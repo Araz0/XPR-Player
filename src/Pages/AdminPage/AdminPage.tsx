@@ -15,10 +15,8 @@ import { useCheckUserAuth } from 'hooks/useCheckUserAuth'
 
 import {
   AdminPageWrapper,
-  LoadingAnimation,
   LoadLocalProgramButton,
   ProgramScreens,
-  ProgramsList,
 } from 'components'
 import { useSocketService } from 'services'
 import { useAdminStore } from 'stores'
@@ -34,7 +32,6 @@ export const AdminPageRaw = () => {
 
   const selectedProgram = useAdminStore((s) => s.selectedProgram)
   const setSelectedProgram = useAdminStore((s) => s.setSelectedProgram)
-  const loadedPrograms = useAdminStore((s) => s.loadedPrograms)
   const { socketService } = useSocketService()
 
   const handelSendProgram = useCallback(() => {
@@ -47,7 +44,7 @@ export const AdminPageRaw = () => {
       topNavHeader="Home"
       topNavActions={<LoadLocalProgramButton />}
     >
-      {selectedProgram !== undefined ? (
+      {selectedProgram !== undefined && (
         <>
           <Typography variant="button">
             {`Selected Program: ${selectedProgram.title}`}
@@ -98,10 +95,6 @@ export const AdminPageRaw = () => {
           </StyledActionsContainer>
           <ProgramScreens />
         </>
-      ) : !loadedPrograms ? (
-        <LoadingAnimation />
-      ) : (
-        <ProgramsList programs={loadedPrograms} />
       )}
     </AdminPageWrapper>
   )

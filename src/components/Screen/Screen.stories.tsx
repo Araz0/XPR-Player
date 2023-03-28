@@ -1,11 +1,18 @@
 import { useCallback } from 'react'
 
 import { withRouter } from 'storybook-addon-react-router-v6'
+import styled from 'styled-components'
 
 import { Story } from '@storybook/react'
 import { Screen } from 'components/Screen'
 
 import { useScreenStore } from 'stores'
+
+const StyledContainer = styled.div`
+  height: 310px;
+  width: 555px;
+  display: flex;
+`
 
 export const Default: Story = (args) => {
   const setProgram = useScreenStore((s) => s.setProgram)
@@ -17,7 +24,9 @@ export const Default: Story = (args) => {
   return (
     <>
       <button onClick={handleSetProgram}>set Program</button>
-      <Screen screenId={0} />
+      <StyledContainer>
+        <Screen screenId={0} />
+      </StyledContainer>
     </>
   )
 }

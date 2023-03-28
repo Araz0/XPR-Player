@@ -22,9 +22,10 @@ const StyledScreenPlayerContainer = styled.div`
 `
 export type ScreenProps = {
   screenId: number
+  backgroundColor?: string
 }
 
-export const ScreenRaw = ({ screenId }: ScreenProps) => {
+export const ScreenRaw = ({ screenId, backgroundColor }: ScreenProps) => {
   const screenPlayerService = new ScreenService()
 
   const programStarted = useScreenStore((s) => s.programStarted)
@@ -48,7 +49,7 @@ export const ScreenRaw = ({ screenId }: ScreenProps) => {
   return (
     <StyledScreenPlayerContainer ref={playerContainerRef}>
       {!programStarted && (
-        <StandbyOverlay>
+        <StandbyOverlay backgroundColor={backgroundColor}>
           {standByMode === StandByMods.TEXT && (
             <Typography>
               {program?.media[screenId]
