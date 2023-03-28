@@ -5,7 +5,11 @@ import styled from 'styled-components'
 
 import { Close } from '@mui/icons-material'
 import { Typography, IconButton } from '@mui/material'
-import { WHITE_COLOR, BACKGROUND_COLOR_PRIMERY } from 'constants/styles'
+import {
+  WHITE_COLOR,
+  BACKGROUND_COLOR_PRIMERY,
+  PRIMARY_COLOR,
+} from 'constants/styles'
 
 const StyledContainer = styled.div`
   position: absolute;
@@ -16,6 +20,8 @@ const StyledContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 10;
   .popup-content {
     border: 1px solid;
     padding: 20px;
@@ -27,7 +33,7 @@ const StyledContainer = styled.div`
     margin-bottom: 10px;
   }
   button {
-    color: ${BACKGROUND_COLOR_PRIMERY};
+    color: ${PRIMARY_COLOR};
   }
 `
 const StyledExitContainer = styled.div`
@@ -38,10 +44,10 @@ const StyledHeader = styled.div`
   text-align: center;
 `
 
-const StyledActionsContainer = styled.div`
+const StyledActionsContainer = styled.div<{ fullWidth?: boolean }>`
   display: flex;
   flex-direction: column;
-  width: fit-content;
+  width: ${(props) => (props.fullWidth ? '100%' : 'fit-content')};
 `
 
 export type PopupProps = {
@@ -49,12 +55,14 @@ export type PopupProps = {
   header: string
   bodyText: string
   children: React.ReactNode
+  fullWidth?: boolean
 }
 export const PopupRaw = ({
   onClose,
   header,
   bodyText,
   children,
+  fullWidth,
 }: PopupProps) => {
   const [container, setContainer] = useState<HTMLDivElement | undefined>()
 
@@ -90,7 +98,9 @@ export const PopupRaw = ({
           {header && <Typography variant="h6">{header}</Typography>}
           {bodyText && <Typography variant="subtitle1">{bodyText}</Typography>}
         </StyledHeader>
-        <StyledActionsContainer>{children}</StyledActionsContainer>
+        <StyledActionsContainer fullWidth={fullWidth}>
+          {children}
+        </StyledActionsContainer>
       </div>
     </StyledContainer>,
     container

@@ -26,7 +26,7 @@ const StyledButton = styled.button<{ variant?: string; width?: string }>`
       ? SECONDARY_COLOR
       : 'transparent'};
 
-  color: ${WHITE_COLOR};
+  color: ${WHITE_COLOR} !important;
 
   font-weight: bold;
 
@@ -46,6 +46,7 @@ const StyledButton = styled.button<{ variant?: string; width?: string }>`
       : 'none'};
 
   border-radius: 4px;
+  text-transform: uppercase;
 
   cursor: pointer;
 

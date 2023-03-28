@@ -1,16 +1,17 @@
-import { memo } from 'react'
+import { memo, useCallback, useState } from 'react'
 
 import styled from 'styled-components'
 
 import { Add } from '@mui/icons-material'
-import { useCheckUserAuth } from 'hooks/useCheckUserAuth'
 
 import {
   AdminPageWrapper,
+  CreateProgramForm,
   LoadingAnimation,
   LoadLocalProgramButton,
   MainButton,
   MainButtonVariants,
+  Popup,
   ProgramsList,
 } from 'components'
 import { useAdminStore } from 'stores'
@@ -23,14 +24,18 @@ const StyledActionsContainer = styled.div`
 `
 
 export const ProgramsPageRaw = () => {
-  const loadedPrograms = useAdminStore((s) => s.loadedPrograms)
-  useCheckUserAuth()
+  const [showCreatePopup, setShowCreatePopup] = useState<boolean>(false)
 
+  const loadedPrograms = useAdminStore((s) => s.loadedPrograms)
+  const handleOnCreateNewClick = useCallback(() => {
+    // navigate('/admin/create')
+    setShowCreatePopup(true)
+  }, [])
   return (
     <AdminPageWrapper>
       <StyledActionsContainer>
         <MainButton
-          onClick={() => alert('program')}
+          onClick={handleOnCreateNewClick}
           width={'fit-contnet'}
           startIcon={<Add />}
           variant={MainButtonVariants.PRIMARY}
@@ -43,6 +48,16 @@ export const ProgramsPageRaw = () => {
         <LoadingAnimation />
       ) : (
         <ProgramsList programs={loadedPrograms} />
+      )}
+      {showCreatePopup && (
+        <Popup
+          onClose={() => setShowCreatePopup(false)}
+          header="New Program"
+          bodyText="Fill up the information and submit to continue creating the program."
+          fullWidth={true}
+        >
+          <CreateProgramForm />
+        </Popup>
       )}
     </AdminPageWrapper>
   )
