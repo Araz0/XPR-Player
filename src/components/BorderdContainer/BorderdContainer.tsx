@@ -11,6 +11,8 @@ import {
 const StyledContainerBorder = styled.div<{
   hotBorder: boolean
   isSelected?: boolean
+  fitContent?: boolean
+  isFullScreen?: boolean
 }>`
   border-radius: 10px;
   position: relative;
@@ -18,6 +20,11 @@ const StyledContainerBorder = styled.div<{
   padding: 2px;
 
   ${(props) => props.isSelected && `background: ${PRIMARY_COLOR};`}
+
+  height: ${(props) =>
+    props.fitContent || !props.isFullScreen ? 'fit-content' : '100%'};
+  width: ${(props) =>
+    props.fitContent || !props.isFullScreen ? 'fit-content' : '100%'};
 
   :hover {
     cursor: pointer;
@@ -29,6 +36,7 @@ const StyledContainerBorder = styled.div<{
 `
 const StyledContainer = styled.div<{
   isSelected?: boolean
+  padding?: string
 }>`
   ${(props) =>
     `background-color: ${
@@ -36,18 +44,29 @@ const StyledContainer = styled.div<{
     };`}
 
   border-radius: 8px;
-  padding: 1rem;
+  padding: ${(props) => (props.padding ? props.padding : '1rem')};
+  height: 100%;
 `
 
 export type BorderdContainerProps = {
   children: React.ReactNode
   hotRef?: React.RefObject<HTMLDivElement>
   isSelected?: boolean
+  padding?: string
+  fitContent?: boolean
+  hotBorder?: boolean
+  onClick?: () => void
+  isFullScreen?: boolean
 }
 export const BorderdContainerRaw = ({
   children,
   hotRef,
   isSelected,
+  padding,
+  fitContent,
+  hotBorder,
+  onClick,
+  isFullScreen,
 }: BorderdContainerProps) => {
   const [hotHoverd, setHotHoverd] = useState<boolean>(false)
 
@@ -70,8 +89,16 @@ export const BorderdContainerRaw = ({
   }, [handleOnHover, handleOnNotHoverd, hotRef])
 
   return (
-    <StyledContainerBorder hotBorder={hotHoverd} isSelected={isSelected}>
-      <StyledContainer isSelected={isSelected}>{children}</StyledContainer>
+    <StyledContainerBorder
+      hotBorder={hotBorder || hotHoverd}
+      isSelected={isSelected}
+      fitContent={fitContent}
+      onClick={onClick}
+      isFullScreen={isFullScreen}
+    >
+      <StyledContainer isSelected={isSelected} padding={padding}>
+        {children}
+      </StyledContainer>
     </StyledContainerBorder>
   )
 }
