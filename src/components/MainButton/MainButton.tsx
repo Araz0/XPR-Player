@@ -10,7 +10,7 @@ export enum MainButtonVariants {
   BASIC = 'basic',
 }
 
-const StyledButton = styled.button<{ variant?: string }>`
+const StyledButton = styled.button<{ variant?: string; width?: string }>`
   box-sizing: border-box;
   font-family: 'Inter', sans-serif;
   background-color: ${(props) =>
@@ -28,11 +28,11 @@ const StyledButton = styled.button<{ variant?: string }>`
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  padding: 6px 32px;
+  padding: ${(props) => (props.width ? '2px 15px' : '6px 32px')};
   gap: 10px;
 
-  width: 180px;
-  height: 36px;
+  width: ${(props) => props.width || '180px'};
+  ${(props) => !props.width && 'height: 36px;'}
 
   border: ${(props) =>
     props.variant === MainButtonVariants.BASIC
@@ -48,18 +48,27 @@ export type MainButtonProps = {
   children: React.ReactNode
   onClick?: () => void
   variant?: MainButtonVariants
+  startIcon?: React.ReactNode
+  endtIcon?: React.ReactNode
+  width?: string
 }
 export const MainButtonRaw = ({
   children,
   onClick,
   variant,
+  startIcon,
+  endtIcon,
+  width,
 }: MainButtonProps) => {
   return (
     <StyledButton
       variant={variant ? variant : MainButtonVariants.BASIC}
       onClick={onClick}
+      width={width}
     >
+      {startIcon}
       {children}
+      {endtIcon}
     </StyledButton>
   )
 }

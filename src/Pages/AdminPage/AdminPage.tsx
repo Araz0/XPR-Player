@@ -3,20 +3,22 @@ import { memo, useCallback } from 'react'
 import styled from 'styled-components'
 
 import {
-  AccountTree,
   Backspace,
-  ControlCamera,
-  PlayArrow,
-  RestartAlt,
-  Pause,
+  Moving,
+  PauseOutlined,
+  PlayArrowOutlined,
+  ReplayOutlined,
+  SettingsOutlined,
 } from '@mui/icons-material'
-import { Button, IconButton, Tooltip, Typography } from '@mui/material'
+import { IconButton, Tooltip, Typography } from '@mui/material'
 import { useCheckUserAuth } from 'hooks/useCheckUserAuth'
 
 import {
   AdminPageWrapper,
   LoadLocalProgramButton,
-  ProgramScreens,
+  MainButton,
+  MainButtonVariants,
+  ScreensList,
 } from 'components'
 import { useSocketService } from 'services'
 import { useAdminStore } from 'stores'
@@ -25,6 +27,10 @@ const StyledActionsContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 15px;
+  margin-bottom: 25px;
+  > :last-child {
+    margin-left: auto;
+  }
 `
 
 export const AdminPageRaw = () => {
@@ -56,44 +62,56 @@ export const AdminPageRaw = () => {
           </Typography>
 
           <StyledActionsContainer>
-            <Button
-              variant="contained"
+            <MainButton
+              variant={MainButtonVariants.PRIMARY}
               onClick={handelSendProgram}
-              startIcon={<AccountTree />}
+              width={'fit-contnet'}
+              startIcon={<Moving />}
             >
-              Send Program
-            </Button>
+              Send
+            </MainButton>
 
-            <Button
-              variant="contained"
-              onClick={socketService.emmitToggleShowControls}
-              startIcon={<ControlCamera />}
-            >
-              Toggle Show Controls
-            </Button>
-            <Button
-              variant="contained"
+            <MainButton
+              variant={MainButtonVariants.PRIMARY}
               onClick={socketService.emmitStartProgram}
-              startIcon={<PlayArrow />}
+              width={'fit-contnet'}
+              startIcon={<PlayArrowOutlined />}
             >
-              Start Program
-            </Button>
-            <Button
-              variant="contained"
+              Start
+            </MainButton>
+            <MainButton
+              variant={MainButtonVariants.PRIMARY}
               onClick={socketService.emmitPauseProgram}
-              startIcon={<Pause />}
+              width={'fit-contnet'}
+              startIcon={<PauseOutlined />}
             >
-              Pause Program
-            </Button>
-            <Button
-              variant="contained"
+              Pause
+            </MainButton>
+            <MainButton
+              variant={MainButtonVariants.PRIMARY}
               onClick={socketService.emmitResetProgram}
-              startIcon={<RestartAlt />}
+              width={'fit-contnet'}
+              startIcon={<ReplayOutlined />}
             >
-              Reset Program
-            </Button>
+              Reset
+            </MainButton>
+
+            <MainButton
+              variant={MainButtonVariants.PRIMARY}
+              width={'fit-contnet'}
+              onClick={socketService.emmitToggleShowControls}
+              startIcon={<SettingsOutlined />}
+            >
+              Toggle Controls
+            </MainButton>
           </StyledActionsContainer>
-          <ProgramScreens />
+          <ScreensList
+            programScreens={[
+              'screen #1 left screen',
+              'screen #2 center screen',
+              'screen #3 right screen',
+            ]}
+          />
         </>
       )}
     </AdminPageWrapper>
