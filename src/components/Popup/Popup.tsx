@@ -4,7 +4,8 @@ import { createPortal } from 'react-dom'
 import styled from 'styled-components'
 
 import { Close } from '@mui/icons-material'
-import { Typography, IconButton, Divider } from '@mui/material'
+import { Typography, IconButton } from '@mui/material'
+import { WHITE_COLOR, BACKGROUND_COLOR_PRIMERY } from 'constants/styles'
 
 const StyledContainer = styled.div`
   position: absolute;
@@ -19,16 +20,24 @@ const StyledContainer = styled.div`
     border: 1px solid;
     padding: 20px;
     border-radius: 5px;
-    background-color: #212121;
+    background-color: ${WHITE_COLOR};
+    color: ${BACKGROUND_COLOR_PRIMERY};
   }
   .popup-content > * {
     margin-bottom: 10px;
   }
+  button {
+    color: ${BACKGROUND_COLOR_PRIMERY};
+  }
 `
-const StyledHeaderContainer = styled.div`
+const StyledExitContainer = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: end;
 `
+const StyledHeader = styled.div`
+  text-align: center;
+`
+
 const StyledActionsContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -72,18 +81,15 @@ export const PopupRaw = ({
   return createPortal(
     <StyledContainer onClick={handleOnClose}>
       <div className="popup-content" onClick={handlePopUpClick}>
-        {header && (
-          <>
-            <StyledHeaderContainer>
-              <Typography variant="h6">{header}</Typography>
-              <IconButton onClick={onClose}>
-                <Close />
-              </IconButton>
-            </StyledHeaderContainer>
-            <Divider />
-          </>
-        )}
-        {bodyText && <Typography variant="subtitle1">{bodyText}</Typography>}
+        <StyledExitContainer>
+          <IconButton onClick={onClose}>
+            <Close />
+          </IconButton>
+        </StyledExitContainer>
+        <StyledHeader>
+          {header && <Typography variant="h6">{header}</Typography>}
+          {bodyText && <Typography variant="subtitle1">{bodyText}</Typography>}
+        </StyledHeader>
         <StyledActionsContainer>{children}</StyledActionsContainer>
       </div>
     </StyledContainer>,
