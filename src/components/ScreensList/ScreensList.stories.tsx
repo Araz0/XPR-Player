@@ -2,23 +2,28 @@ import styled from 'styled-components'
 
 import { Story } from '@storybook/react'
 
-import { ScreenPreview } from './ScreenPreview'
+import { ScreensList } from './ScreensList'
 
 const StyledContainer = styled.div`
-  position: relaitve;
   width: 100vw;
   height: 100vh;
 `
+const fakeScreens = [
+  'screen #1 left screen',
+  'screen #2 center screen',
+  'screen #3 right screen',
+]
+
 export const Default: Story = (args) => {
   return (
     <StyledContainer>
-      <ScreenPreview title="First Screen" screenId={0} />
+      <ScreensList programScreens={fakeScreens} />
     </StyledContainer>
   )
 }
 Default.args = {}
-Default.storyName = 'ScreenPreview'
+Default.storyName = 'ScreensList'
 
 export default {
-  title: 'ScreenPreview',
+  title: 'ScreensList',
 }
