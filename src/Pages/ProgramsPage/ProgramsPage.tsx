@@ -40,7 +40,7 @@ export const ProgramsPageRaw = () => {
           startIcon={<Add />}
           variant={MainButtonVariants.PRIMARY}
         >
-          Add Program
+          New Program
         </MainButton>
         <LoadLocalProgramButton />
       </StyledActionsContainer>

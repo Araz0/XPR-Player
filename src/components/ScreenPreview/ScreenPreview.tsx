@@ -2,7 +2,7 @@ import { memo, useCallback, useState } from 'react'
 
 import styled from 'styled-components'
 
-import { Fullscreen } from '@mui/icons-material'
+import { AspectRatio } from '@mui/icons-material'
 import { IconButton } from '@mui/material'
 import { BorderdContainer } from 'components/BorderdContainer'
 import { Screen } from 'components/Screen/Screen'
@@ -71,7 +71,7 @@ export const ScreenPreviewRaw = ({ title, screenId }: ScreenPreviewProps) => {
         <StyledFooterContainer>
           <span>{title}</span>
           <IconButton size="small" onClick={handleOnClick}>
-            <Fullscreen />
+            <AspectRatio />
           </IconButton>
         </StyledFooterContainer>
       </StyledPreviewContainer>

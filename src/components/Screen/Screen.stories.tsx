@@ -45,5 +45,5 @@ const fakeProgram = {
   thumbnail: 'media/somefile.png',
   segments: [],
   media: [],
-  amountOfScreens: 3,
+  screensInfo: [{ title: 'Front' }, { title: 'Left' }, { title: 'Back' }],
 }

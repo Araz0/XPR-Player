@@ -76,7 +76,7 @@ export const ProgramsListRaw = ({ programs }: ProgramsListProps) => {
             title={program.program.title}
             description={program.program.discription}
             tags={[
-              `${program.program.amountOfScreens} screens`,
+              `${program.program.screensInfo.length} screens`,
               '7-12 Minutes',
             ]}
             thumbnail={program.program.thumbnail}

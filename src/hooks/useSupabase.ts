@@ -1,6 +1,7 @@
 import { useCallback, useEffect } from 'react'
 
 import { createClient } from '@supabase/supabase-js'
+import { PROGRAM_THUMBNAILS_BUCKET } from 'constants/supabase'
 
 import { useAdminStore } from 'stores'
 import { DbProgram, ProgramType } from 'types'
@@ -16,6 +17,25 @@ export function useSupabase() {
   const loggedInUser = useAdminStore((s) => s.loggedInUser)
   const setLoggedInUser = useAdminStore((s) => s.setLoggedInUser)
   const setUserIsLoggedIn = useAdminStore((s) => s.setUserIsLoggedIn)
+
+  const handleUploadProgramThubmnail = useCallback(
+    async (event: { target: { files: any[] } }) => {
+      const file = event.target.files[0]
+      if (!file) return -1
+      const { data, error } = await supabaseClient.storage
+        .from(PROGRAM_THUMBNAILS_BUCKET)
+        .upload('thumbnails', file)
+
+      if (error) {
+        console.log(error)
+        return -1
+      } else {
+        console.log(data)
+        return 1
+      }
+    },
+    []
+  )
 
   const insertProgram = useCallback(
     async (program: ProgramType) => {
@@ -149,5 +169,6 @@ export function useSupabase() {
     signOut,
     deleteProgram,
     updateProgram,
+    handleUploadProgramThubmnail,
   }
 }

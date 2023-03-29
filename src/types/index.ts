@@ -7,8 +7,12 @@ export type ProgramType = {
   title: string
   segments: SegmentType[]
   media: SegmentMediaType[]
-  amountOfScreens: number
+  screensInfo: ProgramScreensInfo[]
   standBySrc?: string
+}
+
+export type ProgramScreensInfo = {
+  title: string
 }
 export type SegmentType = {
   id: number

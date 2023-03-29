@@ -4,7 +4,6 @@ import styled from 'styled-components'
 
 import { NoteAdd } from '@mui/icons-material'
 import { Typography, Divider, TextField, Slider, Button } from '@mui/material'
-import { useCheckUserAuth } from 'hooks/useCheckUserAuth'
 
 import { AdminPageWrapper } from 'components'
 import { useProgram } from 'hooks'
@@ -19,7 +18,6 @@ const StyledSliderContainer = styled.div`
   padding: 15px;
 `
 export const CreatePageRaw = () => {
-  useCheckUserAuth()
   const titleRef = useRef<HTMLInputElement>()
   const { createNewProgram } = useProgram()
   const [screensAmount, setScreensAmount] = useState<number>(1)
@@ -37,9 +35,9 @@ export const CreatePageRaw = () => {
       titleRef.current?.value,
       'discription Place holder',
       'somefile.png',
-      screensAmount
+      [{ title: 'Front' }, { title: 'Left' }, { title: 'Back' }]
     )
-  }, [createNewProgram, screensAmount])
+  }, [createNewProgram])
 
   return (
     <AdminPageWrapper>
