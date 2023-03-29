@@ -14,6 +14,7 @@ import { EditableLabel } from 'components/EditableLabel'
 import { SegmentMenu } from 'components/SegmentMenu'
 import { SegmentScreens } from 'components/SegmentScreens'
 import { SmallIconButton } from 'components/SmallIconButton'
+import { PRIMARY_COLOR, WHITE_COLOR } from 'constants/styles'
 
 import { useProgram } from 'hooks'
 import { SegmentMediaType, SegmentType } from 'types'
@@ -31,8 +32,20 @@ const StyledListItemContainer = styled.li<{
 
   article {
     --uniqueColor: ${(props) => getRandomColor(props.uniqueColor)};
-    ${(props) =>
-      props.isRefed && 'border: 1px dashed var(--uniqueColor) !important;'};
+
+    font-family: arial, verdana, tahoma;
+    font-size: 11px;
+    display: inline-block;
+
+    border-radius: 5px;
+    padding: 5px 10px;
+    color: ${WHITE_COLOR};
+
+    border: 1px
+      ${(props) =>
+        props.isRefed
+          ? 'dashed var(--uniqueColor)'
+          : `solid ${PRIMARY_COLOR}`}!important;
   }
 `
 const StyledVerticalContainer = styled.div`

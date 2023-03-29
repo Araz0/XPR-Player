@@ -16,7 +16,11 @@ export enum MainButtonVariants {
   BASIC = 'basic',
 }
 
-const StyledButton = styled.button<{ variant?: string; width?: string }>`
+const StyledButton = styled.button<{
+  variant?: string
+  width?: string
+  highlighted?: boolean
+}>`
   box-sizing: border-box;
   font-family: 'Inter', sans-serif;
   background-color: ${(props) =>
@@ -26,7 +30,11 @@ const StyledButton = styled.button<{ variant?: string; width?: string }>`
       ? SECONDARY_COLOR
       : 'transparent'};
 
-  color: ${WHITE_COLOR} !important;
+  color: ${(props) =>
+    (props.variant === MainButtonVariants.BASIC &&
+      !props.highlighted &&
+      PRIMARY_COLOR) ||
+    WHITE_COLOR} !important;
 
   font-weight: bold;
 
@@ -42,7 +50,7 @@ const StyledButton = styled.button<{ variant?: string; width?: string }>`
 
   border: ${(props) =>
     props.variant === MainButtonVariants.BASIC
-      ? '1.5px solid #f2f0ff'
+      ? `1.5px solid ${props.highlighted ? WHITE_COLOR : PRIMARY_COLOR}`
       : 'none'};
 
   border-radius: 4px;
@@ -57,6 +65,19 @@ const StyledButton = styled.button<{ variant?: string; width?: string }>`
         : props.variant === MainButtonVariants.SECONDARY
         ? SECONDARY_COLOR_HOVERD
         : 'transparent'};
+
+    border: ${(props) =>
+      props.variant === MainButtonVariants.BASIC
+        ? `1.5px solid ${
+            props.highlighted ? WHITE_COLOR : PRIMARY_COLOR_HOVERD
+          }`
+        : 'none'};
+
+    color: ${(props) =>
+      (props.variant === MainButtonVariants.BASIC &&
+        !props.highlighted &&
+        PRIMARY_COLOR_HOVERD) ||
+      WHITE_COLOR} !important;
   }
 `
 
@@ -67,6 +88,7 @@ export type MainButtonProps = {
   startIcon?: React.ReactNode
   endtIcon?: React.ReactNode
   width?: string
+  highlighted?: boolean
 }
 export const MainButtonRaw = ({
   children,
@@ -75,12 +97,14 @@ export const MainButtonRaw = ({
   startIcon,
   endtIcon,
   width,
+  highlighted,
 }: MainButtonProps) => {
   return (
     <StyledButton
       variant={variant ? variant : MainButtonVariants.BASIC}
       onClick={onClick}
       width={width}
+      highlighted={highlighted}
     >
       {startIcon}
       {children}

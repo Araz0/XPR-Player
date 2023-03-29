@@ -1,6 +1,6 @@
 import { memo, ReactNode, useCallback, useState } from 'react'
 
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 
 import { Logout, Send } from '@mui/icons-material'
@@ -56,6 +56,7 @@ export type AdminPageWrapperProps = {
 }
 export const AdminPageWrapperRaw = ({ children }: AdminPageWrapperProps) => {
   const navigate = useNavigate()
+  const location = useLocation()
   const { signOut } = useSupabase()
   const [showLoginPopup, setShowLoginPopup] = useState<boolean>(false)
 
@@ -72,9 +73,22 @@ export const AdminPageWrapperRaw = ({ children }: AdminPageWrapperProps) => {
           <Logo />
         </StyledSymbolContainer>
         <StyledCenterActionsContainer>
-          <MainButton onClick={() => navigate('/')}>Menu</MainButton>
-          <MainButton onClick={() => navigate('/admin')}>Home</MainButton>
-          <MainButton onClick={() => navigate('/admin/programs')}>
+          <MainButton
+            onClick={() => navigate('/')}
+            highlighted={location.pathname === '/'}
+          >
+            Menu
+          </MainButton>
+          <MainButton
+            onClick={() => navigate('/admin')}
+            highlighted={location.pathname === '/admin'}
+          >
+            Home
+          </MainButton>
+          <MainButton
+            onClick={() => navigate('/admin/programs')}
+            highlighted={location.pathname.includes('/admin/program')}
+          >
             Programs
           </MainButton>
         </StyledCenterActionsContainer>
