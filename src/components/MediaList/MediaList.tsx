@@ -15,15 +15,20 @@ const StyledMediaContainer = styled.div`
 
 export type MediaListProps = {
   mediaArray: SegmentMediaType[]
+  onMediaClick?: (mediaId: number) => void
 }
-export const MediaListRaw = ({ mediaArray }: MediaListProps) => {
+export const MediaListRaw = ({ mediaArray, onMediaClick }: MediaListProps) => {
   const [selectedMedia, setSelectedMedia] = useState<
     SegmentMediaType | undefined
   >()
 
-  const handleOnMediaClick = useCallback((media: SegmentMediaType) => {
-    setSelectedMedia(media)
-  }, [])
+  const handleOnMediaClick = useCallback(
+    (media: SegmentMediaType) => {
+      setSelectedMedia(media)
+      onMediaClick && onMediaClick(media.id)
+    },
+    [onMediaClick]
+  )
 
   const handleOnRemoveClick = useCallback(
     (id: number) => {
@@ -52,6 +57,7 @@ export const MediaListRaw = ({ mediaArray }: MediaListProps) => {
             onClick={() => handleOnMediaClick(media)}
             isSelected={selectedMedia?.id === media.id}
             key={idx}
+            hideActions={true}
           />
         )
       })}

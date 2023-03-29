@@ -67,6 +67,7 @@ export type MediaItemProps = {
   onDelete: () => void
   onClick: () => void
   isSelected?: boolean
+  hideActions?: boolean
 }
 
 export const MediaItemRaw = ({
@@ -75,6 +76,7 @@ export const MediaItemRaw = ({
   onDelete,
   onClick,
   isSelected,
+  hideActions,
 }: MediaItemProps) => {
   const btnsRef = useRef<HTMLDivElement>(null)
   const [shownScreen, setShownScreen] = useState<number>(0)
@@ -124,14 +126,16 @@ export const MediaItemRaw = ({
           <p>00:35</p>
           <p>2 times used</p>
         </StyledDescriptionContainer>
-        <StyledActionsContainer ref={btnsRef} onClick={handleOnClick}>
-          <IconButton onClick={onCopy} style={{ color: WHITE_COLOR }}>
-            <FileCopyOutlined />
-          </IconButton>
-          <IconButton onClick={onDelete} style={{ color: WHITE_COLOR }}>
-            <DeleteOutline />
-          </IconButton>
-        </StyledActionsContainer>
+        {hideActions !== true && (
+          <StyledActionsContainer ref={btnsRef} onClick={handleOnClick}>
+            <IconButton onClick={onCopy} style={{ color: WHITE_COLOR }}>
+              <FileCopyOutlined />
+            </IconButton>
+            <IconButton onClick={onDelete} style={{ color: WHITE_COLOR }}>
+              <DeleteOutline />
+            </IconButton>
+          </StyledActionsContainer>
+        )}
       </StyledChildrenContainer>
     </BorderdContainer>
   )

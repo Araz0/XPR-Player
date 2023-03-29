@@ -55,7 +55,7 @@ const StyledActionsContainer = styled.div<{ fullWidth?: boolean }>`
 export type PopupProps = {
   onClose: () => void
   header: string
-  bodyText: string
+  bodyText?: string
   children: React.ReactNode
   fullWidth?: boolean
 }

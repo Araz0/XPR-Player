@@ -9,9 +9,9 @@ const StyledContainer = styled.div`
   height: 100vh;
 `
 const fakeScreens = [
-  'screen #1 left screen',
-  'screen #2 center screen',
-  'screen #3 right screen',
+  { title: 'screen #1 left screen' },
+  { title: 'screen #2 center screen' },
+  { title: 'screen #3 right screen' },
 ]
 
 export const Default: Story = (args) => {

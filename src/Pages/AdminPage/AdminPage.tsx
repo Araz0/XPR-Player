@@ -55,7 +55,7 @@ export const AdminPageRaw = () => {
             <MainButton
               variant={MainButtonVariants.PRIMARY}
               onClick={handelSendProgram}
-              width={'fit-contnet'}
+              width={'fit-content'}
               startIcon={<Moving />}
             >
               Send
@@ -64,7 +64,7 @@ export const AdminPageRaw = () => {
             <MainButton
               variant={MainButtonVariants.PRIMARY}
               onClick={socketService.emmitStartProgram}
-              width={'fit-contnet'}
+              width={'fit-content'}
               startIcon={<PlayArrowOutlined />}
             >
               Start
@@ -72,7 +72,7 @@ export const AdminPageRaw = () => {
             <MainButton
               variant={MainButtonVariants.PRIMARY}
               onClick={socketService.emmitPauseProgram}
-              width={'fit-contnet'}
+              width={'fit-content'}
               startIcon={<PauseOutlined />}
             >
               Pause
@@ -80,7 +80,7 @@ export const AdminPageRaw = () => {
             <MainButton
               variant={MainButtonVariants.PRIMARY}
               onClick={socketService.emmitResetProgram}
-              width={'fit-contnet'}
+              width={'fit-content'}
               startIcon={<ReplayOutlined />}
             >
               Reset
@@ -88,20 +88,14 @@ export const AdminPageRaw = () => {
 
             <MainButton
               variant={MainButtonVariants.PRIMARY}
-              width={'fit-contnet'}
+              width={'fit-content'}
               onClick={socketService.emmitToggleShowControls}
               startIcon={<SettingsOutlined />}
             >
               Toggle Controls
             </MainButton>
           </StyledActionsContainer>
-          <ScreensList
-            programScreens={[
-              'screen #1 left screen',
-              'screen #2 center screen',
-              'screen #3 right screen',
-            ]}
-          />
+          <ScreensList programScreens={selectedProgram.screensInfo} />
         </>
       )}
     </AdminPageWrapper>
