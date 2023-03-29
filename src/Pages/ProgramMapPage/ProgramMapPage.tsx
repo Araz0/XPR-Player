@@ -1,24 +1,62 @@
-import { memo, useCallback, useEffect, useState } from 'react'
+import { memo, useCallback, useEffect, useRef, useState } from 'react'
 
 import { useNavigate } from 'react-router-dom'
+import styled from 'styled-components'
 
-import { Beenhere, Check, Delete, Save, SaveAlt } from '@mui/icons-material'
-import { IconButton, Tooltip } from '@mui/material'
+import {
+  Check,
+  DeleteOutline,
+  DownloadOutlined,
+  Edit,
+  EditOff,
+  Save,
+  SaveOutlined,
+} from '@mui/icons-material'
+import { IconButton } from '@mui/material'
 
-import { AdminPageWrapper, Popup, TreeList } from 'components'
-import { useSupabase } from 'hooks'
+import {
+  AdminPageWrapper,
+  EditableLabel,
+  MainButton,
+  MainButtonVariants,
+  Popup,
+  TreeList,
+} from 'components'
+import { useProgram, useSupabase } from 'hooks'
 import { useAdminStore } from 'stores'
 import { saveProgramAsJson } from 'utils'
 
+const StyledActionsContainer = styled.div`
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+  align-items: center;
+  margin: 25px 0;
+`
+const StyledActionsWrapper = styled.div`
+  display: flex;
+  gap: 10px;
+  width: fit-content;
+`
+const StyledTitleContainer = styled.div`
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  h6 {
+    margin: 0;
+  }
+`
+
 export const ProgramMapPageRaw = () => {
   const navigate = useNavigate()
+  const { updateProgramTitle } = useProgram()
+  const { handleUpdateProgramInDb, deleteProgram } = useSupabase()
 
-  const [showDeleteProgram, setShowDeleteProgram] = useState<boolean>(false)
   const program = useAdminStore((s) => s.program)
-  const loadedPrograms = useAdminStore((s) => s.loadedPrograms)
-  const setSelectedProgram = useAdminStore((s) => s.setSelectedProgram)
 
-  const { updateProgram, deleteProgram, insertProgram } = useSupabase()
+  const titleRef = useRef<HTMLInputElement>()
+  const [canEditTitle, setCanEditTitle] = useState<boolean>(false)
+  const [showDeleteProgram, setShowDeleteProgram] = useState<boolean>(false)
 
   const handleDeleteProgram = useCallback(() => {
     if (!program) return
@@ -31,22 +69,11 @@ export const ProgramMapPageRaw = () => {
     saveProgramAsJson(program)
   }, [program])
 
-  const handleUpdateProgramInDb = useCallback(() => {
-    if (!program) return
-    const programIdExist = loadedPrograms?.some(
-      (item) => item.program.id === program.id
-    )
-    if (programIdExist) {
-      updateProgram(program)
-    } else {
-      insertProgram(program)
-    }
-  }, [insertProgram, loadedPrograms, program, updateProgram])
-
-  const handleSettingProgramAsSelected = useCallback(() => {
-    if (!program) return
-    setSelectedProgram(program)
-  }, [setSelectedProgram, program])
+  const handleUpdateTitle = useCallback(() => {
+    if (!titleRef.current?.value) return
+    updateProgramTitle(titleRef.current?.value)
+    setCanEditTitle(!canEditTitle)
+  }, [canEditTitle, updateProgramTitle])
 
   useEffect(() => {
     if (!program) navigate('/admin/programs')
@@ -55,29 +82,58 @@ export const ProgramMapPageRaw = () => {
   if (!program) return <h1>Something went wrong loading the program</h1>
   return (
     <AdminPageWrapper>
-      <>
-        <Tooltip title="Select Program">
-          <IconButton onClick={handleSettingProgramAsSelected}>
-            <Beenhere />
+      <StyledActionsContainer>
+        <StyledTitleContainer>
+          <EditableLabel
+            inputRef={titleRef}
+            canEdit={canEditTitle}
+            text={program.title}
+            placeHolder={'Program Title'}
+            typographyVariant={'h6'}
+          />
+          {canEditTitle && (
+            <IconButton onClick={handleUpdateTitle} size="small">
+              <Save />
+            </IconButton>
+          )}
+          <IconButton
+            onClick={() => setCanEditTitle(!canEditTitle)}
+            size="small"
+          >
+            {canEditTitle ? <EditOff /> : <Edit />}
           </IconButton>
-        </Tooltip>
-        <Tooltip title="Save Program as JSON">
-          <IconButton onClick={handleSaveProgramAsJson}>
-            <SaveAlt />
-          </IconButton>
-        </Tooltip>
-        <Tooltip title="Save Changes in Database">
-          <IconButton onClick={handleUpdateProgramInDb}>
-            <Save />
-          </IconButton>
-        </Tooltip>
-        <Tooltip title="Delete Program">
-          <IconButton onClick={() => setShowDeleteProgram(true)}>
-            <Delete />
-          </IconButton>
-        </Tooltip>
-      </>
-      <TreeList program={program} />
+        </StyledTitleContainer>
+
+        <StyledActionsWrapper>
+          <MainButton
+            variant={MainButtonVariants.PRIMARY}
+            onClick={handleSaveProgramAsJson}
+            width={'fit-contnet'}
+            startIcon={<DownloadOutlined fontSize="small" />}
+          >
+            Download
+          </MainButton>
+          <MainButton
+            variant={MainButtonVariants.PRIMARY}
+            onClick={() => handleUpdateProgramInDb(program)}
+            width={'fit-contnet'}
+            startIcon={<SaveOutlined fontSize="small" />}
+          >
+            Save
+          </MainButton>
+          <MainButton
+            variant={MainButtonVariants.SECONDARY}
+            onClick={() => setShowDeleteProgram(true)}
+            width={'fit-contnet'}
+            startIcon={<DeleteOutline fontSize="small" />}
+          >
+            Delete
+          </MainButton>
+        </StyledActionsWrapper>
+      </StyledActionsContainer>
+
+      <TreeList />
+
       {showDeleteProgram && (
         <Popup
           onClose={() => setShowDeleteProgram(false)}

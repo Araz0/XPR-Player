@@ -126,14 +126,34 @@ export function useSupabase() {
     [loggedInUser, loadAllPrograms]
   )
 
-  const updateProgram = useCallback(async (program: ProgramType) => {
-    const { error } = await supabaseClient
-      .from('programs')
-      .update({ program: program })
-      .eq('internal_id', program.id)
+  const updateProgram = useCallback(
+    async (program: ProgramType) => {
+      if (!loggedInUser) return
+      const { error } = await supabaseClient
+        .from('programs')
+        .update({ program: program })
+        .eq('internal_id', program.id)
 
-    if (error) throw error
-  }, [])
+      if (error) throw error
+      loadAllPrograms()
+    },
+    [loggedInUser, loadAllPrograms]
+  )
+
+  const handleUpdateProgramInDb = useCallback(
+    (program: ProgramType) => {
+      if (!program) return
+      const programIdExist = loadedPrograms?.some(
+        (item) => item.program.id === program.id
+      )
+      if (programIdExist) {
+        updateProgram(program)
+      } else {
+        insertProgram(program)
+      }
+    },
+    [insertProgram, loadedPrograms, updateProgram]
+  )
 
   useEffect(() => {
     if (!loadedPrograms) loadProgramsByUser()
@@ -176,5 +196,6 @@ export function useSupabase() {
     deleteProgram,
     updateProgram,
     handleUploadProgramThubmnail,
+    handleUpdateProgramInDb,
   }
 }
