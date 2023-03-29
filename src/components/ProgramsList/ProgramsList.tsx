@@ -9,7 +9,7 @@ import { ProgramsItem } from 'components/ProgramsItem'
 import { useSupabase } from 'hooks'
 import { useAdminStore } from 'stores'
 import { DbProgram, ProgramType } from 'types'
-import { saveProgramAsJson } from 'utils'
+import { generateNewId, saveProgramAsJson } from 'utils'
 
 import { Popup } from '../Popup'
 
@@ -27,7 +27,7 @@ export type ProgramsListProps = {
 
 export const ProgramsListRaw = ({ programs }: ProgramsListProps) => {
   const navigate = useNavigate()
-  const { deleteProgram } = useSupabase()
+  const { deleteProgram, insertProgram } = useSupabase()
   const setSelectedProgram = useAdminStore((s) => s.setSelectedProgram)
   const setProgram = useAdminStore((s) => s.setProgram)
   const [deleteProgramId, setDeleteProgramId] = useState<number | undefined>(
@@ -37,8 +37,8 @@ export const ProgramsListRaw = ({ programs }: ProgramsListProps) => {
   const handleDeleteProgram = useCallback(() => {
     if (!deleteProgramId) return
     deleteProgram(deleteProgramId)
-    navigate('/admin/programs')
-  }, [deleteProgram, deleteProgramId, navigate])
+    setDeleteProgramId(undefined)
+  }, [deleteProgram, deleteProgramId])
 
   const handleSetAsSelectedProgram = useCallback(
     (program: ProgramType) => {
@@ -46,6 +46,19 @@ export const ProgramsListRaw = ({ programs }: ProgramsListProps) => {
       navigate('/admin')
     },
     [setSelectedProgram, navigate]
+  )
+
+  // duplicate a program and add it to programs
+  const duplicateProgram = useCallback(
+    (program: ProgramType) => {
+      const newProgram = {
+        ...program,
+        id: generateNewId(),
+        title: program.title + ' (copy)',
+      }
+      insertProgram(newProgram)
+    },
+    [insertProgram]
   )
 
   const handleOpenProgram = useCallback(
@@ -82,7 +95,7 @@ export const ProgramsListRaw = ({ programs }: ProgramsListProps) => {
             thumbnail={program.program.thumbnail}
             onClick={() => handleSetAsSelectedProgram(program.program)}
             onEdit={() => handleOpenProgram(program)}
-            onCopy={() => alert('onCopy')}
+            onCopy={() => duplicateProgram(program.program)}
             onDownload={() => handleSaveProgramAsJson(program.program)}
             onDelete={() => setDeleteProgramId(program.program.id)}
           />

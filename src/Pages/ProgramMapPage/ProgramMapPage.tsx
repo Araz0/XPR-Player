@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom'
 
 import { Beenhere, Check, Delete, Save, SaveAlt } from '@mui/icons-material'
 import { IconButton, Tooltip } from '@mui/material'
-import { useCheckUserAuth } from 'hooks/useCheckUserAuth'
 
 import { AdminPageWrapper, Popup, TreeList } from 'components'
 import { useSupabase } from 'hooks'
@@ -13,7 +12,6 @@ import { saveProgramAsJson } from 'utils'
 
 export const ProgramMapPageRaw = () => {
   const navigate = useNavigate()
-  useCheckUserAuth()
 
   const [showDeleteProgram, setShowDeleteProgram] = useState<boolean>(false)
   const program = useAdminStore((s) => s.program)

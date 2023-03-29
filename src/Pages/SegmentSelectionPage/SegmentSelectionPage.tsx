@@ -2,9 +2,6 @@ import { memo, useCallback } from 'react'
 
 import styled from 'styled-components'
 
-// import { ThumbUp, ThumbDown } from '@mui/icons-material'
-import { useCheckUserAuth } from 'hooks/useCheckUserAuth'
-
 import { CenterdContainer, MainButton, MainButtonVariants } from 'components'
 import { useSocketService } from 'services'
 
@@ -15,7 +12,6 @@ const StyledButtonsContainer = styled.div`
 
 export const SegmentSelectionPageRaw = () => {
   const { socketService } = useSocketService()
-  useCheckUserAuth()
 
   const handleClickedYes = useCallback(() => {
     socketService.emmitSelectedScreenIndex(1)

@@ -37,6 +37,13 @@ export function useSupabase() {
     []
   )
 
+  const loadAllPrograms = useCallback(async () => {
+    const { data, error } = await supabaseClient.from('programs').select('*')
+    if (error) throw error
+    setLoadedPrograms(data as DbProgram[])
+    return data as DbProgram[]
+  }, [setLoadedPrograms])
+
   const insertProgram = useCallback(
     async (program: ProgramType) => {
       if (!loggedInUser) return
@@ -47,8 +54,9 @@ export function useSupabase() {
       })
 
       if (error) throw error
+      loadAllPrograms()
     },
-    [loggedInUser]
+    [loggedInUser, loadAllPrograms]
   )
   const getProgramById = useCallback(async (Id: string) => {
     const { data, error } = await supabaseClient
@@ -61,13 +69,6 @@ export function useSupabase() {
 
     return data.program
   }, [])
-
-  const loadAllPrograms = useCallback(async () => {
-    const { data, error } = await supabaseClient.from('programs').select('*')
-    if (error) throw error
-    setLoadedPrograms(data as DbProgram[])
-    return data as DbProgram[]
-  }, [setLoadedPrograms])
 
   const loadProgramsByUser = useCallback(async () => {
     if (!loggedInUser) return
@@ -111,14 +112,19 @@ export function useSupabase() {
     if (error) throw error
   }, [])
 
-  const deleteProgram = useCallback(async (programId: number) => {
-    const { error } = await supabaseClient
-      .from('programs')
-      .delete()
-      .eq('internal_id', programId)
+  const deleteProgram = useCallback(
+    async (programId: number) => {
+      if (!loggedInUser) return
+      const { error } = await supabaseClient
+        .from('programs')
+        .delete()
+        .eq('internal_id', programId)
 
-    if (error) throw error
-  }, [])
+      if (error) throw error
+      loadAllPrograms()
+    },
+    [loggedInUser, loadAllPrograms]
+  )
 
   const updateProgram = useCallback(async (program: ProgramType) => {
     const { error } = await supabaseClient
