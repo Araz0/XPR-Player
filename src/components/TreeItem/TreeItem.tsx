@@ -68,7 +68,17 @@ const StyledMediaActionsContainer = styled.div`
   justify-content: space-evenly;
   margin-top: 25px;
 `
-
+const StyledMediaListHeader = styled.div`
+  display: flex;
+  justify-content: end;
+  margin-bottom: 15px;
+  span {
+    border: 1px solid black;
+    padding: 1px 12px;
+    border-radius: 5px;
+    font-size: 14px;
+  }
+`
 export type TreeItemProps = {
   segmentId: number
 }
@@ -243,6 +253,16 @@ export const TreeItemRaw = ({ segmentId }: TreeItemProps) => {
       )}
       {showMediaList && (
         <Popup onClose={() => setShowMediaList(false)} header="Media Assets">
+          <StyledMediaListHeader>
+            <span>
+              {program
+                ? program.media.length === 1
+                  ? 1
+                  : program.media.length
+                : 0}{' '}
+              Assets
+            </span>
+          </StyledMediaListHeader>
           <MediaList
             mediaArray={program ? program.media : []}
             onMediaClick={onMediaClick}
@@ -251,7 +271,6 @@ export const TreeItemRaw = ({ segmentId }: TreeItemProps) => {
             <MainButton
               variant={MainButtonVariants.PRIMARY}
               onClick={() => onAddMediaClick(selectedMediaId)}
-              width={'fit-content'}
             >
               Add Media to Segment
             </MainButton>
