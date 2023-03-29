@@ -13,6 +13,7 @@ const StyledContainerBorder = styled.div<{
   isSelected?: boolean
   fitContent?: boolean
   isFullScreen?: boolean
+  noHoverCursor?: boolean
 }>`
   border-radius: 10px;
   position: relative;
@@ -27,7 +28,8 @@ const StyledContainerBorder = styled.div<{
     props.fitContent || !props.isFullScreen ? 'fit-content' : '100%'};
 
   :hover {
-    cursor: pointer;
+    ${(props) => props.noHoverCursor !== true && `cursor: pointer;`}
+
     ${(props) =>
       props.hotBorder
         ? `background: linear-gradient(160deg, ${PRIMARY_GRADIENT});`
@@ -57,6 +59,7 @@ export type BorderdContainerProps = {
   hotBorder?: boolean
   onClick?: () => void
   isFullScreen?: boolean
+  noHoverCursor?: boolean
 }
 export const BorderdContainerRaw = ({
   children,
@@ -67,6 +70,7 @@ export const BorderdContainerRaw = ({
   hotBorder,
   onClick,
   isFullScreen,
+  noHoverCursor,
 }: BorderdContainerProps) => {
   const [hotHoverd, setHotHoverd] = useState<boolean>(false)
 
@@ -95,6 +99,7 @@ export const BorderdContainerRaw = ({
       fitContent={fitContent}
       onClick={onClick}
       isFullScreen={isFullScreen}
+      noHoverCursor={noHoverCursor}
     >
       <StyledContainer isSelected={isSelected} padding={padding}>
         {children}

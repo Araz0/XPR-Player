@@ -4,7 +4,8 @@ import { createPortal } from 'react-dom'
 import styled from 'styled-components'
 
 import { Close } from '@mui/icons-material'
-import { Typography, IconButton } from '@mui/material'
+import { Typography, IconButton, Divider } from '@mui/material'
+import { BorderdContainer } from 'components/BorderdContainer'
 import {
   WHITE_COLOR,
   BACKGROUND_COLOR_PRIMERY,
@@ -23,9 +24,9 @@ const StyledContainer = styled.div`
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 10;
   .popup-content {
-    border: 1px solid;
-    padding: 20px;
-    border-radius: 5px;
+    position: relative;
+    padding: 40px;
+    border-radius: 10px;
     background-color: ${WHITE_COLOR};
     color: ${BACKGROUND_COLOR_PRIMERY};
   }
@@ -37,8 +38,9 @@ const StyledContainer = styled.div`
   }
 `
 const StyledExitContainer = styled.div`
-  display: flex;
-  justify-content: end;
+  position: absolute;
+  top: 3px;
+  right: 3px;
 `
 const StyledHeader = styled.div`
   text-align: center;
@@ -88,20 +90,30 @@ export const PopupRaw = ({
   if (!container) return null
   return createPortal(
     <StyledContainer onClick={handleOnClose}>
-      <div className="popup-content" onClick={handlePopUpClick}>
-        <StyledExitContainer>
-          <IconButton onClick={onClose}>
-            <Close />
-          </IconButton>
-        </StyledExitContainer>
-        <StyledHeader>
-          {header && <Typography variant="h6">{header}</Typography>}
-          {bodyText && <Typography variant="subtitle1">{bodyText}</Typography>}
-        </StyledHeader>
-        <StyledActionsContainer fullWidth={fullWidth}>
-          {children}
-        </StyledActionsContainer>
-      </div>
+      <BorderdContainer
+        hotBorder={true}
+        isSelected={true}
+        padding="0"
+        noHoverCursor={true}
+      >
+        <div className="popup-content" onClick={handlePopUpClick}>
+          <StyledExitContainer>
+            <IconButton onClick={onClose}>
+              <Close />
+            </IconButton>
+          </StyledExitContainer>
+          <StyledHeader>
+            {header && <Typography variant="h6">{header}</Typography>}
+            {bodyText && (
+              <Typography variant="subtitle1">{bodyText}</Typography>
+            )}
+          </StyledHeader>
+          <Divider />
+          <StyledActionsContainer fullWidth={fullWidth}>
+            {children}
+          </StyledActionsContainer>
+        </div>
+      </BorderdContainer>
     </StyledContainer>,
     container
   )
