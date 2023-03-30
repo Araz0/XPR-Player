@@ -12,6 +12,7 @@ import {
   SmartDisplayOutlined,
 } from '@mui/icons-material'
 import { EditableLabel } from 'components/EditableLabel'
+import { LabelSpan } from 'components/LabelSpan'
 import { MainButton, MainButtonVariants } from 'components/MainButton'
 import { MediaList } from 'components/MediaList'
 import { Popup } from 'components/Popup'
@@ -72,12 +73,6 @@ const StyledMediaListHeader = styled.div`
   display: flex;
   justify-content: end;
   margin-bottom: 15px;
-  span {
-    border: 1px solid black;
-    padding: 1px 12px;
-    border-radius: 5px;
-    font-size: 14px;
-  }
 `
 export type TreeItemProps = {
   segmentId: number
@@ -254,14 +249,13 @@ export const TreeItemRaw = ({ segmentId }: TreeItemProps) => {
       {showMediaList && (
         <Popup onClose={() => setShowMediaList(false)} header="Media Assets">
           <StyledMediaListHeader>
-            <span>
+            <LabelSpan>
               {program
                 ? program.media.length === 1
-                  ? 1
-                  : program.media.length
-                : 0}{' '}
-              Assets
-            </span>
+                  ? `1 Asset`
+                  : `${program.media.length} Assets`
+                : '0 Assets'}
+            </LabelSpan>
           </StyledMediaListHeader>
           <MediaList
             mediaArray={program ? program.media : []}

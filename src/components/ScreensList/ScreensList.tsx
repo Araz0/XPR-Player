@@ -8,8 +8,8 @@ import { ProgramScreensInfo } from 'types'
 
 const StyledContainer = styled.div`
   position: relative;
-  width: 100%;
-  height: 100%;
+  width: fit-content;
+  height: fit-content;
 
   display: grid;
   grid-template-columns: 1fr 1fr;

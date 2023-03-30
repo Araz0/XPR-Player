@@ -82,7 +82,7 @@ const StyledButton = styled.button<{
 `
 
 export type MainButtonProps = {
-  children: React.ReactNode
+  children?: React.ReactNode
   onClick?: () => void
   variant?: MainButtonVariants
   startIcon?: React.ReactNode
@@ -107,7 +107,7 @@ export const MainButtonRaw = ({
       highlighted={highlighted}
     >
       {startIcon}
-      {children}
+      {children && children}
       {endtIcon}
     </StyledButton>
   )

@@ -61,3 +61,8 @@ export enum StandByMods {
   ANIMATION = 'ANIMATION',
   TEXT = 'TEXT',
 }
+
+export type LogType = {
+  title: string
+  description: string
+}
