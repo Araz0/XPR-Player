@@ -85,6 +85,21 @@ export const SegmentScreensRaw = ({ media }: SegmentScreensProps) => {
     setShowAddScreen(true)
   }, [])
 
+  const handleShiftItemLeftByIndex = useCallback(
+    (index: number) => {
+      shiftItemLeftByIndex(media.screens, index)
+      forceUpdateComponent({})
+    },
+    [media.screens]
+  )
+  const handleShiftItemRightByIndex = useCallback(
+    (index: number) => {
+      shiftItemRightByIndex(media.screens, index)
+      forceUpdateComponent({})
+    },
+    [media.screens]
+  )
+
   return (
     <>
       <Typography variant="overline" lineHeight={1} gutterBottom>
@@ -105,14 +120,14 @@ export const SegmentScreensRaw = ({ media }: SegmentScreensProps) => {
                 {idx > 0 && (
                   <SmallIconButton
                     tooltip="shift left"
-                    onClick={() => shiftItemLeftByIndex(media.screens, idx)}
+                    onClick={() => handleShiftItemLeftByIndex(idx)}
                     icon={<NavigateBefore fontSize="small" />}
                   />
                 )}
                 {idx < media.screens.length - 1 && (
                   <SmallIconButton
                     tooltip="shift right"
-                    onClick={() => shiftItemRightByIndex(media.screens, idx)}
+                    onClick={() => handleShiftItemRightByIndex(idx)}
                     icon={<NavigateNext fontSize="small" />}
                   />
                 )}
