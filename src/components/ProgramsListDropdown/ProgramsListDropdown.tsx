@@ -1,6 +1,8 @@
 import { memo, useCallback, useState } from 'react'
 
-import { Check } from '@mui/icons-material'
+import styled from 'styled-components'
+
+import { Check, KeyboardArrowDown } from '@mui/icons-material'
 import {
   Menu,
   MenuItem,
@@ -12,6 +14,18 @@ import {
 
 import { useAdminStore } from 'stores'
 import { DbProgram } from 'types'
+
+const StyledButton = styled(Button)`
+  position: relative;
+  input {
+    padding-right: 35px;
+  }
+`
+const StyledKeyboardArrowDown = styled(KeyboardArrowDown)`
+  position: absolute;
+  right: 15px;
+  color: white;
+`
 
 export type ProgramsListDropdownProps = {
   programs: DbProgram[]
@@ -46,7 +60,7 @@ export const ProgramsListDropdownRaw = ({
 
   return (
     <>
-      <Button
+      <StyledButton
         onClick={handleClick}
         id="basic-button"
         aria-controls={menuOpen ? 'basic-menu' : undefined}
@@ -65,7 +79,8 @@ export const ProgramsListDropdownRaw = ({
           size="small"
           style={{ margin: '5px' }}
         />
-      </Button>
+        <StyledKeyboardArrowDown />
+      </StyledButton>
       <Menu
         id="basic-menu"
         anchorEl={anchorEl}
