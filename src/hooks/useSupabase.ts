@@ -1,6 +1,7 @@
 import { useCallback, useEffect } from 'react'
 
 import { createClient } from '@supabase/supabase-js'
+import { PROGRAM_THUMBNAILS_BUCKET } from 'constants/supabase'
 
 import { useAdminStore } from 'stores'
 import { DbProgram, ProgramType } from 'types'
@@ -17,6 +18,32 @@ export function useSupabase() {
   const setLoggedInUser = useAdminStore((s) => s.setLoggedInUser)
   const setUserIsLoggedIn = useAdminStore((s) => s.setUserIsLoggedIn)
 
+  const handleUploadProgramThubmnail = useCallback(
+    async (event: { target: { files: any[] } }) => {
+      const file = event.target.files[0]
+      if (!file) return -1
+      const { data, error } = await supabaseClient.storage
+        .from(PROGRAM_THUMBNAILS_BUCKET)
+        .upload('thumbnails', file)
+
+      if (error) {
+        console.log(error)
+        return -1
+      } else {
+        console.log(data)
+        return 1
+      }
+    },
+    []
+  )
+
+  const loadAllPrograms = useCallback(async () => {
+    const { data, error } = await supabaseClient.from('programs').select('*')
+    if (error) throw error
+    setLoadedPrograms(data as DbProgram[])
+    return data as DbProgram[]
+  }, [setLoadedPrograms])
+
   const insertProgram = useCallback(
     async (program: ProgramType) => {
       if (!loggedInUser) return
@@ -27,8 +54,9 @@ export function useSupabase() {
       })
 
       if (error) throw error
+      loadAllPrograms()
     },
-    [loggedInUser]
+    [loggedInUser, loadAllPrograms]
   )
   const getProgramById = useCallback(async (Id: string) => {
     const { data, error } = await supabaseClient
@@ -41,13 +69,6 @@ export function useSupabase() {
 
     return data.program
   }, [])
-
-  const loadAllPrograms = useCallback(async () => {
-    const { data, error } = await supabaseClient.from('programs').select('*')
-    if (error) throw error
-    setLoadedPrograms(data as DbProgram[])
-    return data as DbProgram[]
-  }, [setLoadedPrograms])
 
   const loadProgramsByUser = useCallback(async () => {
     if (!loggedInUser) return
@@ -91,23 +112,48 @@ export function useSupabase() {
     if (error) throw error
   }, [])
 
-  const deleteProgram = useCallback(async (programId: number) => {
-    const { error } = await supabaseClient
-      .from('programs')
-      .delete()
-      .eq('internal_id', programId)
+  const deleteProgram = useCallback(
+    async (programId: number) => {
+      if (!loggedInUser) return
+      const { error } = await supabaseClient
+        .from('programs')
+        .delete()
+        .eq('internal_id', programId)
 
-    if (error) throw error
-  }, [])
+      if (error) throw error
+      loadAllPrograms()
+    },
+    [loggedInUser, loadAllPrograms]
+  )
 
-  const updateProgram = useCallback(async (program: ProgramType) => {
-    const { error } = await supabaseClient
-      .from('programs')
-      .update({ program: program })
-      .eq('internal_id', program.id)
+  const updateProgram = useCallback(
+    async (program: ProgramType) => {
+      if (!loggedInUser) return
+      const { error } = await supabaseClient
+        .from('programs')
+        .update({ program: program })
+        .eq('internal_id', program.id)
 
-    if (error) throw error
-  }, [])
+      if (error) throw error
+      loadAllPrograms()
+    },
+    [loggedInUser, loadAllPrograms]
+  )
+
+  const handleUpdateProgramInDb = useCallback(
+    (program: ProgramType) => {
+      if (!program) return
+      const programIdExist = loadedPrograms?.some(
+        (item) => item.program.id === program.id
+      )
+      if (programIdExist) {
+        updateProgram(program)
+      } else {
+        insertProgram(program)
+      }
+    },
+    [insertProgram, loadedPrograms, updateProgram]
+  )
 
   useEffect(() => {
     if (!loadedPrograms) loadProgramsByUser()
@@ -149,5 +195,7 @@ export function useSupabase() {
     signOut,
     deleteProgram,
     updateProgram,
+    handleUploadProgramThubmnail,
+    handleUpdateProgramInDb,
   }
 }

@@ -5,6 +5,12 @@ import styled from 'styled-components'
 
 import { Close } from '@mui/icons-material'
 import { Typography, IconButton, Divider } from '@mui/material'
+import { BorderdContainer } from 'components/BorderdContainer'
+import {
+  WHITE_COLOR,
+  BACKGROUND_COLOR_PRIMERY,
+  PRIMARY_COLOR,
+} from 'constants/styles'
 
 const StyledContainer = styled.div`
   position: absolute;
@@ -15,37 +21,50 @@ const StyledContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 10;
   .popup-content {
-    border: 1px solid;
-    padding: 20px;
-    border-radius: 5px;
-    background-color: #212121;
+    position: relative;
+    padding: 40px;
+    border-radius: 10px;
+    background-color: ${WHITE_COLOR};
+    color: ${BACKGROUND_COLOR_PRIMERY};
   }
   .popup-content > * {
     margin-bottom: 10px;
   }
+  button {
+    color: ${PRIMARY_COLOR};
+  }
 `
-const StyledHeaderContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
+const StyledExitContainer = styled.div`
+  position: absolute;
+  top: 3px;
+  right: 3px;
 `
-const StyledActionsContainer = styled.div`
+const StyledHeader = styled.div`
+  text-align: center;
+`
+
+const StyledActionsContainer = styled.div<{ fullWidth?: boolean }>`
   display: flex;
   flex-direction: column;
-  width: fit-content;
+  width: ${(props) => (props.fullWidth ? '100%' : 'fit-content')};
 `
 
 export type PopupProps = {
   onClose: () => void
   header: string
-  bodyText: string
+  bodyText?: string
   children: React.ReactNode
+  fullWidth?: boolean
 }
 export const PopupRaw = ({
   onClose,
   header,
   bodyText,
   children,
+  fullWidth,
 }: PopupProps) => {
   const [container, setContainer] = useState<HTMLDivElement | undefined>()
 
@@ -71,21 +90,30 @@ export const PopupRaw = ({
   if (!container) return null
   return createPortal(
     <StyledContainer onClick={handleOnClose}>
-      <div className="popup-content" onClick={handlePopUpClick}>
-        {header && (
-          <>
-            <StyledHeaderContainer>
-              <Typography variant="h6">{header}</Typography>
-              <IconButton onClick={onClose}>
-                <Close />
-              </IconButton>
-            </StyledHeaderContainer>
-            <Divider />
-          </>
-        )}
-        {bodyText && <Typography variant="subtitle1">{bodyText}</Typography>}
-        <StyledActionsContainer>{children}</StyledActionsContainer>
-      </div>
+      <BorderdContainer
+        hotBorder={true}
+        isSelected={true}
+        padding="0"
+        noHoverCursor={true}
+      >
+        <div className="popup-content" onClick={handlePopUpClick}>
+          <StyledExitContainer>
+            <IconButton onClick={onClose}>
+              <Close />
+            </IconButton>
+          </StyledExitContainer>
+          <StyledHeader>
+            {header && <Typography variant="h6">{header}</Typography>}
+            {bodyText && (
+              <Typography variant="subtitle1">{bodyText}</Typography>
+            )}
+          </StyledHeader>
+          <Divider />
+          <StyledActionsContainer fullWidth={fullWidth}>
+            {children}
+          </StyledActionsContainer>
+        </div>
+      </BorderdContainer>
     </StyledContainer>,
     container
   )

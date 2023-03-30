@@ -1,5 +1,7 @@
 import { Routes, Route } from 'react-router-dom'
 
+import { LoginPage } from 'Pages/LoginPage'
+
 import {
   AdminPage,
   ProgramsPage,
@@ -21,6 +23,7 @@ function App() {
       <Route path="admin/programs" element={<ProgramsPage />} />
       <Route path="admin/programMap" element={<ProgramMapPage />} />
       <Route path="selection" element={<SegmentSelectionPage />} />
+      <Route path="login" element={<LoginPage />} />
     </Routes>
   )
 }

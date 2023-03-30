@@ -19,18 +19,9 @@
   overflow: auto;
   white-space: nowrap;
 
-  transition: all var(--treansitionSpeed);
-  -webkit-transition: all var(--treansitionSpeed);
-  -moz-transition: all var(--treansitionSpeed);
 }
 
-.familyTree li {
-  /* display: inline-table;
-  text-align: center;
-  list-style-type: none;
-  position: relative;
-  padding: 20px 5px 0 5px; */
-
+.familyTree ul, .familyTree li, .familyTree li * {
   transition: all var(--treansitionSpeed);
   -webkit-transition: all var(--treansitionSpeed);
   -moz-transition: all var(--treansitionSpeed);
@@ -94,24 +85,6 @@ right connector from last child*/
   border-left: 1px solid var(--borderColor);
   width: 0;
   height: 20px;
-}
-
-.familyTree li article {
-  border: 1px solid var(--borderColor);
-  padding: 5px 10px;
-  /* text-decoration: none; */
-  color: var(--itemTextColor);
-  font-family: arial, verdana, tahoma;
-  font-size: 11px;
-  display: inline-block;
-
-  border-radius: 5px;
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-
-  transition: all var(--treansitionSpeed);
-  -webkit-transition: all var(--treansitionSpeed);
-  -moz-transition: all var(--treansitionSpeed);
 }
 
 /*Time for some hover effects*/

@@ -2,28 +2,23 @@ import { memo, useCallback, useState } from 'react'
 
 import { useNavigate } from 'react-router-dom'
 
-import { Delete, AccountTree, Check } from '@mui/icons-material'
-import {
-  IconButton,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemText,
-  styled,
-  Tooltip,
-} from '@mui/material'
+import { Check } from '@mui/icons-material'
+import { IconButton, List, styled } from '@mui/material'
+import { ProgramsItem } from 'components/ProgramsItem'
 
 import { useSupabase } from 'hooks'
 import { useAdminStore } from 'stores'
 import { DbProgram, ProgramType } from 'types'
+import { generateNewId, saveProgramAsJson } from 'utils'
 
 import { Popup } from '../Popup'
 
 const StyledProgramsListContainer = styled(List)`
-  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
   margin: 0 auto;
-  border: 1px dashed rgba(255, 255, 255, 0.5);
-  border-radius: 5px;
+  align-items: center;
 `
 
 export type ProgramsListProps = {
@@ -32,7 +27,7 @@ export type ProgramsListProps = {
 
 export const ProgramsListRaw = ({ programs }: ProgramsListProps) => {
   const navigate = useNavigate()
-  const { deleteProgram } = useSupabase()
+  const { deleteProgram, insertProgram } = useSupabase()
   const setSelectedProgram = useAdminStore((s) => s.setSelectedProgram)
   const setProgram = useAdminStore((s) => s.setProgram)
   const [deleteProgramId, setDeleteProgramId] = useState<number | undefined>(
@@ -42,8 +37,8 @@ export const ProgramsListRaw = ({ programs }: ProgramsListProps) => {
   const handleDeleteProgram = useCallback(() => {
     if (!deleteProgramId) return
     deleteProgram(deleteProgramId)
-    navigate('/admin/programs')
-  }, [deleteProgram, deleteProgramId, navigate])
+    setDeleteProgramId(undefined)
+  }, [deleteProgram, deleteProgramId])
 
   const handleSetAsSelectedProgram = useCallback(
     (program: ProgramType) => {
@@ -53,6 +48,19 @@ export const ProgramsListRaw = ({ programs }: ProgramsListProps) => {
     [setSelectedProgram, navigate]
   )
 
+  // duplicate a program and add it to programs
+  const duplicateProgram = useCallback(
+    (program: ProgramType) => {
+      const newProgram = {
+        ...program,
+        id: generateNewId(),
+        title: program.title + ' (copy)',
+      }
+      insertProgram(newProgram)
+    },
+    [insertProgram]
+  )
+
   const handleOpenProgram = useCallback(
     (dbProgram: DbProgram) => {
       setProgram(dbProgram.program)
@@ -60,6 +68,10 @@ export const ProgramsListRaw = ({ programs }: ProgramsListProps) => {
     },
     [navigate, setProgram]
   )
+
+  const handleSaveProgramAsJson = useCallback((program: ProgramType) => {
+    saveProgramAsJson(program)
+  }, [])
 
   if (programs.length === 0)
     return (
@@ -72,43 +84,21 @@ export const ProgramsListRaw = ({ programs }: ProgramsListProps) => {
     <StyledProgramsListContainer>
       {programs.map((program: DbProgram) => {
         return (
-          <Tooltip
+          <ProgramsItem
             key={program.id}
-            title={new Date(program.internal_id).toLocaleString()}
-            placement="left"
-          >
-            <ListItem
-              secondaryAction={
-                <>
-                  <Tooltip title="Open Program Map">
-                    <IconButton
-                      edge="end"
-                      onClick={() => handleOpenProgram(program)}
-                    >
-                      <AccountTree />
-                    </IconButton>
-                  </Tooltip>
-                  <Tooltip title="Delete Program">
-                    <IconButton
-                      edge="end"
-                      onClick={() => setDeleteProgramId(program.program.id)}
-                    >
-                      <Delete />
-                    </IconButton>
-                  </Tooltip>
-                </>
-              }
-              disablePadding
-            >
-              <ListItemButton
-                role={undefined}
-                onClick={() => handleSetAsSelectedProgram(program.program)}
-                dense
-              >
-                <ListItemText primary={program.program.title} />
-              </ListItemButton>
-            </ListItem>
-          </Tooltip>
+            title={program.program.title}
+            description={program.program.discription}
+            tags={[
+              `${program.program.screensInfo.length} screens`,
+              '7-12 Minutes',
+            ]}
+            thumbnail={program.program.thumbnail}
+            onClick={() => handleSetAsSelectedProgram(program.program)}
+            onEdit={() => handleOpenProgram(program)}
+            onCopy={() => duplicateProgram(program.program)}
+            onDownload={() => handleSaveProgramAsJson(program.program)}
+            onDelete={() => setDeleteProgramId(program.program.id)}
+          />
         )
       })}
       {deleteProgramId && (

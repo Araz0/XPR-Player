@@ -9,13 +9,20 @@ import {
   EditOff,
   ExpandLess,
   ExpandMore,
+  SmartDisplayOutlined,
 } from '@mui/icons-material'
 import { EditableLabel } from 'components/EditableLabel'
+import { LabelSpan } from 'components/LabelSpan'
+import { MainButton, MainButtonVariants } from 'components/MainButton'
+import { MediaList } from 'components/MediaList'
+import { Popup } from 'components/Popup'
 import { SegmentMenu } from 'components/SegmentMenu'
 import { SegmentScreens } from 'components/SegmentScreens'
 import { SmallIconButton } from 'components/SmallIconButton'
+import { PRIMARY_COLOR, WHITE_COLOR } from 'constants/styles'
 
 import { useProgram } from 'hooks'
+import { useAdminStore } from 'stores'
 import { SegmentMediaType, SegmentType } from 'types'
 import { generateNewId, getRandomColor } from 'utils'
 
@@ -31,8 +38,20 @@ const StyledListItemContainer = styled.li<{
 
   article {
     --uniqueColor: ${(props) => getRandomColor(props.uniqueColor)};
-    ${(props) =>
-      props.isRefed && 'border: 1px dashed var(--uniqueColor) !important;'};
+
+    font-family: arial, verdana, tahoma;
+    font-size: 11px;
+    display: inline-block;
+
+    border-radius: 5px;
+    padding: 5px 10px;
+    color: ${WHITE_COLOR};
+
+    border: 1px
+      ${(props) =>
+        props.isRefed
+          ? 'dashed var(--uniqueColor)'
+          : `solid ${PRIMARY_COLOR}`}!important;
   }
 `
 const StyledVerticalContainer = styled.div`
@@ -45,18 +64,33 @@ const StyledActionsContainer = styled.div`
   justify-content: space-evenly;
 `
 
+const StyledMediaActionsContainer = styled.div`
+  display: flex;
+  justify-content: space-evenly;
+  margin-top: 25px;
+`
+const StyledMediaListHeader = styled.div`
+  display: flex;
+  justify-content: end;
+  margin-bottom: 15px;
+`
 export type TreeItemProps = {
   segmentId: number
 }
 export const TreeItemRaw = ({ segmentId }: TreeItemProps) => {
   const titleRef = useRef<HTMLInputElement>()
   const descriptionRef = useRef<HTMLInputElement>()
+
+  const program = useAdminStore((s) => s.program)
+
   const [canEdit, setCanEdit] = useState<boolean>(false)
   const [showMore, setShowMore] = useState<boolean>(false)
   const [isReferenced, setIsReferenced] = useState<boolean>(false)
-
+  const [showMediaList, setShowMediaList] = useState<boolean>(false)
+  const [selectedMediaId, setSelectedMediaId] = useState<number | undefined>()
   const [segment, setSegment] = useState<SegmentType | undefined>(undefined)
   const [media, setMedia] = useState<SegmentMediaType | undefined>(undefined)
+
   const {
     getSegmentById,
     updateMedia,
@@ -91,6 +125,22 @@ export const TreeItemRaw = ({ segmentId }: TreeItemProps) => {
     setCanEdit(!canEdit)
   }, [canEdit])
 
+  const onMediaClick = useCallback((id: number) => {
+    setSelectedMediaId(id)
+  }, [])
+  const onAddMediaClick = useCallback(
+    (id: number | undefined) => {
+      if (!segment) return
+      if (!id) return
+      segment.mediaId = id
+      const foundMedia = getMediaById(id)
+      if (!foundMedia) return
+      setMedia(foundMedia)
+      setShowMediaList(false)
+    },
+    [getMediaById, segment]
+  )
+
   const handleSave = useCallback(() => {
     if (!segment) return
     const updatedMedia = {
@@ -117,7 +167,6 @@ export const TreeItemRaw = ({ segmentId }: TreeItemProps) => {
     updateMedia,
   ])
 
-  // if (!segment) return null
   return (
     <StyledListItemContainer
       isRefed={isReferenced}
@@ -168,6 +217,12 @@ export const TreeItemRaw = ({ segmentId }: TreeItemProps) => {
             }
             icon={<Add fontSize="small" />}
           />
+
+          <SmallIconButton
+            tooltip="select Media"
+            onClick={() => setShowMediaList(true)}
+            icon={<SmartDisplayOutlined fontSize="small" />}
+          />
           {media && (
             <SmallIconButton
               tooltip={showMore ? 'Hide More' : 'Show More'}
@@ -190,6 +245,31 @@ export const TreeItemRaw = ({ segmentId }: TreeItemProps) => {
             return <TreeItem key={idx} segmentId={id} />
           })}
         </ul>
+      )}
+      {showMediaList && (
+        <Popup onClose={() => setShowMediaList(false)} header="Media Assets">
+          <StyledMediaListHeader>
+            <LabelSpan>
+              {program
+                ? program.media.length === 1
+                  ? `1 Asset`
+                  : `${program.media.length} Assets`
+                : '0 Assets'}
+            </LabelSpan>
+          </StyledMediaListHeader>
+          <MediaList
+            mediaArray={program ? program.media : []}
+            onMediaClick={onMediaClick}
+          />
+          <StyledMediaActionsContainer>
+            <MainButton
+              variant={MainButtonVariants.PRIMARY}
+              onClick={() => onAddMediaClick(selectedMediaId)}
+            >
+              Add Media to Segment
+            </MainButton>
+          </StyledMediaActionsContainer>
+        </Popup>
       )}
     </StyledListItemContainer>
   )

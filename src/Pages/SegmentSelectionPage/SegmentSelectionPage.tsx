@@ -2,10 +2,7 @@ import { memo, useCallback } from 'react'
 
 import styled from 'styled-components'
 
-import { ThumbUp, ThumbDown } from '@mui/icons-material'
-import { Button } from '@mui/material'
-
-import { CenterdContainer } from 'components'
+import { CenterdContainer, MainButton, MainButtonVariants } from 'components'
 import { useSocketService } from 'services'
 
 const StyledButtonsContainer = styled.div`
@@ -15,6 +12,7 @@ const StyledButtonsContainer = styled.div`
 
 export const SegmentSelectionPageRaw = () => {
   const { socketService } = useSocketService()
+
   const handleClickedYes = useCallback(() => {
     socketService.emmitSelectedScreenIndex(1)
   }, [socketService])
@@ -26,20 +24,18 @@ export const SegmentSelectionPageRaw = () => {
   return (
     <CenterdContainer>
       <StyledButtonsContainer>
-        <Button
-          variant="outlined"
+        <MainButton
+          variant={MainButtonVariants.SECONDARY}
           onClick={handleClickedNo}
-          startIcon={<ThumbDown />}
         >
           No
-        </Button>
-        <Button
-          variant="outlined"
+        </MainButton>
+        <MainButton
+          variant={MainButtonVariants.PRIMARY}
           onClick={handleClickedYes}
-          startIcon={<ThumbUp />}
         >
           Yes
-        </Button>
+        </MainButton>
       </StyledButtonsContainer>
     </CenterdContainer>
   )

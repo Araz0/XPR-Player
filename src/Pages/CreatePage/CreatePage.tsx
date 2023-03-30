@@ -22,17 +22,22 @@ export const CreatePageRaw = () => {
   const { createNewProgram } = useProgram()
   const [screensAmount, setScreensAmount] = useState<number>(1)
 
-  const handleChangeScreensAmount = (
-    event: Event,
-    newValue: number | number[]
-  ) => {
-    setScreensAmount(newValue as number)
-  }
+  const handleChangeScreensAmount = useCallback(
+    () => (event: Event, newValue: number | number[]) => {
+      setScreensAmount(newValue as number)
+    },
+    []
+  )
 
   const handleCreateProgram = useCallback(() => {
     if (!titleRef.current?.value) return
-    createNewProgram(titleRef.current?.value, screensAmount)
-  }, [createNewProgram, screensAmount])
+    createNewProgram(
+      titleRef.current?.value,
+      'discription Place holder',
+      'somefile.png',
+      [{ title: 'Front' }, { title: 'Left' }, { title: 'Back' }]
+    )
+  }, [createNewProgram])
 
   return (
     <AdminPageWrapper>

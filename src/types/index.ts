@@ -2,11 +2,17 @@ export * from './eventNames'
 
 export type ProgramType = {
   id: number
+  discription: string
+  thumbnail: string
   title: string
   segments: SegmentType[]
   media: SegmentMediaType[]
-  amountOfScreens: number
+  screensInfo: ProgramScreensInfo[]
   standBySrc?: string
+}
+
+export type ProgramScreensInfo = {
+  title: string
 }
 export type SegmentType = {
   id: number
@@ -54,4 +60,9 @@ export enum ScreenStatus {
 export enum StandByMods {
   ANIMATION = 'ANIMATION',
   TEXT = 'TEXT',
+}
+
+export type LogType = {
+  title: string
+  description: string
 }

@@ -1,7 +1,8 @@
 import { withRouter } from 'storybook-addon-react-router-v6'
 
 import { Story } from '@storybook/react'
-import { SegmentMenu } from 'components/SegmentMenu'
+
+import { SegmentMenu } from './SegmentMenu'
 
 export const Default: Story<{ programId: string }> = (args) => {
   return (
@@ -16,7 +17,6 @@ export const Default: Story<{ programId: string }> = (args) => {
     />
   )
 }
-Default.args = {}
 Default.storyName = 'SegmentMenu'
 
 export default {

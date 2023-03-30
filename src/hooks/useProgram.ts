@@ -3,7 +3,13 @@ import { useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { useAdminStore } from 'stores'
-import { ProgramType, ScreenType, SegmentMediaType, SegmentType } from 'types'
+import {
+  ProgramScreensInfo,
+  ProgramType,
+  ScreenType,
+  SegmentMediaType,
+  SegmentType,
+} from 'types'
 import { generateNewId, loadJsonFile } from 'utils'
 
 export function useProgram() {
@@ -81,11 +87,18 @@ export function useProgram() {
   }, [program, setProgram])
 
   const createNewProgram = useCallback(
-    (title: string, amountOfScreens: number) => {
+    (
+      title: string,
+      discription: string,
+      thumbnail: string,
+      screensInfo: ProgramScreensInfo[]
+    ) => {
       const newProgram = {
         id: generateNewId(),
         title: title,
-        amountOfScreens: amountOfScreens,
+        screensInfo: screensInfo,
+        discription: discription,
+        thumbnail: thumbnail,
         segments: [],
         media: [],
       }
