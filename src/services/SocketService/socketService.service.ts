@@ -9,6 +9,10 @@ export class SocketService {
     console.log('SocketService is created')
   }
 
+  public disconnect = () => {
+    this._socket.disconnect()
+  }
+
   private emmit = (EventName: string, commandPackage: any) => {
     this._socket.emit(EventName, commandPackage)
   }
@@ -55,7 +59,12 @@ export class SocketService {
     this.emmit(EventNames.USER_SELECTED_SEGMENT, index)
   }
 
-  public onLisiten = (
+  public onAnything = (exicute: (withData?: any) => void) => {
+    this._socket.onAny((eventName: any, args) => {
+      exicute(`(${eventName}):  | ⌚ ${new Date().getMilliseconds()}`)
+    })
+  }
+  private onLisiten = (
     eventName: string,
     exicute: (withData?: any) => void,
     exicuteWithData?: boolean
@@ -71,106 +80,40 @@ export class SocketService {
   }
 
   public onSetProgram = (exicute: (program: ProgramType) => void) => {
-    this._socket.on(EventNames.SET_PROGRAM, (program: ProgramType) => {
-      // eslint-disable-next-line no-console
-      console.log(
-        `Received command (set-program): `,
-        new Date().getMilliseconds()
-      )
-      exicute(program)
-    })
+    this.onLisiten(EventNames.SET_PROGRAM, exicute, true)
   }
 
   public onStart = (exicute: () => void) => {
-    this._socket.on(EventNames.START_PROGRAM, (data: any) => {
-      // eslint-disable-next-line no-console
-      console.log(
-        `Received command (start-program): ${data}`,
-        new Date().getMilliseconds()
-      )
-      exicute()
-    })
+    this.onLisiten(EventNames.START_PROGRAM, exicute)
   }
 
   public onPause = (exicute: () => void) => {
-    this._socket.on(EventNames.PAUSE_PROGRAM, (data: any) => {
-      // eslint-disable-next-line no-console
-      console.log(
-        `Received command (pause-program): ${data}`,
-        new Date().getMilliseconds()
-      )
-      exicute()
-    })
+    this.onLisiten(EventNames.PAUSE_PROGRAM, exicute)
   }
 
   public onReset = (exicute: () => void) => {
-    this._socket.on(EventNames.RESET_PROGRAM, (data: any) => {
-      // eslint-disable-next-line no-console
-      console.log(
-        `Received command (reset-program): ${data}`,
-        new Date().getMilliseconds()
-      )
-      exicute()
-    })
+    this.onLisiten(EventNames.RESET_PROGRAM, exicute)
   }
 
   public onRequestFullScreen = (exicute: () => void) => {
-    this._socket.on(EventNames.REQUEST_FULLSCREEN, (data: any) => {
-      // eslint-disable-next-line no-console
-      console.log(
-        `Received command (request-full-screen): ${data}`,
-        new Date().getMilliseconds()
-      )
-      exicute()
-    })
+    this.onLisiten(EventNames.REQUEST_FULLSCREEN, exicute)
   }
 
   public onShowControls = (exicute: () => void) => {
-    this._socket.on(EventNames.SHOW_CONTROLS, () => {
-      // eslint-disable-next-line no-console
-      console.log(
-        `Received command (show-controls): `,
-        new Date().getMilliseconds()
-      )
-      exicute()
-    })
+    this.onLisiten(EventNames.SHOW_CONTROLS, exicute)
   }
 
   public onHideControls = (exicute: () => void) => {
-    this._socket.on(EventNames.HIDE_CONTROLS, () => {
-      // eslint-disable-next-line no-console
-      console.log(
-        `Received command (hide-controls): `,
-        new Date().getMilliseconds()
-      )
-      exicute()
-    })
+    this.onLisiten(EventNames.HIDE_CONTROLS, exicute)
   }
 
   public onUserSelectedNextSegment = (
     exicute: (selectedNextSegmentIndex: number) => void
   ) => {
-    this._socket.on(
-      EventNames.USER_SELECTED_SEGMENT,
-      (selectedNextSegmentIndex: number) => {
-        // eslint-disable-next-line no-console
-        console.log(
-          `Received command (user-selected-segment): `,
-          new Date().getMilliseconds()
-        )
-        exicute(selectedNextSegmentIndex)
-      }
-    )
+    this.onLisiten(EventNames.USER_SELECTED_SEGMENT, exicute, true)
   }
 
   public onToggleShowControls = (exicute: () => void) => {
-    this._socket.on(EventNames.TOGGLE_SHOW_CONTROLS, () => {
-      // eslint-disable-next-line no-console
-      console.log(
-        `Received command (toggle-show-controls): `,
-        new Date().getMilliseconds()
-      )
-      exicute()
-    })
+    this.onLisiten(EventNames.TOGGLE_SHOW_CONTROLS, exicute)
   }
 }

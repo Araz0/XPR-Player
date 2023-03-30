@@ -12,8 +12,6 @@ import {
   WHITE_COLOR,
 } from 'constants/styles'
 
-import { LogType } from 'types'
-
 const StyledListContainer = styled.div`
   height: 100%;
   display: flex;
@@ -43,7 +41,7 @@ const StyledVertuosoContainer = styled.div`
 `
 
 export type LogsListProps = {
-  logs: LogType[]
+  logs: string[]
   onResetClick: () => void
   onDownloadClick: () => void
 }
@@ -75,9 +73,10 @@ export const LogsListRaw = ({
           totalCount={logs.length}
           itemContent={(i) => (
             <StyledLogItem>
-              <span>{logs[i].title}</span> - {logs[i].description}
+              <span>Log:</span> - {logs[i]}
             </StyledLogItem>
           )}
+          followOutput
         />
       </StyledVertuosoContainer>
     </StyledListContainer>

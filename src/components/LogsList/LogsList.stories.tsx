@@ -1,7 +1,5 @@
 import { Story } from '@storybook/react'
 
-import { LogType } from 'types'
-
 import { LogsList } from './LogsList'
 
 export const Default: Story = (args) => {
@@ -19,10 +17,10 @@ export default {
   title: 'LogsList',
 }
 
-const fakeLogs: LogType[] = [
-  { title: 'user1', description: 'voted for new segment 1' },
-  { title: 'user3', description: 'voted for new segment 2' },
-  { title: 'user2', description: 'voted for new segment 2' },
-  { title: 'user3', description: 'voted for new segment 2' },
-  { title: 'user1', description: 'voted for new segment 1' },
+const fakeLogs: string[] = [
+  'voted for new segment 1',
+  'voted for new segment 2',
+  'voted for new segment 2',
+  'voted for new segment 2',
+  'voted for new segment 1',
 ]

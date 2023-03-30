@@ -23,9 +23,14 @@ const StyledScreenPlayerContainer = styled.div`
 export type ScreenProps = {
   screenId: number
   backgroundColor?: string
+  muted?: boolean
 }
 
-export const ScreenRaw = ({ screenId, backgroundColor }: ScreenProps) => {
+export const ScreenRaw = ({
+  screenId,
+  backgroundColor,
+  muted,
+}: ScreenProps) => {
   const screenPlayerService = new ScreenService()
 
   const programStarted = useScreenStore((s) => s.programStarted)
@@ -62,8 +67,8 @@ export const ScreenRaw = ({ screenId, backgroundColor }: ScreenProps) => {
         </StandbyOverlay>
       )}
       <>
-        <VideoPlayer ref={videoRef1} />
-        <VideoPlayer ref={videoRef2} />
+        <VideoPlayer reference={videoRef1} muted={muted} />
+        <VideoPlayer reference={videoRef2} muted={muted} />
       </>
     </StyledScreenPlayerContainer>
   )

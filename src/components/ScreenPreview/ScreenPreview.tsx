@@ -47,8 +47,13 @@ const StyledFooterContainer = styled.div`
 export type ScreenPreviewProps = {
   title: string
   screenId: number
+  muted?: boolean
 }
-export const ScreenPreviewRaw = ({ title, screenId }: ScreenPreviewProps) => {
+export const ScreenPreviewRaw = ({
+  title,
+  screenId,
+  muted,
+}: ScreenPreviewProps) => {
   const [isFullScreen, setIsFullscreen] = useState<boolean>(false)
 
   const handleOnClick = useCallback(() => {
@@ -67,6 +72,7 @@ export const ScreenPreviewRaw = ({ title, screenId }: ScreenPreviewProps) => {
         <Screen
           screenId={screenId}
           backgroundColor={BACKGROUND_COLOR_SECONDERY}
+          muted={muted ? true : false}
         />
         <StyledFooterContainer>
           <span>{title}</span>

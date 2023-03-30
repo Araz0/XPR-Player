@@ -22,7 +22,14 @@ export const ScreensListRaw = ({ programScreens }: ScreensListProps) => {
   return (
     <StyledContainer>
       {programScreens.map((screen, idx) => {
-        return <ScreenPreview screenId={idx} title={screen.title} key={idx} />
+        return (
+          <ScreenPreview
+            key={idx}
+            screenId={idx}
+            title={screen.title}
+            muted={true}
+          />
+        )
       })}
     </StyledContainer>
   )
