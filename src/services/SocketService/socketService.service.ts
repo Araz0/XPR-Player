@@ -59,7 +59,12 @@ export class SocketService {
     this.emmit(EventNames.USER_SELECTED_SEGMENT, index)
   }
 
-  public onLisiten = (
+  public onAnything = (exicute: (withData?: any) => void) => {
+    this._socket.onAny((eventName: any, args) => {
+      exicute(`(${eventName}):  | ⌚ ${new Date().getMilliseconds()}`)
+    })
+  }
+  private onLisiten = (
     eventName: string,
     exicute: (withData?: any) => void,
     exicuteWithData?: boolean

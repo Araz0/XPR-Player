@@ -17,6 +17,10 @@ export type AdminState = {
   program: ProgramType | undefined
   setProgram: (program: ProgramType) => void
 
+  logsArray: string[]
+  setLogsArray: (logsArray: string[]) => void
+  addLogToLogsArray: (log: string) => void
+
   loadedPrograms: DbProgram[] | undefined
   setLoadedPrograms: (loadedPrograms: DbProgram[]) => void
 
@@ -39,6 +43,11 @@ export const useAdminStore = create<AdminState>((set) => ({
 
   program: undefined,
   setProgram: (program: ProgramType) => set(() => ({ program })),
+
+  logsArray: [],
+  setLogsArray: (logsArray: string[]) => set(() => ({ logsArray })),
+  addLogToLogsArray: (log: string) =>
+    set((state) => ({ logsArray: [...state.logsArray, log] })),
 
   loadedPrograms: undefined,
   setLoadedPrograms: (loadedPrograms: DbProgram[]) =>

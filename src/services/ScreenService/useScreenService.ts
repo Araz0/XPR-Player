@@ -1,12 +1,14 @@
 import { useCallback } from 'react'
 
 import { ScreenService, useSocketService } from 'services'
-import { useScreenStore } from 'stores'
+import { useAdminStore, useScreenStore } from 'stores'
 import { PlayerContainerType, ProgramType, VideoRefElementType } from 'types'
 
 export function useScreenService(screenPlayerService: ScreenService) {
   const setProgram = useScreenStore((s) => s.setProgram)
   const setProgramStarted = useScreenStore((s) => s.setProgramStarted)
+  const addLogToLogsArray = useAdminStore((s) => s.addLogToLogsArray)
+
   const { socketService } = useSocketService()
 
   const playPauseScreen = useCallback(() => {
@@ -79,6 +81,7 @@ export function useScreenService(screenPlayerService: ScreenService) {
     socketService.onReset(resetProgram)
     socketService.onToggleShowControls(toggleShowingControls)
     socketService.onUserSelectedNextSegment(setSelectedNextSegment)
+    socketService.onAnything(addLogToLogsArray)
     // force no rerenders on this hook
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
