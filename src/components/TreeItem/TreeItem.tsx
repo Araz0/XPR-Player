@@ -24,7 +24,7 @@ import { PRIMARY_COLOR, WHITE_COLOR } from 'constants/styles'
 import { useProgram } from 'hooks'
 import { useAdminStore } from 'stores'
 import { SegmentMediaType, SegmentType } from 'types'
-import { generateNewId, getRandomColor } from 'utils'
+import { generateNewId, getColorFromPalette } from 'utils'
 
 const StyledListItemContainer = styled.li<{
   isRefed: boolean
@@ -37,7 +37,7 @@ const StyledListItemContainer = styled.li<{
   padding: 20px 5px 0 5px;
 
   article {
-    --uniqueColor: ${(props) => getRandomColor(props.uniqueColor)};
+    --uniqueColor: ${(props) => getColorFromPalette(props.uniqueColor)};
 
     font-family: arial, verdana, tahoma;
     font-size: 11px;

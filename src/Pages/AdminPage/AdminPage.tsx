@@ -47,10 +47,6 @@ export const AdminPageRaw = () => {
   const selectedProgram = useAdminStore((s) => s.selectedProgram)
   const loadedPrograms = useAdminStore((s) => s.loadedPrograms)
   const logsArray = useAdminStore((s) => s.logsArray)
-  console.log(
-    '🚀 ~ file: AdminPage.tsx:50 ~ AdminPageRaw ~ logsArray:',
-    logsArray
-  )
 
   const { socketService } = useSocketService()
 
