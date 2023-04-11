@@ -72,8 +72,9 @@ export const ProgramsListDropdownRaw = ({
         <TextField
           id="outlined-read-only-input"
           label="Program"
-          defaultValue={'select a program'}
-          value={selectedProgram?.title}
+          defaultValue={
+            selectedProgram ? selectedProgram?.title : 'select a program'
+          }
           InputProps={{
             readOnly: true,
           }}
