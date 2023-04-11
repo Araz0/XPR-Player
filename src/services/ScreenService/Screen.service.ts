@@ -27,6 +27,7 @@ export class ScreenService {
     this._player2 = new VideoService('B', undefined)
     this._selectedPID = this._player1.id
   }
+
   public setRefs = (
     screenId: number,
     container: PlayerContainerType,
@@ -44,18 +45,22 @@ export class ScreenService {
     this.setListners(this._player1)
     this.setListners(this._player2)
   }
+
   public setNextSelectedSegmentIndex = (index: number) => {
     this._nextSelectedSegmentIndex = index
   }
-  public destroyScreen = () => {
+
+  public removeAllListners = () => {
     this.removeListners(this._player1)
     this.removeListners(this._player2)
   }
+
   public currentPlayer() {
     return this._selectedPID === this._player1.id
       ? this._player1
       : this._player2
   }
+
   public nextPlayer() {
     return this._selectedPID === this._player1.id
       ? this._player2
@@ -65,6 +70,7 @@ export class ScreenService {
   public setCurrentAsNextPlayer = () => {
     this._selectedPID = this.nextPlayer().id
   }
+
   public play = () => {
     this.currentPlayer().play()
   }
@@ -74,7 +80,11 @@ export class ScreenService {
   }
 
   public reset = () => {
+    this.removeAllListners()
+    this.setAllListners()
+
     this.setEndScreen()
+    this.currentPlayer().show()
     this.setSrcToIntro()
   }
 
@@ -83,25 +93,29 @@ export class ScreenService {
       ? this.play()
       : this.pause()
   }
+
   public requestFullScreen = () => {
     if (this._containerRef?.current)
       this._containerRef.current.requestFullscreen()
   }
+
   public playNext = () => {
-    this.nextPlayer().show()
     this.nextPlayer().play()
-    this.currentPlayer().pause()
+    this.nextPlayer().show()
     this.currentPlayer().hide()
+    this.currentPlayer().pause()
     this.currentPlayer().resetPlayer()
     this.setCurrentAsNextPlayer()
     this._currentSegment = this._nextSegment
     this._nextSegment = undefined
     this._nextSelectedSegmentIndex = 0
   }
+
   public setEndScreen = () => {
     this._currentSegment = undefined
     this._nextSegment = undefined
     this._nextSelectedSegmentIndex = 0
+    this._selectedPID = this._player1.id
     this.currentPlayer().pause()
     this.nextPlayer().pause()
     this.currentPlayer().resetPlayer()
@@ -111,9 +125,11 @@ export class ScreenService {
     this.currentPlayer().setSource('')
     this.nextPlayer().setSource('')
   }
+
   public setCurrentSource = (src: string) => {
     this.currentPlayer().setSource(src)
   }
+
   public setNextSource = (src: string) => {
     this.nextPlayer().setSource(src)
   }
@@ -123,11 +139,13 @@ export class ScreenService {
     this.nextPlayer().showControls()
     this._isShowingControls = true
   }
+
   public hideControls = () => {
     this.currentPlayer().hideControls()
     this.nextPlayer().hideControls()
     this._isShowingControls = false
   }
+
   public toggleControls = () => {
     this._isShowingControls ? this.hideControls() : this.showControls()
   }
@@ -145,8 +163,9 @@ export class ScreenService {
       this._program.media,
       this._currentSegment.mediaId
     )
-    if (segmentMedia?.screens[this._id])
+    if (segmentMedia?.screens[this._id]) {
       this.setCurrentSource(segmentMedia?.screens[this._id].mediaSrc)
+    }
   }
 
   private getNextSegment = () => {
