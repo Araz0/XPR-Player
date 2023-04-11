@@ -4,7 +4,6 @@ import styled from 'styled-components'
 
 import {
   Moving,
-  PauseOutlined,
   PlayArrowOutlined,
   ReplayOutlined,
   SettingsOutlined,
@@ -80,14 +79,14 @@ export const AdminPageRaw = () => {
               >
                 Start
               </MainButton>
-              <MainButton
+              {/* <MainButton
                 variant={MainButtonVariants.PRIMARY}
                 onClick={socketService.emmitPauseProgram}
                 width={'fit-content'}
                 startIcon={<PauseOutlined />}
               >
                 Pause
-              </MainButton>
+              </MainButton> */}
               <MainButton
                 variant={MainButtonVariants.PRIMARY}
                 onClick={socketService.emmitResetProgram}
