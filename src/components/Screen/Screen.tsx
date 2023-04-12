@@ -7,7 +7,7 @@ import { StandbyOverlay } from 'components/StandbyOverlay'
 import { VideoPlayer } from 'components/VideoPlayer'
 
 import { useDoubleKeyPress } from 'hooks'
-import { ScreenService, useScreenService } from 'services'
+import { ScreenService, SocketService, useScreenService } from 'services'
 import { useScreenStore } from 'stores'
 import { StandByMods } from 'types'
 
@@ -24,12 +24,14 @@ export type ScreenProps = {
   screenId: number
   backgroundColor?: string
   muted?: boolean
+  socketService?: SocketService
 }
 
 export const ScreenRaw = ({
   screenId,
   backgroundColor,
   muted,
+  socketService,
 }: ScreenProps) => {
   const screenPlayerService = new ScreenService()
 
@@ -41,7 +43,7 @@ export const ScreenRaw = ({
   const videoRef2 = useRef<any>()
 
   const { init, requestFullScreen, requestShowControls, setScerenListeners } =
-    useScreenService(screenPlayerService)
+    useScreenService(screenPlayerService, socketService)
 
   useDoubleKeyPress('f', () => requestFullScreen())
   useDoubleKeyPress('c', () => requestShowControls())

@@ -105,7 +105,10 @@ export const AdminPageRaw = () => {
                 Toggle Controls
               </MainButton>
             </StyledActionsContainer>
-            <ScreensList programScreens={selectedProgram.screensInfo} />
+            <ScreensList
+              programScreens={selectedProgram.screensInfo}
+              socketService={socketService}
+            />
           </div>
           <LogsList
             logs={logsArray}

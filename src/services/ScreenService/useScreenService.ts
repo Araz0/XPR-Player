@@ -1,15 +1,16 @@
 import { useCallback } from 'react'
 
-import { ScreenService, useSocketService } from 'services'
+import { ScreenService, SocketService } from 'services'
 import { useAdminStore, useScreenStore } from 'stores'
 import { PlayerContainerType, ProgramType, VideoRefElementType } from 'types'
 
-export function useScreenService(screenPlayerService: ScreenService) {
+export function useScreenService(
+  screenPlayerService: ScreenService,
+  socketService?: SocketService
+) {
   const setProgram = useScreenStore((s) => s.setProgram)
   const setProgramStarted = useScreenStore((s) => s.setProgramStarted)
   const addLogToLogsArray = useAdminStore((s) => s.addLogToLogsArray)
-
-  const { socketService } = useSocketService()
 
   const playPauseScreen = useCallback(() => {
     screenPlayerService.playPause()
@@ -74,7 +75,15 @@ export function useScreenService(screenPlayerService: ScreenService) {
     [setProgram, screenPlayerService]
   )
 
+  const setSelectedNextSegment = useCallback(
+    (index: number) => {
+      screenPlayerService.setNextSelectedSegmentIndex(index)
+    },
+    [screenPlayerService]
+  )
+
   const setScerenListeners = useCallback(() => {
+    if (!socketService) return
     socketService.onSetProgram(setScreenProgram)
     socketService.onStart(startProgram)
     socketService.onPause(pauseProgram)
@@ -82,13 +91,21 @@ export function useScreenService(screenPlayerService: ScreenService) {
     socketService.onToggleShowControls(toggleShowingControls)
     socketService.onUserSelectedNextSegment(setSelectedNextSegment)
     socketService.onAnything(addLogToLogsArray)
-    // force no rerenders on this hook
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [
+    addLogToLogsArray,
+    pauseProgram,
+    resetProgram,
+    setScreenProgram,
+    setSelectedNextSegment,
+    socketService,
+    startProgram,
+    toggleShowingControls,
+  ])
 
-  const setSelectedNextSegment = (index: number) => {
-    screenPlayerService.setNextSelectedSegmentIndex(index)
-  }
+  const destroySocket = useCallback(() => {
+    if (!socketService) return
+    socketService.disconnect()
+  }, [socketService])
 
   const init = useCallback(
     (
@@ -119,5 +136,6 @@ export function useScreenService(screenPlayerService: ScreenService) {
     toggleShowingControls,
     setSelectedNextSegment,
     setScerenListeners,
+    destroySocket,
   }
 }
