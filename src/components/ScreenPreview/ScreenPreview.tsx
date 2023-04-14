@@ -8,6 +8,8 @@ import { BorderdContainer } from 'components/BorderdContainer'
 import { Screen } from 'components/Screen/Screen'
 import { BACKGROUND_COLOR_SECONDERY, WHITE_COLOR } from 'constants/styles'
 
+import { SocketService } from 'services'
+
 const StyledPreviewContainer = styled.div<{ isFullScreen: boolean }>`
   position: relative;
   height: ${(props) => (props.isFullScreen ? '100%' : '310px')};
@@ -48,11 +50,13 @@ export type ScreenPreviewProps = {
   title: string
   screenId: number
   muted?: boolean
+  socketService?: SocketService
 }
 export const ScreenPreviewRaw = ({
   title,
   screenId,
   muted,
+  socketService,
 }: ScreenPreviewProps) => {
   const [isFullScreen, setIsFullscreen] = useState<boolean>(false)
 
@@ -73,6 +77,7 @@ export const ScreenPreviewRaw = ({
           screenId={screenId}
           backgroundColor={BACKGROUND_COLOR_SECONDERY}
           muted={muted ? true : false}
+          socketService={socketService}
         />
         <StyledFooterContainer>
           <span>{title}</span>

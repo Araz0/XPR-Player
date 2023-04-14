@@ -4,6 +4,7 @@ import styled from 'styled-components'
 
 import { ScreenPreview } from 'components/ScreenPreview'
 
+import { SocketService } from 'services'
 import { ProgramScreensInfo } from 'types'
 
 const StyledContainer = styled.div`
@@ -17,8 +18,12 @@ const StyledContainer = styled.div`
 `
 export type ScreensListProps = {
   programScreens: ProgramScreensInfo[]
+  socketService?: SocketService
 }
-export const ScreensListRaw = ({ programScreens }: ScreensListProps) => {
+export const ScreensListRaw = ({
+  programScreens,
+  socketService,
+}: ScreensListProps) => {
   return (
     <StyledContainer>
       {programScreens.map((screen, idx) => {
@@ -28,6 +33,7 @@ export const ScreensListRaw = ({ programScreens }: ScreensListProps) => {
             screenId={idx}
             title={screen.title}
             muted={true}
+            socketService={socketService}
           />
         )
       })}

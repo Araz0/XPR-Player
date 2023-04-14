@@ -4,7 +4,6 @@ import styled from 'styled-components'
 
 import {
   Moving,
-  PauseOutlined,
   PlayArrowOutlined,
   ReplayOutlined,
   SettingsOutlined,
@@ -47,10 +46,6 @@ export const AdminPageRaw = () => {
   const selectedProgram = useAdminStore((s) => s.selectedProgram)
   const loadedPrograms = useAdminStore((s) => s.loadedPrograms)
   const logsArray = useAdminStore((s) => s.logsArray)
-  console.log(
-    '🚀 ~ file: AdminPage.tsx:50 ~ AdminPageRaw ~ logsArray:',
-    logsArray
-  )
 
   const { socketService } = useSocketService()
 
@@ -84,14 +79,14 @@ export const AdminPageRaw = () => {
               >
                 Start
               </MainButton>
-              <MainButton
+              {/* <MainButton
                 variant={MainButtonVariants.PRIMARY}
                 onClick={socketService.emmitPauseProgram}
                 width={'fit-content'}
                 startIcon={<PauseOutlined />}
               >
                 Pause
-              </MainButton>
+              </MainButton> */}
               <MainButton
                 variant={MainButtonVariants.PRIMARY}
                 onClick={socketService.emmitResetProgram}
@@ -110,7 +105,10 @@ export const AdminPageRaw = () => {
                 Toggle Controls
               </MainButton>
             </StyledActionsContainer>
-            <ScreensList programScreens={selectedProgram.screensInfo} />
+            <ScreensList
+              programScreens={selectedProgram.screensInfo}
+              socketService={socketService}
+            />
           </div>
           <LogsList
             logs={logsArray}

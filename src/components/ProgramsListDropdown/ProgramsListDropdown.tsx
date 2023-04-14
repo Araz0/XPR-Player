@@ -19,6 +19,7 @@ const StyledButton = styled(Button)`
   position: relative;
   input {
     padding-right: 35px;
+    cursor: pointer;
   }
 `
 const StyledKeyboardArrowDown = styled(KeyboardArrowDown)`
@@ -71,8 +72,9 @@ export const ProgramsListDropdownRaw = ({
         <TextField
           id="outlined-read-only-input"
           label="Program"
-          defaultValue={'select a program'}
-          value={selectedProgram?.title}
+          defaultValue={
+            selectedProgram ? selectedProgram?.title : 'select a program'
+          }
           InputProps={{
             readOnly: true,
           }}
@@ -90,9 +92,9 @@ export const ProgramsListDropdownRaw = ({
           'aria-labelledby': 'basic-button',
         }}
       >
-        {programs.map((program) => {
+        {programs.map((program, index) => {
           return (
-            <MenuItem onClick={() => handleOnProgramClick(program)}>
+            <MenuItem onClick={() => handleOnProgramClick(program)} key={index}>
               {selectedProgram?.id === program.program.id && (
                 <ListItemIcon>
                   <Check fontSize="small" />
