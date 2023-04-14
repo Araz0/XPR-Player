@@ -2,6 +2,8 @@ import styled from 'styled-components'
 
 import { Story } from '@storybook/react'
 
+import { ScreenService } from 'services'
+
 import { ScreenPreview } from './ScreenPreview'
 
 const StyledContainer = styled.div`
@@ -12,7 +14,11 @@ const StyledContainer = styled.div`
 export const Default: Story = (args) => {
   return (
     <StyledContainer>
-      <ScreenPreview title="First Screen" screenId={0} />
+      <ScreenPreview
+        title="First Screen"
+        screenId={0}
+        screenService={new ScreenService()}
+      />
     </StyledContainer>
   )
 }
