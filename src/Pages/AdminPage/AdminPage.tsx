@@ -79,14 +79,6 @@ export const AdminPageRaw = () => {
               >
                 Start
               </MainButton>
-              {/* <MainButton
-                variant={MainButtonVariants.PRIMARY}
-                onClick={socketService.emmitPauseProgram}
-                width={'fit-content'}
-                startIcon={<PauseOutlined />}
-              >
-                Pause
-              </MainButton> */}
               <MainButton
                 variant={MainButtonVariants.PRIMARY}
                 onClick={socketService.emmitResetProgram}

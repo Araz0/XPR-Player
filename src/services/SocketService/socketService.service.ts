@@ -5,9 +5,6 @@ import { EventNames, ProgramType } from 'types'
 export class SocketService {
   private _serverUrl = 'http://localhost:8000'
   private _socket = io(this._serverUrl)
-  constructor() {
-    console.log('SocketService is created')
-  }
 
   public disconnect = () => {
     this._socket.disconnect()

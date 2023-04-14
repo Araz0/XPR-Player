@@ -22,7 +22,6 @@ export class ScreenService {
   private _nextSelectedSegmentIndex = 0
 
   constructor() {
-    console.log('ScreenService: constructor')
     this._player1 = new VideoService('A', undefined)
     this._player2 = new VideoService('B', undefined)
     this._selectedPID = this._player1.id
