@@ -2,10 +2,10 @@ import { memo, useCallback, useRef, useState } from 'react'
 
 import styled from 'styled-components'
 
-import { Add, AddToQueue, Delete } from '@mui/icons-material'
-import { Divider } from '@mui/material'
+import { Add, AddCircle, AddToQueue, Delete, Loop } from '@mui/icons-material'
+import { Divider, TextField, ThemeProvider } from '@mui/material'
 import { MainButton, MainButtonVariants } from 'components/MainButton'
-import { PRIMARY_COLOR } from 'constants/styles'
+import { PRIMARY_COLOR, lightTheme } from 'constants/styles'
 
 import { useProgram, useSupabase } from 'hooks'
 import { ProgramScreensInfo } from 'types'
@@ -34,7 +34,7 @@ const StyledThumbnailInputContainer = styled.div`
   border: 2px solid ${PRIMARY_COLOR};
   border-radius: 5px;
   width: 145px;
-  height: 72px;
+  height: 78px;
 
   justify-items: center;
   display: grid;
@@ -54,6 +54,20 @@ const StyledThumbnailInputContainer = styled.div`
     object-fit: cover;
   }
 `
+const StyledLoopIcon = styled(Loop)`
+  @keyframes rotate {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  animation-name: rotate;
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+`
 const StyledScreenInfoContainer = styled.div`
   display: flex;
   align-items: center;
@@ -63,8 +77,9 @@ const StyledScreenInfoContainer = styled.div`
 const StyledThumbnailDescriptionWrapper = styled.div`
   display: grid;
   grid-template-columns: 1fr 2fr;
-  input[type='text'] {
-    height: 72px;
+
+  textarea {
+    font-size: 14px;
   }
 `
 
@@ -74,7 +89,8 @@ export const CreateProgramFormRaw = () => {
   const descriptionRef = useRef<any>()
   const thumbnailRef = useRef<HTMLInputElement | null>(null)
 
-  const [imageUrl, setImageUrl] = useState<any>(null)
+  const [thumbnailImg, setThumbnailImg] = useState<string>()
+  const [uploadingThumbnail, setUploadingThumbnail] = useState<boolean>(false)
 
   const { createNewProgram } = useProgram()
   const [screens, setScreens] = useState<ProgramScreensInfo[]>([
@@ -82,17 +98,13 @@ export const CreateProgramFormRaw = () => {
   ])
 
   const handleuploadThumbnail = useCallback(
-    (e: any) => {
-      const file = e.target.files[0]
-      const mgUrl = URL.createObjectURL(file)
-      setImageUrl(mgUrl)
-      handleUploadProgramThubmnail(e)
-      console.log(
-        '🚀 ~ file: CreateProgramForm.tsx:91 ~ CreateProgramFormRaw ~ mgUrl:',
-        imageUrl
-      )
+    async (e: any) => {
+      setUploadingThumbnail(true)
+      const data = await handleUploadProgramThubmnail(e)
+      setUploadingThumbnail(false)
+      if (data) setThumbnailImg(data)
     },
-    [handleUploadProgramThubmnail, imageUrl]
+    [handleUploadProgramThubmnail]
   )
 
   const onScreenTitleChange = useCallback(
@@ -123,13 +135,13 @@ export const CreateProgramFormRaw = () => {
     createNewProgram(
       titleRef.current.value,
       descriptionRef.current.value,
-      '/media/thumbnailFallback.jpg',
-      [{ title: 'Front' }, { title: 'Left' }, { title: 'Back' }]
+      thumbnailImg || '/media/thumbnailFallback.jpg',
+      screens || [{ title: 'Front' }, { title: 'Left' }, { title: 'Back' }]
     )
-  }, [createNewProgram])
+  }, [createNewProgram, thumbnailImg, screens])
 
   const handleOnThumbnailClick = useCallback(() => {
-    // thumbnailRef.current?.click()
+    thumbnailRef.current?.click()
   }, [])
 
   return (
@@ -146,11 +158,8 @@ export const CreateProgramFormRaw = () => {
         <div>
           <StyledInputLabel>Thumbnail</StyledInputLabel>
           <StyledThumbnailInputContainer onClick={handleOnThumbnailClick}>
-            {/* <AddCircleOutline /> */}
-            {/* {imageUrl && (
-              <img src={'/media/thumbnailFallback.jpg'} alt="Preview" />
-            )} */}
-            <img src={'/media/thumbnailFallback.jpg'} alt="Preview" />
+            {uploadingThumbnail ? <StyledLoopIcon /> : <AddCircle />}
+            {thumbnailImg && <img src={thumbnailImg} alt="Thumbnail Preview" />}
             <input
               hidden
               accept="image/*"
@@ -163,13 +172,22 @@ export const CreateProgramFormRaw = () => {
         </div>
         <div>
           <StyledInputLabel>Description</StyledInputLabel>
-          <StyledTextInput
-            ref={descriptionRef}
-            type="text"
-            id="programDescription"
-            name="programDescription"
-            placeholder="Description"
-          />
+          <ThemeProvider theme={lightTheme}>
+            <TextField
+              fullWidth={true}
+              ref={descriptionRef}
+              style={{
+                border: `2px solid ${PRIMARY_COLOR}`,
+                borderRadius: '8px',
+              }}
+              multiline
+              rows={2}
+              variant="outlined"
+              id="programDescription"
+              name="programDescription"
+              placeholder="Write something short..."
+            />
+          </ThemeProvider>
         </div>
       </StyledThumbnailDescriptionWrapper>
 
@@ -196,9 +214,10 @@ export const CreateProgramFormRaw = () => {
           </StyledScreenInfoContainer>
         )
       })}
+
       <MainButton
         onClick={handleCreateScreenInfo}
-        width={'fit-contnet'}
+        width={'fit-content'}
         startIcon={<AddToQueue />}
         variant={MainButtonVariants.PRIMARY}
       >
@@ -209,7 +228,7 @@ export const CreateProgramFormRaw = () => {
       <br />
       <MainButton
         onClick={handleCreateProgram}
-        width={'fit-content'}
+        width={'fit-contnet'}
         startIcon={<Add />}
         variant={MainButtonVariants.PRIMARY}
       >

@@ -9,8 +9,11 @@ export type ProgramType = {
   media: SegmentMediaType[]
   screensInfo: ProgramScreensInfo[]
   standBySrc?: string
+  meta?: ProgramMeta
 }
-
+export type ProgramMeta = {
+  estimatedTime?: string
+}
 export type ProgramScreensInfo = {
   title: string
 }

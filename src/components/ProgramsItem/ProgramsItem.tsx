@@ -78,8 +78,8 @@ export const ProgramsItemRaw = ({
         <StyledTitle>{title}</StyledTitle>
         <p>{description}</p>
         <StyledTagsContainer>
-          {tags.map((tag) => {
-            return <Chip label={tag} />
+          {tags.map((tag, index) => {
+            return <Chip label={tag} key={index} />
           })}
         </StyledTagsContainer>
         <StyledActionsContainer ref={btnsRef} onClick={handleOnClick}>

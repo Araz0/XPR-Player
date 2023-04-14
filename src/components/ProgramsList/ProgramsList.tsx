@@ -90,7 +90,9 @@ export const ProgramsListRaw = ({ programs }: ProgramsListProps) => {
             description={program.program.discription}
             tags={[
               `${program.program.screensInfo.length} screens`,
-              '7-12 Minutes',
+              program.program.meta?.estimatedTime
+                ? program.program.meta?.estimatedTime
+                : '🪄',
             ]}
             thumbnail={program.program.thumbnail}
             onClick={() => handleSetAsSelectedProgram(program.program)}
