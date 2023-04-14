@@ -1,6 +1,6 @@
 {
-  "name": "mmp3-demo",
-  "version": "0.1.0",
+  "name": "xpr",
+  "version": "0.2.0",
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.10.5",
@@ -9,7 +9,6 @@
     "@mui/material": "^5.11.9",
     "@mui/styled-engine-sc": "^5.11.9",
     "@supabase/supabase-js": "^2.8.0",
-    "eventemitter3": "^4.0.7",
     "express": "^4.18.2",
     "http": "^0.0.1-security",
     "react": "^17.0.2",
@@ -101,5 +100,5 @@
     "chromatic": "npx chromatic --auto-accept-changes"
   },
   "readme": "ERROR: No README data found!",
-  "_id": "mmp3-demo@0.1.0"
+  "_id": "xpr@0.2.0"
 }
