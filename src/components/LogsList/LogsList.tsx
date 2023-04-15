@@ -18,7 +18,7 @@ import { EventLog } from 'types'
 const StyledListContainer = styled.div`
   height: 100%;
   display: flex;
-  min-width: 250px;
+  min-width: 275px;
   flex-direction: column;
   gap: 20px;
 `
