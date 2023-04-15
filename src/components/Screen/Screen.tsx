@@ -29,6 +29,7 @@ export type ScreenProps = {
   muted?: boolean
   socketService?: SocketService
   standByMode?: StandByMods
+  readyByClick?: boolean
 }
 
 export const ScreenRaw = ({
@@ -38,6 +39,7 @@ export const ScreenRaw = ({
   muted,
   socketService,
   standByMode,
+  readyByClick = false,
 }: ScreenProps) => {
   const programStarted = useScreenStore((s) => s.programStarted)
   const program = useScreenStore((s) => s.program)
@@ -45,41 +47,52 @@ export const ScreenRaw = ({
   const videoRef1 = useRef<any>()
   const videoRef2 = useRef<any>()
 
-  const [loading, setLoading] = useState(true)
+  const [isLoading, setIsLoading] = useState(true)
   const [showOverlay, setShowOverlay] = useState(true)
 
   useEffect(() => {
-    if (program) setLoading(false)
+    if (program) setIsLoading(false)
   }, [program])
 
   useEffect(() => {
     if (programStarted) setShowOverlay(false)
   }, [programStarted])
 
-  const { init, requestFullScreen, requestShowControls, setScerenListeners } =
+  const { init, requestFullScreen, requestShowControls, setScreenListeners } =
     useScreenService(screenService, socketService)
 
   useDoubleKeyPress('f', () => requestFullScreen())
   useDoubleKeyPress('c', () => requestShowControls())
 
+  const onRecivedScreenReady = useCallback(
+    (recivedScreenId: number) => {
+      if (recivedScreenId === screenId) setShowOverlay(false)
+    },
+    [screenId]
+  )
+
   useEffect(() => {
     init(screenId, playerContainerRef, videoRef1, videoRef2)
-    setScerenListeners()
-  }, [init, screenId, setScerenListeners])
+    setScreenListeners()
+    socketService?.onScreenIsReady(onRecivedScreenReady)
+  }, [init, onRecivedScreenReady, screenId, setScreenListeners, socketService])
 
   const onReadyClick = useCallback(() => {
-    setShowOverlay(false)
-  }, [])
+    if (readyByClick) {
+      setShowOverlay(false)
+      socketService?.emmitScreenIsReady(screenId)
+    }
+  }, [screenId, socketService, readyByClick])
 
   return (
     <StyledScreenPlayerContainer ref={playerContainerRef}>
       {showOverlay && (
         <StandbyOverlay
           backgroundColor={backgroundColor}
-          onClick={loading ? undefined : onReadyClick}
+          onClick={isLoading && readyByClick ? undefined : onReadyClick}
         >
           {!standByMode ? (
-            <LoadingAnimation loading={loading} />
+            <LoadingAnimation isLoading={isLoading} />
           ) : (
             standByMode === StandByMods.TEXT && (
               <Typography>
@@ -90,7 +103,13 @@ export const ScreenRaw = ({
               </Typography>
             )
           )}
-          <code>{loading ? 'Waiting for program...' : 'click when ready'}</code>
+          <code>
+            {isLoading
+              ? 'Waiting for program...'
+              : readyByClick
+              ? 'click when ready'
+              : 'screen is not ready'}
+          </code>
         </StandbyOverlay>
       )}
       <>

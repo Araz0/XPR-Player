@@ -18,7 +18,8 @@ const StyledContainerBorder = styled.div<{
   height?: string
 }>`
   border-radius: 10px;
-  position: relative;
+  position: ${(props) => (props.isFullScreen ? 'absolute' : 'relative')};
+  ${(props) => props.isFullScreen && `z-index: 500;`}
   background: ${BACKGROUND_COLOR_SECONDERY};
   padding: 2px;
 
@@ -29,13 +30,13 @@ const StyledContainerBorder = styled.div<{
       ? props.height
       : props.fitContent || !props.isFullScreen
       ? 'fit-content'
-      : '100%'};
+      : '643px'};
   width: ${(props) =>
     props.width
       ? props.width
       : props.fitContent || !props.isFullScreen
       ? 'fit-content'
-      : '100%'};
+      : '1133px'};
 
   :hover {
     ${(props) => props.noHoverCursor !== true && `cursor: pointer;`}

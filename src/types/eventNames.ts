@@ -11,6 +11,7 @@ export enum EventNames {
   HIDE_CONTROLS = 'hide-controls',
   REQUEST_FULLSCREEN = 'request-fullscreen',
   USER_SELECTED_SEGMENT = 'user-selected-segment',
+  SCREEN_IS_READY = 'screen-is-ready',
 }
 
 export type EventLog = {

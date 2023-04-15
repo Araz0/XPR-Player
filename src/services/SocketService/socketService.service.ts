@@ -45,6 +45,10 @@ export class SocketService {
     this.emmit(EventNames.HIDE_CONTROLS, 'admin requested hide controls')
   }
 
+  public emmitScreenIsReady = (screenId: number) => {
+    this.emmit(EventNames.SCREEN_IS_READY, screenId)
+  }
+
   public emmitToggleShowControls = () => {
     this.emmit(
       EventNames.TOGGLE_SHOW_CONTROLS,
@@ -108,6 +112,10 @@ export class SocketService {
     exicute: (selectedNextSegmentIndex: number) => void
   ) => {
     this.onLisiten(EventNames.USER_SELECTED_SEGMENT, exicute, true)
+  }
+
+  public onScreenIsReady = (exicute: (screenId: number) => void) => {
+    this.onLisiten(EventNames.SCREEN_IS_READY, exicute, true)
   }
 
   public onToggleShowControls = (exicute: () => void) => {
