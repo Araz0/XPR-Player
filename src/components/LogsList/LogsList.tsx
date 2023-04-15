@@ -9,21 +9,27 @@ import { MainButton, MainButtonVariants } from 'components/MainButton'
 import {
   BACKGROUND_COLOR_SECONDERY,
   PRIMARY_COLOR,
+  SECONDARY_COLOR,
   WHITE_COLOR,
 } from 'constants/styles'
+
+import { EventLog } from 'types'
 
 const StyledListContainer = styled.div`
   height: 100%;
   display: flex;
-  width: 250px;
+  min-width: 250px;
   flex-direction: column;
   gap: 20px;
 `
 const StyledLogItem = styled.span`
   color: ${WHITE_COLOR};
-  span {
+  span:first-child {
     font-weight: bold;
     color: ${PRIMARY_COLOR};
+  }
+  span:nth-child(2) {
+    color: ${SECONDARY_COLOR};
   }
 `
 
@@ -41,7 +47,7 @@ const StyledVertuosoContainer = styled.div`
 `
 
 export type LogsListProps = {
-  logs: string[]
+  logs: EventLog[]
   onResetClick: () => void
   onDownloadClick: () => void
 }
@@ -53,7 +59,7 @@ export const LogsListRaw = ({
   return (
     <StyledListContainer>
       <StyledActionsContainer>
-        <LabelSpan>Logs</LabelSpan>
+        <LabelSpan>Logs in ms</LabelSpan>
         <MainButton
           variant={MainButtonVariants.PRIMARY}
           onClick={onDownloadClick}
@@ -73,7 +79,13 @@ export const LogsListRaw = ({
           totalCount={logs.length}
           itemContent={(i) => (
             <StyledLogItem>
-              <span>Log:</span> - {logs[i]}
+              <span>{logs[i].event}:</span>
+
+              {` ${String(logs[i].timestamp).slice(-3)} `}
+
+              {logs[i - 1] && logs[i].event === logs[i - 1].event && (
+                <span>(+{logs[i].timestamp - logs[i - 1].timestamp})</span>
+              )}
             </StyledLogItem>
           )}
           followOutput

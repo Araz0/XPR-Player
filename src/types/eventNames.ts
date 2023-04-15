@@ -12,3 +12,8 @@ export enum EventNames {
   REQUEST_FULLSCREEN = 'request-fullscreen',
   USER_SELECTED_SEGMENT = 'user-selected-segment',
 }
+
+export type EventLog = {
+  event: string
+  timestamp: number
+}

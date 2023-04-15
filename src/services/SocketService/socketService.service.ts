@@ -1,6 +1,6 @@
 import { io } from 'socket.io-client'
 
-import { EventNames, ProgramType } from 'types'
+import { EventLog, EventNames, ProgramType } from 'types'
 
 export class SocketService {
   private _serverUrl = 'http://localhost:8000'
@@ -56,9 +56,9 @@ export class SocketService {
     this.emmit(EventNames.USER_SELECTED_SEGMENT, index)
   }
 
-  public onAnything = (exicute: (withData?: any) => void) => {
-    this._socket.onAny((eventName: any, args) => {
-      exicute(`(${eventName}):  | ⌚ ${new Date().getMilliseconds()}`)
+  public onAnything = (exicute: (log: EventLog) => void) => {
+    this._socket.onAny((eventName: string, args) => {
+      exicute({ event: eventName, timestamp: Date.now() })
     })
   }
   private onLisiten = (

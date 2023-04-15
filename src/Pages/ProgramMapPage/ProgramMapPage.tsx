@@ -24,7 +24,7 @@ import {
 } from 'components'
 import { useProgram, useSupabase } from 'hooks'
 import { useAdminStore } from 'stores'
-import { saveProgramAsJson } from 'utils'
+import { downloadJson } from 'utils'
 
 const StyledActionsContainer = styled.div`
   display: flex;
@@ -66,7 +66,7 @@ export const ProgramMapPageRaw = () => {
 
   const handleSaveProgramAsJson = useCallback(() => {
     if (!program) return
-    saveProgramAsJson(program)
+    downloadJson(program, `${program.title}-${program.id}`)
   }, [program])
 
   const handleUpdateTitle = useCallback(() => {

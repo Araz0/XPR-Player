@@ -1,5 +1,7 @@
 import { Story } from '@storybook/react'
 
+import { EventLog } from 'types'
+
 import { LogsList } from './LogsList'
 
 export const Default: Story = (args) => {
@@ -17,10 +19,8 @@ export default {
   title: 'LogsList',
 }
 
-const fakeLogs: string[] = [
-  'voted for new segment 1',
-  'voted for new segment 2',
-  'voted for new segment 2',
-  'voted for new segment 2',
-  'voted for new segment 1',
+const fakeLogs: EventLog[] = [
+  { event: 'set-program', timestamp: 1681515560468 },
+  { event: 'set-program', timestamp: 1681515560568 },
+  { event: 'set-program', timestamp: 1681515560448 },
 ]

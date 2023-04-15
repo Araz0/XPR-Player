@@ -20,6 +20,7 @@ import {
 } from 'components'
 import { useSocketService } from 'services'
 import { useAdminStore } from 'stores'
+import { downloadJson } from 'utils'
 
 const StyledActionsContainer = styled.div`
   display: flex;
@@ -46,13 +47,22 @@ export const AdminPageRaw = () => {
   const selectedProgram = useAdminStore((s) => s.selectedProgram)
   const loadedPrograms = useAdminStore((s) => s.loadedPrograms)
   const logsArray = useAdminStore((s) => s.logsArray)
+  const setLogsArray = useAdminStore((s) => s.setLogsArray)
 
   const { socketService } = useSocketService()
 
-  const handelSendProgram = useCallback(() => {
+  const handleSendProgram = useCallback(() => {
     if (!selectedProgram) return
     socketService.emmitProgram(selectedProgram)
   }, [selectedProgram, socketService])
+
+  const handleClearLogs = useCallback(() => {
+    setLogsArray([])
+  }, [setLogsArray])
+
+  const handleDownloadLogs = useCallback(() => {
+    downloadJson(logsArray, `event_logs_${Date.now()}`)
+  }, [logsArray])
 
   return (
     <AdminPageWrapper>
@@ -64,7 +74,7 @@ export const AdminPageRaw = () => {
             <StyledActionsContainer>
               <MainButton
                 variant={MainButtonVariants.PRIMARY}
-                onClick={handelSendProgram}
+                onClick={handleSendProgram}
                 width={'fit-content'}
                 startIcon={<Moving />}
               >
@@ -104,8 +114,8 @@ export const AdminPageRaw = () => {
           </div>
           <LogsList
             logs={logsArray}
-            onResetClick={() => alert(-1)}
-            onDownloadClick={() => alert(-1)}
+            onResetClick={handleClearLogs}
+            onDownloadClick={handleDownloadLogs}
           />
         </StyledContainer>
       )}
