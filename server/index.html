@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Socket Server</title>
+    <style>
+      /* Define custom CSS variables for colors */
+      :root {
+        --bg-color: #111;
+        --text-color: #eee;
+        --primary-color: #3f51b5;
+        --secondary-color: #ff9800;
+        --PRIMARY_COLOR: '#0368FF';
+        --PRIMARY_COLOR_HOVERD: '#5899FF';
+        --SECONDARY_COLOR: '#FF3E95';
+        --SECONDARY_COLOR_HOVERD: '#FF74B2';
+        --PRIMARY_GRADIENT : 'rgba(3,104,255,1) 0%, rgba(255,62,149,1) 100%';
+        --BACKGROUND_COLOR_SECONDERY: '#221C3E';
+        --BACKGROUND_COLOR_PRIMERY: '#0F0920';
+        --WHITE_COLOR: '#F2F0FF';
+      }
+
+      /* Apply dark mode styling */
+      body {
+        background-color: var(--bg-color);
+        color: var(--text-color);
+      }
+
+      h1 {
+        color: var(--primary-color);
+      }
+
+      a {
+        color: var(--secondary-color);
+      }
+
+      /* Style the content section */
+      .content {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 2rem;
+      }
+
+      /* Style the code blocks */
+      pre {
+        background-color: #333;
+        color: #fff;
+        padding: 1rem;
+        overflow-x: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <header class="content">
+      <h1>Socket Server</h1>
+      <a href="http://github.com/araz0/xpr">github</a>
+    </header>
+    
+    <main class="content">
+      <h2>Installing and Running a React App with Socket.io</h2>
+
+      <p>
+        To get started, you'll need to have Node.js and npm (or yarn) installed on
+        your machine. If you don't have them yet, you can download and install them
+        from the official website:
+      </p>
+
+      <pre>
+        <code>$ curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -</code>
+        <code>$ sudo apt-get install -y nodejs</code>
+        <code>$ sudo npm install -g yarn</code>
+      </pre>
+
+      <p>
+        Once you have Node.js and npm installed, you can create a new React app
+        with the <code>create-react-app</code> command:
+      </p>
+
+      <pre>
+        <code>$ npx create-react-app my-app</code>
+      </pre>
+
+      <p>
+        Next, you'll need to install the Socket.io client library in your app's
+        dependencies:
+      </p>
+
+      <pre>
+        <code>$ yarn add socket.io-client</code>
+      </pre>
+
+      <p>
+        Once you have Socket.io installed, you can start using it in your app by
+        importing it and connecting to your server:
+      </p>
+
+      <pre>
+        <code>
+          import io from 'socket.io-client';
+
+          const socket = io('http://localhost:3000');
+
+          socket.on('connect', () => {
+            console.log('Connected to server');
+          });
+
+          socket.on('disconnect', () => {
+            console.log('Disconnected from server');
+          });
+        </code>
+      </pre>
+
+      <h2>How Socket.io Works</h2>
+
+      <p>
+        Socket.io is a library that enables real-time, bidirectional and event-based
+        communication between the browser and the server. It uses websockets as the
+        default transport protocol, but can also use other protocols such as polling
+        or long-polling as a fallback for older browsers or environments that don't
+        support websockets.
+      </p>
+
+      <p>
+        The basic workflow of using Socket.io is as follows:
+      </p>
+
+    </main>
+
+</body>
+</html>

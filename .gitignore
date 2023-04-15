@@ -5,6 +5,9 @@
 /.pnp
 .pnp.js
 
+# .env
+.env
+
 # testing
 /coverage
 
@@ -24,3 +27,6 @@ yarn-error.log*
 
 # big files
 *.mp4
+
+# storybook and chromatic
+build-storybook.log

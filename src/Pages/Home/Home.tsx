@@ -1,42 +1,39 @@
-import React, { memo, useCallback, useRef } from 'react'
+import { memo, useEffect } from 'react'
 
-import { useParams } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
-import { VideoPlayer } from '../../components/VideoPlayer'
-import { useVideoPlayer } from '../../hooks'
+import { CenterdContainer, MainButton, MainButtonVariants } from 'components'
+import { useSupabase } from 'hooks'
 
 export const HomeRaw = () => {
-  const { init, playVideo, pauseVideo, setSource, toggleMute, getDuration } =
-    useVideoPlayer()
-  const { screenId } = useParams()
-  const useVideoRef = useRef<any>()
+  const navigate = useNavigate()
+  const { checkUserLogin } = useSupabase()
 
-  const handleClick = useCallback(() => {
-    init(useVideoRef)
-    setSource('https://media.w3.org/2010/05/bunny/movie.mp4')
-  }, [init, setSource])
-
-  const handlePlayPause = useCallback(() => {
-    if (useVideoRef.current.paused) {
-      playVideo()
-    } else {
-      pauseVideo()
-    }
-  }, [pauseVideo, playVideo])
+  useEffect(() => {
+    checkUserLogin()
+  }, [checkUserLogin])
 
   return (
-    <div>
-      <header>
-        <p>
-          Edit <code>src/App.tsx/{screenId}</code> and save to reload.
-        </p>
-        <button onClick={handleClick}>init</button>
-        <button onClick={handlePlayPause}>PlayPause</button>
-        <button onClick={toggleMute}>toggleMute</button>
-        <button onClick={getDuration}>getDuration</button>
-        <VideoPlayer ref={useVideoRef} />
-      </header>
-    </div>
+    <CenterdContainer>
+      <MainButton
+        variant={MainButtonVariants.PRIMARY}
+        onClick={() => navigate('/admin')}
+      >
+        Admin Page
+      </MainButton>
+      <MainButton
+        variant={MainButtonVariants.PRIMARY}
+        onClick={() => navigate('/screen/0')}
+      >
+        Screen
+      </MainButton>
+      <MainButton
+        variant={MainButtonVariants.PRIMARY}
+        onClick={() => navigate('/selection')}
+      >
+        Screen Selection
+      </MainButton>
+    </CenterdContainer>
   )
 }
 

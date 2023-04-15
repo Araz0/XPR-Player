@@ -1,15 +1,17 @@
-import { forwardRef, memo } from 'react'
+import { memo } from 'react'
 
 import styled from 'styled-components'
 
 const StyledVideo = styled.video`
   width: 100%;
+  height: 100%;
 `
-export interface VideoProps {
-  src: string
+export type VideoPlayerProps = {
+  muted?: boolean
+  reference: any
 }
-export const VideoPlayerRaw = forwardRef<HTMLVideoElement>((props, ref) => (
-  <StyledVideo controls ref={ref} />
-))
+export const VideoPlayerRaw = ({ muted, reference }: VideoPlayerProps) => {
+  return <StyledVideo ref={reference} muted={muted ? true : false} />
+}
 
 export const VideoPlayer = memo(VideoPlayerRaw)

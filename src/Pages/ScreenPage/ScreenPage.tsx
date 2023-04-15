@@ -1,56 +1,29 @@
-import { memo, useCallback, useEffect, useRef } from 'react'
+import { memo } from 'react'
 
-import styled from 'styled-components'
+import { useParams } from 'react-router-dom'
 
-import { VideoPlayer } from '../../components'
-import { useScreenPlayer } from '../../hooks'
+import { Typography } from '@mui/material'
 
-const StyledScreenPlayerContainer = styled.div`
-  position: relative;
-  video {
-    position: absolute;
-  }
-`
+import { CenterdContainer, Screen } from 'components'
+import { ScreenService, useSocketService } from 'services'
 
 export const ScreenPageRaw = () => {
-  const videoRef1 = useRef<any>()
-  const videoRef2 = useRef<any>()
-  const newUrlInputRef = useRef<any>()
-
-  const { init, setCurrentSource, setNextSource, playPauseScreen } =
-    useScreenPlayer()
-
-  useEffect(() => {
-    init(videoRef1, videoRef2)
-  }, [init])
-
-  const handlePlayPause = useCallback(() => {
-    playPauseScreen()
-  }, [playPauseScreen])
-
-  const handleSetCurrentSource = useCallback(() => {
-    newUrlInputRef.current.value.length > 0
-      ? setCurrentSource(newUrlInputRef.current.value)
-      : setCurrentSource('/Audio_Video_Sync.mp4')
-  }, [setCurrentSource])
-
-  const handleSetNextSource = useCallback(() => {
-    newUrlInputRef.current.value.length > 0
-      ? setNextSource(newUrlInputRef.current.value)
-      : setNextSource('/60fps_Tester.mp4')
-  }, [setNextSource])
+  const { screenId } = useParams()
+  const { socketService } = useSocketService()
+  if (!screenId)
+    return (
+      <CenterdContainer>
+        <Typography>Set a screen id first</Typography>
+      </CenterdContainer>
+    )
 
   return (
-    <>
-      <button onClick={handlePlayPause}>PlayPause</button>
-      <button onClick={handleSetCurrentSource}>set current</button>
-      <button onClick={handleSetNextSource}>set next</button>
-      <input type="text" name="" id="newUrlInput" ref={newUrlInputRef} />
-      <StyledScreenPlayerContainer>
-        <VideoPlayer ref={videoRef1} />
-        <VideoPlayer ref={videoRef2} />
-      </StyledScreenPlayerContainer>
-    </>
+    <Screen
+      screenId={parseInt(screenId)}
+      screenService={new ScreenService()}
+      socketService={socketService}
+      readyByClick={true}
+    />
   )
 }
 export const ScreenPage = memo(ScreenPageRaw)

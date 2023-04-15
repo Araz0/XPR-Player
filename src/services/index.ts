@@ -1,2 +1,3 @@
-export * from './ScreenController'
-export * from './VideoController'
+export * from './ScreenService'
+export * from './VideoService'
+export * from './SocketService'
