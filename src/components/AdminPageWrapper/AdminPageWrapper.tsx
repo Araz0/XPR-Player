@@ -1,4 +1,4 @@
-import { memo, ReactNode, useCallback, useState } from 'react'
+import { memo, ReactNode, useCallback, useEffect, useState } from 'react'
 
 import { useLocation, useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
@@ -59,6 +59,12 @@ export const AdminPageWrapperRaw = ({ children }: AdminPageWrapperProps) => {
   const location = useLocation()
   const { signOut } = useSupabase()
   const [showLoginPopup, setShowLoginPopup] = useState<boolean>(false)
+
+  const { checkUserLogin } = useSupabase()
+
+  useEffect(() => {
+    checkUserLogin()
+  }, [checkUserLogin])
 
   const handleRequestLogout = useCallback(async () => {
     await signOut()
