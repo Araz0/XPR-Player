@@ -9,8 +9,8 @@ import {
 import { useAdminStore } from 'stores'
 import { DbProgram, ProgramType } from 'types'
 
-const supabaseUrl = process.env.REACT_APP_SUPABASE_URL || ''
-const supabaseKey = process.env.REACT_APP_SUPABASE_KEY || ''
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || ''
+const supabaseKey = import.meta.env.VITE_SUPABASE_KEY || ''
 
 const supabaseClient = createClient(supabaseUrl, supabaseKey)
 
@@ -162,7 +162,7 @@ export function useSupabase() {
     if (!loadedPrograms) loadProgramsByUser()
   }, [loadProgramsByUser, loadedPrograms])
 
-  useEffect(() => {
+  const checkUserLogin = useCallback(() => {
     if (!loggedInUser) {
       getUserData()
     } else {
@@ -188,6 +188,7 @@ export function useSupabase() {
 
   return {
     supabaseClient,
+    checkUserLogin,
     insertProgram,
     getProgramById,
     loadAllPrograms,

@@ -1,5 +1,6 @@
-import { memo, useCallback } from 'react'
+import { memo, useCallback, useEffect } from 'react'
 
+import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 
 import {
@@ -8,7 +9,6 @@ import {
   ReplayOutlined,
   SettingsOutlined,
 } from '@mui/icons-material'
-import { useCheckUserAuth } from 'hooks/useCheckUserAuth'
 
 import {
   AdminPageWrapper,
@@ -42,7 +42,13 @@ const StyledContainer = styled.div`
 `
 
 export const AdminPageRaw = () => {
-  useCheckUserAuth()
+  const navigate = useNavigate()
+  const userIsLoggedIn = useAdminStore((s) => s.userIsLoggedIn)
+
+  useEffect(() => {
+    if (!userIsLoggedIn) navigate('/login')
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const selectedProgram = useAdminStore((s) => s.selectedProgram)
   const loadedPrograms = useAdminStore((s) => s.loadedPrograms)
