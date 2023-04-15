@@ -4,11 +4,11 @@ import styled from 'styled-components'
 
 import { Logo } from 'components/Icons'
 
-const StyledContainer = styled.div<{ loading: boolean }>`
+const StyledContainer = styled.div<{ isLoading: boolean }>`
   svg {
     z-index: 10;
   }
-  animation: ${({ loading }) => (!loading ? 'none' : 'pulse 1s infinite')};
+  animation: ${({ isLoading }) => (!isLoading ? 'none' : 'pulse 1s infinite')};
   @keyframes pulse {
     0% {
       transform: scale(1);
@@ -28,13 +28,13 @@ const StyledLogoWrapper = styled.div`
 `
 
 export type LoadingAnimationProps = {
-  loading?: boolean
+  isLoading?: boolean
 }
 export const LoadingAnimationRaw = ({
-  loading = true,
+  isLoading = true,
 }: LoadingAnimationProps) => {
   return (
-    <StyledContainer loading={loading ? true : false}>
+    <StyledContainer isLoading={isLoading}>
       <StyledLogoWrapper>
         <Logo />
       </StyledLogoWrapper>

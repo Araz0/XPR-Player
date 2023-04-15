@@ -16,6 +16,7 @@ const io = new Server(server, {
 })
 //todo: add type safty
 let clients = []
+let program = undefined
 
 app.get('/', (req, res) => {
   // res.send('<h1>Hello world</h1>')
@@ -32,6 +33,10 @@ io.on('connection', (socket) => {
     clients.push(socket)
     // eslint-disable-next-line no-console
     console.log(`✅ - Client connected. Total clients: ${clients.length}`)
+    if (program) {
+      socket.broadcast.emit('set-program', program)
+      socket.emit('set-program', program)
+    }
   }
   socket.on('disconnect', () => {
     clients = clients.filter((c) => c !== socket)
@@ -42,6 +47,7 @@ io.on('connection', (socket) => {
   socket.on('set-program', (args) => {
     socket.broadcast.emit('set-program', args)
     socket.emit('set-program', args)
+    program = args
     // eslint-disable-next-line no-console
     console.log(`📀 - admin sent program: `, args.title)
   })
@@ -107,5 +113,12 @@ io.on('connection', (socket) => {
     socket.emit('user-selected-segment', args)
     // eslint-disable-next-line no-console
     console.log(`👍🏽👎🏽 - `, args)
+  })
+
+  socket.on('screen-is-ready', (args) => {
+    socket.broadcast.emit('screen-is-ready', args)
+    socket.emit('screen-is-ready', args)
+    // eslint-disable-next-line no-console
+    console.log(`👌 - `, args)
   })
 })

@@ -82,7 +82,7 @@ export function useScreenService(
     [screenPlayerService]
   )
 
-  const setScerenListeners = useCallback(() => {
+  const setScreenListeners = useCallback(() => {
     if (!socketService) return
     socketService.onSetProgram(setScreenProgram)
     socketService.onStart(startProgram)
@@ -133,7 +133,7 @@ export function useScreenService(
     requestHideControls,
     toggleShowingControls,
     setSelectedNextSegment,
-    setScerenListeners,
+    setScreenListeners,
     destroySocket,
   }
 }

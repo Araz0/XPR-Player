@@ -22,6 +22,7 @@ export const ScreenPageRaw = () => {
       screenId={parseInt(screenId)}
       screenService={new ScreenService()}
       socketService={socketService}
+      readyByClick={true}
     />
   )
 }
