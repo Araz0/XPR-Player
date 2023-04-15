@@ -14,6 +14,8 @@ const StyledContainerBorder = styled.div<{
   fitContent?: boolean
   isFullScreen?: boolean
   noHoverCursor?: boolean
+  width?: string
+  height?: string
 }>`
   border-radius: 10px;
   position: relative;
@@ -23,9 +25,17 @@ const StyledContainerBorder = styled.div<{
   ${(props) => props.isSelected && `background: ${PRIMARY_COLOR};`}
 
   height: ${(props) =>
-    props.fitContent || !props.isFullScreen ? 'fit-content' : '100%'};
+    props.height
+      ? props.height
+      : props.fitContent || !props.isFullScreen
+      ? 'fit-content'
+      : '100%'};
   width: ${(props) =>
-    props.fitContent || !props.isFullScreen ? 'fit-content' : '100%'};
+    props.width
+      ? props.width
+      : props.fitContent || !props.isFullScreen
+      ? 'fit-content'
+      : '100%'};
 
   :hover {
     ${(props) => props.noHoverCursor !== true && `cursor: pointer;`}
@@ -60,6 +70,8 @@ export type BorderdContainerProps = {
   onClick?: () => void
   isFullScreen?: boolean
   noHoverCursor?: boolean
+  width?: string
+  height?: string
 }
 export const BorderdContainerRaw = ({
   children,
@@ -71,6 +83,8 @@ export const BorderdContainerRaw = ({
   onClick,
   isFullScreen,
   noHoverCursor,
+  width,
+  height,
 }: BorderdContainerProps) => {
   const [hotHoverd, setHotHoverd] = useState<boolean>(false)
 
@@ -100,6 +114,8 @@ export const BorderdContainerRaw = ({
       onClick={onClick}
       isFullScreen={isFullScreen}
       noHoverCursor={noHoverCursor}
+      width={width}
+      height={height}
     >
       <StyledContainer isSelected={isSelected} padding={padding}>
         {children}

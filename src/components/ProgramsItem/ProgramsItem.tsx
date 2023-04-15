@@ -72,7 +72,7 @@ export const ProgramsItemRaw = ({
   }, [])
 
   return (
-    <BorderdContainer hotRef={btnsRef}>
+    <BorderdContainer hotRef={btnsRef} width={'100%'}>
       <StyledChildrenContainer onClick={onClick}>
         <StyledThumbnail src={thumbnail} alt={`${title} thumbnail`} />
         <StyledTitle>{title}</StyledTitle>
