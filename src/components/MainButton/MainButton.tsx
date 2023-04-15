@@ -23,6 +23,7 @@ const StyledButton = styled.button<{
 }>`
   box-sizing: border-box;
   font-family: 'Inter', sans-serif;
+
   background-color: ${(props) =>
     props.variant === MainButtonVariants.PRIMARY
       ? PRIMARY_COLOR

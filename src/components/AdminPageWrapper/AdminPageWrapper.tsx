@@ -20,6 +20,9 @@ const StyledPageContainer = styled.div`
   grid-template-rows: 50px auto;
   gap: 0px 0px;
   grid-template-areas: 'topNav' 'mainContent';
+
+  max-width: 1800px;
+  margin: 0 auto;
 `
 
 const StyledTopNav = styled.div`

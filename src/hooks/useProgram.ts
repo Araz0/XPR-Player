@@ -12,10 +12,13 @@ import {
 } from 'types'
 import { generateNewId, loadJsonFile } from 'utils'
 
+import { useSupabase } from './useSupabase'
+
 export function useProgram() {
   const program = useAdminStore((s) => s.program)
   const setProgram = useAdminStore((s) => s.setProgram)
   const navigate = useNavigate()
+  const { insertProgram } = useSupabase()
 
   const loadJsonProgram = useCallback(
     (jsonPath: string) => {
@@ -102,10 +105,11 @@ export function useProgram() {
         segments: [],
         media: [],
       }
+      insertProgram(newProgram)
       setProgram(newProgram)
       navigate(`/admin/programMap`)
     },
-    [navigate, setProgram]
+    [navigate, setProgram, insertProgram]
   )
 
   const addNextSegmentById = useCallback(

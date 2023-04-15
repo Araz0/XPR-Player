@@ -19,6 +19,8 @@
   overflow: auto;
   white-space: nowrap;
 
+  display: flex;
+
 }
 
 .familyTree ul, .familyTree li, .familyTree li * {

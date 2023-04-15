@@ -11,6 +11,7 @@ import {
   QueuePlayNext,
 } from '@mui/icons-material'
 import { Button, IconButton, TextField, Typography } from '@mui/material'
+import { MainButton, MainButtonVariants } from 'components/MainButton'
 import { Popup } from 'components/Popup'
 import { SmallIconButton } from 'components/SmallIconButton'
 
@@ -47,11 +48,19 @@ const StyledLeftActionsContainer = styled.div`
   border-radius: 3px;
 `
 
+const StyledFlexedColumnWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+`
+
 export type SegmentScreensProps = {
   media: SegmentMediaType
 }
 export const SegmentScreensRaw = ({ media }: SegmentScreensProps) => {
   const [showAddScreen, setShowAddScreen] = useState<boolean>(false)
+  const mediaInputRef = useRef<HTMLInputElement | null>(null)
+
   const [, forceUpdateComponent] = useState<any>()
 
   const screenTitleRef = useRef<HTMLInputElement>()
@@ -59,6 +68,10 @@ export const SegmentScreensRaw = ({ media }: SegmentScreensProps) => {
   const [screenToBeDeletedId, setScreenToBeDeletedId] = useState<
     number | undefined
   >(undefined)
+
+  const handleOnMediaClick = useCallback(() => {
+    mediaInputRef.current?.click()
+  }, [])
 
   const handleDeleteScreen = useCallback(() => {
     if (!screenToBeDeletedId) return
@@ -101,7 +114,7 @@ export const SegmentScreensRaw = ({ media }: SegmentScreensProps) => {
   )
 
   return (
-    <>
+    <StyledFlexedColumnWrapper>
       <Typography variant="overline" lineHeight={1} gutterBottom>
         screens:
       </Typography>
@@ -167,23 +180,33 @@ export const SegmentScreensRaw = ({ media }: SegmentScreensProps) => {
           header="Add screen"
           bodyText="First give it a title, and then select the video file:"
         >
-          <TextField
-            inputRef={screenTitleRef}
-            placeholder={'screen title'}
-            size="small"
-          />
-          <IconButton component="label">
-            <input
-              hidden
-              accept="video/mp4"
-              type="file"
-              onChange={handleAddScreen}
+          <StyledFlexedColumnWrapper>
+            <TextField
+              inputRef={screenTitleRef}
+              placeholder={'screen title'}
+              size="small"
+              style={{ color: 'red' }}
             />
-            <QueuePlayNext />
-          </IconButton>
+            <MainButton
+              onClick={handleOnMediaClick}
+              width={'fit-content'}
+              startIcon={<QueuePlayNext />}
+              variant={MainButtonVariants.PRIMARY}
+            >
+              Add Screen
+            </MainButton>
+          </StyledFlexedColumnWrapper>
+          <input
+            hidden
+            accept="video/mp4"
+            type="file"
+            onChange={handleAddScreen}
+            ref={mediaInputRef}
+            style={{ display: 'none' }}
+          />
         </Popup>
       )}
-    </>
+    </StyledFlexedColumnWrapper>
   )
 }
 export const SegmentScreens = memo(SegmentScreensRaw)

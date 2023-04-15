@@ -130,8 +130,8 @@ export const CreateProgramFormRaw = () => {
   }, [])
 
   const handleCreateProgram = useCallback(() => {
-    if (!titleRef.current?.value) return
-    if (!descriptionRef.current?.value) return
+    if (!titleRef.current) return
+    if (!descriptionRef.current) return
     createNewProgram(
       titleRef.current.value,
       descriptionRef.current.value,

@@ -4,12 +4,13 @@ import { createPortal } from 'react-dom'
 import styled from 'styled-components'
 
 import { Close } from '@mui/icons-material'
-import { Typography, IconButton, Divider } from '@mui/material'
+import { Typography, IconButton, Divider, ThemeProvider } from '@mui/material'
 import { BorderdContainer } from 'components/BorderdContainer'
 import {
   WHITE_COLOR,
   BACKGROUND_COLOR_PRIMERY,
   PRIMARY_COLOR,
+  lightTheme,
 } from 'constants/styles'
 
 const StyledContainer = styled.div`
@@ -110,7 +111,7 @@ export const PopupRaw = ({
           </StyledHeader>
           <Divider />
           <StyledActionsContainer fullWidth={fullWidth}>
-            {children}
+            <ThemeProvider theme={lightTheme}>{children}</ThemeProvider>
           </StyledActionsContainer>
         </div>
       </BorderdContainer>
