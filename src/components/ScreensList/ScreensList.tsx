@@ -12,9 +12,11 @@ const StyledContainer = styled.div`
   width: fit-content;
   height: fit-content;
 
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
   gap: 15px;
+
+  flex-wrap: wrap;
+  max-width: 1133px;
 `
 export type ScreensListProps = {
   programScreens: ProgramScreensInfo[]
