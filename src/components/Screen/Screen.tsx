@@ -22,6 +22,7 @@ const StyledScreenPlayerContainer = styled.div`
 `
 export type ScreenProps = {
   screenId: number
+  screenService: ScreenService
   backgroundColor?: string
   muted?: boolean
   socketService?: SocketService
@@ -29,12 +30,11 @@ export type ScreenProps = {
 
 export const ScreenRaw = ({
   screenId,
+  screenService,
   backgroundColor,
   muted,
   socketService,
 }: ScreenProps) => {
-  const screenPlayerService = new ScreenService()
-
   const programStarted = useScreenStore((s) => s.programStarted)
   const standByMode = useScreenStore((s) => s.standByMode)
   const program = useScreenStore((s) => s.program)
@@ -43,7 +43,7 @@ export const ScreenRaw = ({
   const videoRef2 = useRef<any>()
 
   const { init, requestFullScreen, requestShowControls, setScerenListeners } =
-    useScreenService(screenPlayerService, socketService)
+    useScreenService(screenService, socketService)
 
   useDoubleKeyPress('f', () => requestFullScreen())
   useDoubleKeyPress('c', () => requestShowControls())

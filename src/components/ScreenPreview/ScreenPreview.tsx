@@ -8,7 +8,7 @@ import { BorderdContainer } from 'components/BorderdContainer'
 import { Screen } from 'components/Screen/Screen'
 import { BACKGROUND_COLOR_SECONDERY, WHITE_COLOR } from 'constants/styles'
 
-import { SocketService } from 'services'
+import { ScreenService, SocketService } from 'services'
 
 const StyledPreviewContainer = styled.div<{ isFullScreen: boolean }>`
   position: relative;
@@ -49,12 +49,14 @@ const StyledFooterContainer = styled.div`
 export type ScreenPreviewProps = {
   title: string
   screenId: number
+  screenService: ScreenService
   muted?: boolean
   socketService?: SocketService
 }
 export const ScreenPreviewRaw = ({
   title,
   screenId,
+  screenService,
   muted,
   socketService,
 }: ScreenPreviewProps) => {
@@ -75,6 +77,7 @@ export const ScreenPreviewRaw = ({
       <StyledPreviewContainer isFullScreen={isFullScreen}>
         <Screen
           screenId={screenId}
+          screenService={screenService}
           backgroundColor={BACKGROUND_COLOR_SECONDERY}
           muted={muted ? true : false}
           socketService={socketService}

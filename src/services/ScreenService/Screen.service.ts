@@ -22,7 +22,6 @@ export class ScreenService {
   private _nextSelectedSegmentIndex = 0
 
   constructor() {
-    console.log('ScreenService: constructor')
     this._player1 = new VideoService('A', undefined)
     this._player2 = new VideoService('B', undefined)
     this._selectedPID = this._player1.id
@@ -177,14 +176,20 @@ export class ScreenService {
     )
   }
 
-  private onPlayerEnded = (player: VideoService) => {
-    if (player.id !== this.currentPlayer().id) return
-    // if there is no more next segments to play, end screen, otherwise, play next
-    this._nextSegment === undefined ? this.setEndScreen() : this.playNext()
-  }
+  // private onPlayerEnded = (player: VideoService) => {
+  //   if (player.id !== this.currentPlayer().id) return
+  //   // if there is no more next segments to play, end screen, otherwise, play next
+  //   this._nextSegment === undefined ? this.setEndScreen() : this.playNext()
+  // }
 
   private onPlayerUpdate = (player: VideoService) => {
     if (player.id !== this.currentPlayer().id) return
+
+    // if the video is about to end (10ms before it ends), switch to the next one.
+    // switching player to the next video like this and not using "onEnded" event listner helps making the switch seamless
+    if (player.getDuration() - 0.01 <= player.getCurrentTime()) {
+      this._nextSegment === undefined ? this.setEndScreen() : this.playNext()
+    }
 
     // in the last two seconds
     if (player.getDuration() - 2 <= player.getCurrentTime()) {
@@ -205,9 +210,9 @@ export class ScreenService {
   private setListners = (player: VideoService) => {
     if (!player.videoElement?.current) return
 
-    player.videoElement.current.addEventListener('ended', (e: any) => {
-      this.onPlayerEnded(player)
-    })
+    // player.videoElement.current.addEventListener('ended', (e: any) => {
+    //   this.onPlayerEnded(player)
+    // })
 
     player.videoElement.current.addEventListener('timeupdate', (e: any) => {
       this.onPlayerUpdate(player)
@@ -216,9 +221,9 @@ export class ScreenService {
 
   private removeListners = (player: VideoService) => {
     if (!player.videoElement?.current) return
-    player.videoElement.current.removeEventListener('ended', (e: any) => {
-      this.onPlayerEnded(player)
-    })
+    // player.videoElement.current.removeEventListener('ended', (e: any) => {
+    //   this.onPlayerEnded(player)
+    // })
     player.videoElement.current.removeEventListener('timeupdate', (e: any) => {
       this.onPlayerUpdate(player)
     })

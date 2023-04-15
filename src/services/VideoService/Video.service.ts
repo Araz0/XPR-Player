@@ -5,8 +5,6 @@ export class VideoService {
   private _id: string
 
   constructor(id: string, videoElement?: VideoRefElementType) {
-    console.log('VideoController is created')
-
     this._videoElement = videoElement
     this._id = id
   }

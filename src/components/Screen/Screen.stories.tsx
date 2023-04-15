@@ -6,6 +6,7 @@ import styled from 'styled-components'
 import { Story } from '@storybook/react'
 import { Screen } from 'components/Screen'
 
+import { ScreenService } from 'services'
 import { useScreenStore } from 'stores'
 
 const StyledContainer = styled.div`
@@ -25,7 +26,7 @@ export const Default: Story = (args) => {
     <>
       <button onClick={handleSetProgram}>set Program</button>
       <StyledContainer>
-        <Screen screenId={0} />
+        <Screen screenId={0} screenService={new ScreenService()} />
       </StyledContainer>
     </>
   )

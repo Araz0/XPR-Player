@@ -4,7 +4,7 @@ import styled from 'styled-components'
 
 import { ScreenPreview } from 'components/ScreenPreview'
 
-import { SocketService } from 'services'
+import { ScreenService, SocketService } from 'services'
 import { ProgramScreensInfo } from 'types'
 
 const StyledContainer = styled.div`
@@ -31,6 +31,7 @@ export const ScreensListRaw = ({
           <ScreenPreview
             key={idx}
             screenId={idx}
+            screenService={new ScreenService()}
             title={screen.title}
             muted={true}
             socketService={socketService}

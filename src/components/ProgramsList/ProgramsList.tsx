@@ -5,11 +5,12 @@ import { useNavigate } from 'react-router-dom'
 import { Check } from '@mui/icons-material'
 import { IconButton, List, styled } from '@mui/material'
 import { ProgramsItem } from 'components/ProgramsItem'
+import { downloadJson } from 'utils/downloadJson'
 
 import { useSupabase } from 'hooks'
 import { useAdminStore } from 'stores'
 import { DbProgram, ProgramType } from 'types'
-import { generateNewId, saveProgramAsJson } from 'utils'
+import { generateNewId } from 'utils'
 
 import { Popup } from '../Popup'
 
@@ -70,7 +71,7 @@ export const ProgramsListRaw = ({ programs }: ProgramsListProps) => {
   )
 
   const handleSaveProgramAsJson = useCallback((program: ProgramType) => {
-    saveProgramAsJson(program)
+    downloadJson(program, `${program.title}-${program.id}`)
   }, [])
 
   if (programs.length === 0)

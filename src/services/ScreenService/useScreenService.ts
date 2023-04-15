@@ -115,8 +115,6 @@ export function useScreenService(
       videoRef2: VideoRefElementType
     ) => {
       screenPlayerService.setRefs(screenId, container, videoRef1, videoRef2)
-      // eslint-disable-next-line no-console
-      console.log('📺 useScreenService init', screenId)
     },
     [screenPlayerService]
   )

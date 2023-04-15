@@ -2,7 +2,7 @@ import { create } from 'zustand'
 
 import { User } from '@supabase/supabase-js'
 
-import { DbProgram, ProgramType } from 'types'
+import { DbProgram, EventLog, ProgramType } from 'types'
 
 export type AdminState = {
   canEditTreeMap: boolean
@@ -17,9 +17,9 @@ export type AdminState = {
   program: ProgramType | undefined
   setProgram: (program: ProgramType) => void
 
-  logsArray: string[]
-  setLogsArray: (logsArray: string[]) => void
-  addLogToLogsArray: (log: string) => void
+  logsArray: EventLog[]
+  setLogsArray: (logsArray: EventLog[]) => void
+  addLogToLogsArray: (log: EventLog) => void
 
   loadedPrograms: DbProgram[] | undefined
   setLoadedPrograms: (loadedPrograms: DbProgram[]) => void
@@ -45,8 +45,8 @@ export const useAdminStore = create<AdminState>((set) => ({
   setProgram: (program: ProgramType) => set(() => ({ program })),
 
   logsArray: [],
-  setLogsArray: (logsArray: string[]) => set(() => ({ logsArray })),
-  addLogToLogsArray: (log: string) =>
+  setLogsArray: (logsArray: EventLog[]) => set(() => ({ logsArray })),
+  addLogToLogsArray: (log: EventLog) =>
     set((state) => ({ logsArray: [...state.logsArray, log] })),
 
   loadedPrograms: undefined,
