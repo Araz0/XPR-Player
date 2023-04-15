@@ -162,7 +162,7 @@ export function useSupabase() {
     if (!loadedPrograms) loadProgramsByUser()
   }, [loadProgramsByUser, loadedPrograms])
 
-  useEffect(() => {
+  const checkUserLogin = useCallback(() => {
     if (!loggedInUser) {
       getUserData()
     } else {
@@ -200,5 +200,6 @@ export function useSupabase() {
     updateProgram,
     handleUploadProgramThubmnail,
     handleUpdateProgramInDb,
+    checkUserLogin,
   }
 }
