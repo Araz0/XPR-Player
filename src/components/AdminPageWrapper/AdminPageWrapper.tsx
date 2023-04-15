@@ -39,6 +39,9 @@ const StyledContentWrapper = styled.div`
   grid-area: mainContent;
   padding: 0 15px;
   overflow: auto;
+
+  display: flex;
+  flex-direction: column;
 `
 
 const StyledSymbolContainer = styled.div`

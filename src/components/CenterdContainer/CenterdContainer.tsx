@@ -16,6 +16,8 @@ const StyledActionsContainer = styled.div`
   gap: 15px;
   width: fit-content;
   height: fit-content;
+  position: relative;
+  z-index: 100;
 `
 export type CenterdContainerProps = {
   children: React.ReactNode

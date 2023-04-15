@@ -13,25 +13,36 @@ const StyledCenterContainer = styled.div<{ backgroundColor?: string }>`
     props.backgroundColor ? props.backgroundColor : 'rgba(1, 0, 0, 1)'};
 `
 
-const StyledActionsContainer = styled.div`q
+const StyledActionsContainer = styled.div<{ clickable?: boolean }>`
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
-  gap: 15px;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
   width: fit-content;
   height: fit-content;
+
+  transition: transform 250ms;
+
+  ${({ clickable }) => clickable && 'cursor: pointer;'}
+  ${({ clickable }) => clickable && ':hover{ transform: scale(0.9);}'}
 `
 export type StandbyOverlayProps = {
   children: React.ReactNode
   backgroundColor?: string
+  onClick?: () => void
 }
 export const StandbyOverlayRaw = ({
   children,
   backgroundColor,
+  onClick,
 }: StandbyOverlayProps) => {
   return (
-    <StyledCenterContainer backgroundColor={backgroundColor}>
-      <StyledActionsContainer>{children}</StyledActionsContainer>
+    <StyledCenterContainer backgroundColor={backgroundColor} onClick={onClick}>
+      <StyledActionsContainer clickable={onClick ? true : false}>
+        {children}
+      </StyledActionsContainer>
     </StyledCenterContainer>
   )
 }

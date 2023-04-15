@@ -1,8 +1,9 @@
-import { memo, useEffect, useRef } from 'react'
+import { memo, useCallback, useEffect, useRef, useState } from 'react'
 
 import styled from 'styled-components'
 
-import { Typography, CircularProgress } from '@mui/material'
+import { Typography } from '@mui/material'
+import { LoadingAnimation } from 'components/LoadingAnimation'
 import { StandbyOverlay } from 'components/StandbyOverlay'
 import { VideoPlayer } from 'components/VideoPlayer'
 
@@ -20,12 +21,14 @@ const StyledScreenPlayerContainer = styled.div`
     position: absolute;
   }
 `
+
 export type ScreenProps = {
   screenId: number
   screenService: ScreenService
   backgroundColor?: string
   muted?: boolean
   socketService?: SocketService
+  standByMode?: StandByMods
 }
 
 export const ScreenRaw = ({
@@ -34,13 +37,24 @@ export const ScreenRaw = ({
   backgroundColor,
   muted,
   socketService,
+  standByMode,
 }: ScreenProps) => {
   const programStarted = useScreenStore((s) => s.programStarted)
-  const standByMode = useScreenStore((s) => s.standByMode)
   const program = useScreenStore((s) => s.program)
   const playerContainerRef = useRef<any>()
   const videoRef1 = useRef<any>()
   const videoRef2 = useRef<any>()
+
+  const [loading, setLoading] = useState(true)
+  const [showOverlay, setShowOverlay] = useState(true)
+
+  useEffect(() => {
+    if (program) setLoading(false)
+  }, [program])
+
+  useEffect(() => {
+    if (programStarted) setShowOverlay(false)
+  }, [programStarted])
 
   const { init, requestFullScreen, requestShowControls, setScerenListeners } =
     useScreenService(screenService, socketService)
@@ -53,19 +67,30 @@ export const ScreenRaw = ({
     setScerenListeners()
   }, [init, screenId, setScerenListeners])
 
+  const onReadyClick = useCallback(() => {
+    setShowOverlay(false)
+  }, [])
+
   return (
     <StyledScreenPlayerContainer ref={playerContainerRef}>
-      {!programStarted && (
-        <StandbyOverlay backgroundColor={backgroundColor}>
-          {standByMode === StandByMods.TEXT && (
-            <Typography>
-              {program?.media[screenId]
-                ? `Program (${program.title}) is set, waiting on your command to
+      {showOverlay && (
+        <StandbyOverlay
+          backgroundColor={backgroundColor}
+          onClick={loading ? undefined : onReadyClick}
+        >
+          {!standByMode ? (
+            <LoadingAnimation loading={loading} />
+          ) : (
+            standByMode === StandByMods.TEXT && (
+              <Typography>
+                {program?.media[screenId]
+                  ? `Program (${program.title}) is set, waiting on your command to
               start!`
-                : `No media found on screen id ${screenId}`}
-            </Typography>
+                  : `No media found on screen id ${screenId}`}
+              </Typography>
+            )
           )}
-          {standByMode === StandByMods.ANIMATION && <CircularProgress />}
+          <code>{loading ? 'Waiting for program...' : 'click when ready'}</code>
         </StandbyOverlay>
       )}
       <>

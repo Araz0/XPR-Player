@@ -22,7 +22,13 @@ const StyledActionsContainer = styled.div`
   margin-top: 25px;
   margin-bottom: 15px;
 `
-
+const StyledLoadingWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+`
 export const ProgramsPageRaw = () => {
   const [showCreatePopup, setShowCreatePopup] = useState<boolean>(false)
 
@@ -45,7 +51,9 @@ export const ProgramsPageRaw = () => {
         <LoadLocalProgramButton />
       </StyledActionsContainer>
       {!loadedPrograms ? (
-        <LoadingAnimation />
+        <StyledLoadingWrapper>
+          <LoadingAnimation />
+        </StyledLoadingWrapper>
       ) : (
         <ProgramsList programs={loadedPrograms} />
       )}

@@ -8,10 +8,10 @@ import {
   ReplayOutlined,
   SettingsOutlined,
 } from '@mui/icons-material'
-import { useCheckUserAuth } from 'hooks/useCheckUserAuth'
 
 import {
   AdminPageWrapper,
+  LoadingAnimation,
   LogsList,
   MainButton,
   MainButtonVariants,
@@ -41,9 +41,15 @@ const StyledContainer = styled.div`
   flex-wrap: wrap;
 `
 
-export const AdminPageRaw = () => {
-  useCheckUserAuth()
+const StyledLoadingWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+`
 
+export const AdminPageRaw = () => {
   const selectedProgram = useAdminStore((s) => s.selectedProgram)
   const loadedPrograms = useAdminStore((s) => s.loadedPrograms)
   const logsArray = useAdminStore((s) => s.logsArray)
@@ -68,7 +74,7 @@ export const AdminPageRaw = () => {
     <AdminPageWrapper>
       {loadedPrograms && <ProgramsListDropdown programs={loadedPrograms} />}
 
-      {selectedProgram !== undefined && (
+      {selectedProgram !== undefined ? (
         <StyledContainer>
           <div>
             <StyledActionsContainer>
@@ -118,6 +124,12 @@ export const AdminPageRaw = () => {
             onDownloadClick={handleDownloadLogs}
           />
         </StyledContainer>
+      ) : loadedPrograms ? (
+        <code>select a program first...</code>
+      ) : (
+        <StyledLoadingWrapper>
+          <LoadingAnimation />
+        </StyledLoadingWrapper>
       )}
     </AdminPageWrapper>
   )

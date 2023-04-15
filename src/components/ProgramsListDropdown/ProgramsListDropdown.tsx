@@ -17,6 +17,7 @@ import { DbProgram } from 'types'
 
 const StyledButton = styled(Button)`
   position: relative;
+  width: fit-content;
   input {
     padding-right: 35px;
     cursor: pointer;
