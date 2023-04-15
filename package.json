@@ -16,7 +16,6 @@
     "build-storybook": "build-storybook -s public",
     "chromatic": "npx chromatic --auto-accept-changes"
   },
-  "proxy": "http://localhost:5000",
 
   "dependencies": {
     "@emotion/react": "^11.10.5",
