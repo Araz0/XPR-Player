@@ -77,8 +77,6 @@ export const ScreenRaw = ({
   useDoubleKeyPress('f', () => requestFullScreen())
   useDoubleKeyPress('c', () => requestShowControls())
 
-  // useEffect that
-
   const onRecivedScreenReady = useCallback(
     (recivedScreenId: number) => {
       if (recivedScreenId === screenId) setShowOverlay(false)
