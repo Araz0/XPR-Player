@@ -22,6 +22,18 @@ const StyledScreenPlayerContainer = styled.div`
   }
 `
 
+const StyledIdentityWrapper = styled.div`
+  position: absolute;
+  z-index: 100;
+  bottom: 25px;
+  left: 25px;
+  span {
+    color: white;
+    font-size: 2rem;
+    font-weight: bold;
+  }
+`
+
 export type ScreenProps = {
   screenId: number
   screenService: ScreenService
@@ -43,6 +55,7 @@ export const ScreenRaw = ({
 }: ScreenProps) => {
   const programStarted = useScreenStore((s) => s.programStarted)
   const program = useScreenStore((s) => s.program)
+  const showIdentification = useScreenStore((s) => s.showIdentification)
   const playerContainerRef = useRef<any>()
   const videoRef1 = useRef<any>()
   const videoRef2 = useRef<any>()
@@ -63,6 +76,8 @@ export const ScreenRaw = ({
 
   useDoubleKeyPress('f', () => requestFullScreen())
   useDoubleKeyPress('c', () => requestShowControls())
+
+  // useEffect that
 
   const onRecivedScreenReady = useCallback(
     (recivedScreenId: number) => {
@@ -116,6 +131,15 @@ export const ScreenRaw = ({
         <VideoPlayer reference={videoRef1} muted={muted} />
         <VideoPlayer reference={videoRef2} muted={muted} />
       </>
+      {showIdentification && (
+        <StyledIdentityWrapper>
+          <span>
+            {program
+              ? `${screenId}: ${program.screensInfo[screenId].title}`
+              : `Screen id: ${screenId}`}
+          </span>
+        </StyledIdentityWrapper>
+      )}
     </StyledScreenPlayerContainer>
   )
 }

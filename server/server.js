@@ -121,4 +121,11 @@ io.on('connection', (socket) => {
     // eslint-disable-next-line no-console
     console.log(`👌 - `, args)
   })
+
+  socket.on('identify-screens', (args) => {
+    socket.broadcast.emit('identify-screens', args)
+    socket.emit('identify-screens', args)
+    // eslint-disable-next-line no-console
+    console.log(`⁉️ - `, args)
+  })
 })

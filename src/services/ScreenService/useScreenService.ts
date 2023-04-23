@@ -10,6 +10,7 @@ export function useScreenService(
 ) {
   const setProgram = useScreenStore((s) => s.setProgram)
   const setProgramStarted = useScreenStore((s) => s.setProgramStarted)
+  const setShowIdentification = useScreenStore((s) => s.setShowIdentification)
   const addLogToLogsArray = useAdminStore((s) => s.addLogToLogsArray)
 
   const playPauseScreen = useCallback(() => {
@@ -82,6 +83,14 @@ export function useScreenService(
     [screenPlayerService]
   )
 
+  const showIdentificationTemporarly = useCallback(() => {
+    setShowIdentification(true)
+    const timeout = setTimeout(() => {
+      setShowIdentification(false)
+    }, 5000)
+    return () => clearTimeout(timeout)
+  }, [setShowIdentification])
+
   const setScreenListeners = useCallback(() => {
     if (!socketService) return
     socketService.onSetProgram(setScreenProgram)
@@ -91,6 +100,7 @@ export function useScreenService(
     socketService.onToggleShowControls(toggleShowingControls)
     socketService.onUserSelectedNextSegment(setSelectedNextSegment)
     socketService.onAnything(addLogToLogsArray)
+    socketService.onIdentifyScreens(showIdentificationTemporarly)
   }, [
     addLogToLogsArray,
     pauseProgram,
@@ -100,6 +110,7 @@ export function useScreenService(
     socketService,
     startProgram,
     toggleShowingControls,
+    showIdentificationTemporarly,
   ])
 
   const destroySocket = useCallback(() => {

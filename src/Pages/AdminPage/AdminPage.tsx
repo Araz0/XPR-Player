@@ -7,6 +7,7 @@ import {
   PlayArrowOutlined,
   ReplayOutlined,
   SettingsOutlined,
+  Fingerprint,
 } from '@mui/icons-material'
 
 import {
@@ -28,7 +29,7 @@ const StyledActionsContainer = styled.div`
   gap: 15px;
   margin-bottom: 20px;
 
-  > :last-child {
+  > :nth-last-child(2) {
     margin-left: auto;
   }
 `
@@ -102,6 +103,15 @@ export const AdminPageRaw = () => {
                 startIcon={<ReplayOutlined />}
               >
                 Reset
+              </MainButton>
+
+              <MainButton
+                variant={MainButtonVariants.PRIMARY}
+                width={'fit-content'}
+                onClick={socketService.emmitIdentifyScreens}
+                startIcon={<Fingerprint />}
+              >
+                Identify Screens
               </MainButton>
 
               <MainButton
