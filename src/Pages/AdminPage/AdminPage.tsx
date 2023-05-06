@@ -19,6 +19,7 @@ import {
   ProgramsListDropdown,
   ScreensList,
 } from 'components'
+import { useCheckUserAuth } from 'hooks'
 import { useSocketService } from 'services'
 import { useAdminStore } from 'stores'
 import { downloadJson } from 'utils'
@@ -55,6 +56,7 @@ export const AdminPageRaw = () => {
   const loadedPrograms = useAdminStore((s) => s.loadedPrograms)
   const logsArray = useAdminStore((s) => s.logsArray)
   const setLogsArray = useAdminStore((s) => s.setLogsArray)
+  useCheckUserAuth()
 
   const { socketService } = useSocketService()
 
