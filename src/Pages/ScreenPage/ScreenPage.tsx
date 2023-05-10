@@ -1,4 +1,4 @@
-import { memo } from 'react'
+import { memo, useEffect } from 'react'
 
 import { useParams } from 'react-router-dom'
 
@@ -10,6 +10,14 @@ import { ScreenService, useSocketService } from 'services'
 export const ScreenPageRaw = () => {
   const { screenId } = useParams()
   const { socketService } = useSocketService()
+
+  useEffect(() => {
+    // change page title
+    document.title = `XPR | Screen ${screenId}`
+    return () => {
+      document.title = `XPR`
+    }
+  }, [screenId])
   if (!screenId)
     return (
       <CenterdContainer>
