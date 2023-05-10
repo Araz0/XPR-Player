@@ -17,6 +17,9 @@ import { useSupabase } from './useSupabase'
 export function useProgram() {
   const program = useAdminStore((s) => s.program)
   const setProgram = useAdminStore((s) => s.setProgram)
+  const setLoadedPrograms = useAdminStore((s) => s.setLoadedPrograms)
+  const loadedPrograms = useAdminStore((s) => s.loadedPrograms)
+
   const navigate = useNavigate()
   const { insertProgram } = useSupabase()
 
@@ -24,10 +27,21 @@ export function useProgram() {
     (jsonPath: string) => {
       loadJsonFile(jsonPath).then((prog) => {
         setProgram(prog as ProgramType)
+        const localDbProgramType = {
+          id: Date.now(),
+          internal_id: Date.now(),
+          program: prog as ProgramType,
+          user_id: 'anonymous',
+        }
+        setLoadedPrograms(
+          loadedPrograms
+            ? [...loadedPrograms, localDbProgramType]
+            : [localDbProgramType]
+        )
         navigate(`/admin/programMap`)
       })
     },
-    [navigate, setProgram]
+    [loadedPrograms, navigate, setLoadedPrograms, setProgram]
   )
 
   const segmentIsReferenced = useCallback(

@@ -20,6 +20,7 @@ export function useSupabase() {
   const loggedInUser = useAdminStore((s) => s.loggedInUser)
   const setLoggedInUser = useAdminStore((s) => s.setLoggedInUser)
   const setUserIsLoggedIn = useAdminStore((s) => s.setUserIsLoggedIn)
+  const userIsLoggedIn = useAdminStore((s) => s.userIsLoggedIn)
 
   const handleUploadProgramThubmnail = useCallback(
     async (event: { target: { files: any[] } }) => {
@@ -41,11 +42,12 @@ export function useSupabase() {
   )
 
   const loadAllPrograms = useCallback(async () => {
+    if (!userIsLoggedIn) return
     const { data, error } = await supabaseClient.from('programs').select('*')
     if (error) throw error
     setLoadedPrograms(data as DbProgram[])
     return data as DbProgram[]
-  }, [setLoadedPrograms])
+  }, [setLoadedPrograms, userIsLoggedIn])
 
   const insertProgram = useCallback(
     async (program: ProgramType) => {
@@ -61,17 +63,21 @@ export function useSupabase() {
     },
     [loggedInUser, loadAllPrograms]
   )
-  const getProgramById = useCallback(async (Id: string) => {
-    const { data, error } = await supabaseClient
-      .from('programs')
-      .select('program')
-      .eq('internal_id', Id)
-      .single()
+  const getProgramById = useCallback(
+    async (Id: string) => {
+      if (!userIsLoggedIn) return
+      const { data, error } = await supabaseClient
+        .from('programs')
+        .select('program')
+        .eq('internal_id', Id)
+        .single()
 
-    if (error) throw error
+      if (error) throw error
 
-    return data.program
-  }, [])
+      return data.program
+    },
+    [userIsLoggedIn]
+  )
 
   const loadProgramsByUser = useCallback(async () => {
     if (!loggedInUser) return
@@ -145,6 +151,7 @@ export function useSupabase() {
 
   const handleUpdateProgramInDb = useCallback(
     (program: ProgramType) => {
+      if (!userIsLoggedIn) return
       if (!program) return
       const programIdExist = loadedPrograms?.some(
         (item) => item.program.id === program.id
@@ -155,7 +162,7 @@ export function useSupabase() {
         insertProgram(program)
       }
     },
-    [insertProgram, loadedPrograms, updateProgram]
+    [insertProgram, loadedPrograms, updateProgram, userIsLoggedIn]
   )
 
   useEffect(() => {

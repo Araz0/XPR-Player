@@ -19,7 +19,6 @@ import {
   ProgramsListDropdown,
   ScreensList,
 } from 'components'
-import { useCheckUserAuth } from 'hooks'
 import { useSocketService } from 'services'
 import { useAdminStore } from 'stores'
 import { downloadJson } from 'utils'
@@ -46,17 +45,20 @@ const StyledContainer = styled.div`
 const StyledLoadingWrapper = styled.div`
   width: 100%;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   flex: 1;
+  gap: 25px;
 `
 
 export const AdminPageRaw = () => {
   const selectedProgram = useAdminStore((s) => s.selectedProgram)
   const loadedPrograms = useAdminStore((s) => s.loadedPrograms)
   const logsArray = useAdminStore((s) => s.logsArray)
+  const userIsLoggedIn = useAdminStore((s) => s.userIsLoggedIn)
+
   const setLogsArray = useAdminStore((s) => s.setLogsArray)
-  useCheckUserAuth()
 
   const { socketService } = useSocketService()
 
@@ -137,10 +139,14 @@ export const AdminPageRaw = () => {
           />
         </StyledContainer>
       ) : loadedPrograms ? (
-        <code>select a program first...</code>
-      ) : (
+        <code>Select a program first...</code>
+      ) : userIsLoggedIn ? (
         <StyledLoadingWrapper>
           <LoadingAnimation />
+        </StyledLoadingWrapper>
+      ) : (
+        <StyledLoadingWrapper>
+          <span>Login to see online saved programs</span>
         </StyledLoadingWrapper>
       )}
     </AdminPageWrapper>

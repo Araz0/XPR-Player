@@ -63,8 +63,8 @@ export const ProgramsListRaw = ({ programs }: ProgramsListProps) => {
   )
 
   const handleOpenProgram = useCallback(
-    (dbProgram: DbProgram) => {
-      setProgram(dbProgram.program)
+    (program: ProgramType) => {
+      setProgram(program)
       navigate('/admin/programMap')
     },
     [navigate, setProgram]
@@ -83,21 +83,22 @@ export const ProgramsListRaw = ({ programs }: ProgramsListProps) => {
     )
   return (
     <StyledProgramsListContainer>
-      {programs.map((program: DbProgram) => {
+      {programs.map((program: DbProgram, key: number) => {
         return (
           <ProgramsItem
-            key={program.id}
+            key={key}
             title={program.program.title}
             description={program.program.discription}
             tags={[
               `${program.program.screensInfo.length} screens`,
+              program.user_id === 'anonymous' ? 'local' : '',
               program.program.meta?.estimatedTime
                 ? program.program.meta?.estimatedTime
-                : '🪄',
+                : '',
             ]}
             thumbnail={program.program.thumbnail}
             onClick={() => handleSetAsSelectedProgram(program.program)}
-            onEdit={() => handleOpenProgram(program)}
+            onEdit={() => handleOpenProgram(program.program)}
             onCopy={() => duplicateProgram(program.program)}
             onDownload={() => handleSaveProgramAsJson(program.program)}
             onDelete={() => setDeleteProgramId(program.program.id)}

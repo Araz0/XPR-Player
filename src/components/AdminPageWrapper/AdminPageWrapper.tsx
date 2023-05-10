@@ -3,12 +3,13 @@ import { memo, ReactNode, useCallback, useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 
-import { Logout, Send } from '@mui/icons-material'
+import { Login, Logout, Send } from '@mui/icons-material'
 import { IconButton } from '@mui/material'
 import { Logo } from 'components/Icons'
 import { MainButton } from 'components/MainButton'
 
 import { useSupabase } from 'hooks'
+import { useAdminStore } from 'stores'
 
 import { Popup } from '../Popup'
 
@@ -65,7 +66,7 @@ export const AdminPageWrapperRaw = ({ children }: AdminPageWrapperProps) => {
   const location = useLocation()
   const { signOut } = useSupabase()
   const [showLoginPopup, setShowLoginPopup] = useState<boolean>(false)
-
+  const userIsLoggedIn = useAdminStore((s) => s.userIsLoggedIn)
   const { checkUserLogin } = useSupabase()
 
   useEffect(() => {
@@ -105,10 +106,17 @@ export const AdminPageWrapperRaw = ({ children }: AdminPageWrapperProps) => {
           </MainButton>
         </StyledCenterActionsContainer>
         <StyledRightActionsContainer>
-          <MainButton onClick={handleRequestLogout}>
-            <Logout />
-            Logout
-          </MainButton>
+          {userIsLoggedIn ? (
+            <MainButton onClick={handleRequestLogout}>
+              <Logout />
+              Logout
+            </MainButton>
+          ) : (
+            <MainButton onClick={() => navigate('/login')}>
+              <Login />
+              Login
+            </MainButton>
+          )}
         </StyledRightActionsContainer>
       </StyledTopNav>
 

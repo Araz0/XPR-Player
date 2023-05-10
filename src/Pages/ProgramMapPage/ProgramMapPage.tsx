@@ -24,6 +24,7 @@ import {
 } from 'components'
 import { useProgram, useSupabase } from 'hooks'
 import { useAdminStore } from 'stores'
+import { ProgramType } from 'types'
 import { downloadJson } from 'utils'
 
 const StyledActionsContainer = styled.div`
@@ -53,6 +54,8 @@ export const ProgramMapPageRaw = () => {
   const { handleUpdateProgramInDb, deleteProgram } = useSupabase()
 
   const program = useAdminStore((s) => s.program)
+  const userIsLoggedIn = useAdminStore((s) => s.userIsLoggedIn)
+  const setSelectedProgram = useAdminStore((s) => s.setSelectedProgram)
 
   const titleRef = useRef<HTMLInputElement>()
   const [canEditTitle, setCanEditTitle] = useState<boolean>(false)
@@ -74,6 +77,14 @@ export const ProgramMapPageRaw = () => {
     updateProgramTitle(titleRef.current?.value)
     setCanEditTitle(!canEditTitle)
   }, [canEditTitle, updateProgramTitle])
+
+  const handleSetAsSelectedProgram = useCallback(
+    (program: ProgramType) => {
+      setSelectedProgram(program)
+      navigate('/admin')
+    },
+    [setSelectedProgram, navigate]
+  )
 
   useEffect(() => {
     if (!program) navigate('/admin/programs')
@@ -114,21 +125,33 @@ export const ProgramMapPageRaw = () => {
             Download
           </MainButton>
           <MainButton
-            variant={MainButtonVariants.PRIMARY}
-            onClick={() => handleUpdateProgramInDb(program)}
-            width={'fit-contnet'}
-            startIcon={<SaveOutlined fontSize="small" />}
-          >
-            Save
-          </MainButton>
-          <MainButton
             variant={MainButtonVariants.SECONDARY}
-            onClick={() => setShowDeleteProgram(true)}
+            onClick={() => handleSetAsSelectedProgram(program)}
             width={'fit-contnet'}
             startIcon={<DeleteOutline fontSize="small" />}
           >
-            Delete
+            Set as selected Program
           </MainButton>
+          {userIsLoggedIn && (
+            <>
+              <MainButton
+                variant={MainButtonVariants.PRIMARY}
+                onClick={() => handleUpdateProgramInDb(program)}
+                width={'fit-contnet'}
+                startIcon={<SaveOutlined fontSize="small" />}
+              >
+                Save
+              </MainButton>
+              <MainButton
+                variant={MainButtonVariants.SECONDARY}
+                onClick={() => setShowDeleteProgram(true)}
+                width={'fit-contnet'}
+                startIcon={<DeleteOutline fontSize="small" />}
+              >
+                Delete
+              </MainButton>
+            </>
+          )}
         </StyledActionsWrapper>
       </StyledActionsContainer>
 
