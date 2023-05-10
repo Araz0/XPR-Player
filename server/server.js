@@ -1,5 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const http = require('http')
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+// const { networkInterfaces } = require('os')
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const express = require('express')
@@ -21,6 +23,15 @@ let program = undefined
 app.get('/', (req, res) => {
   // res.send('<h1>Hello world</h1>')
   res.sendFile(__dirname + '/index.html')
+})
+
+app.get('/api', (req, res) => {
+  const selectedIndex = req.query.selectedIndex
+  io.emit('user-selected-segment', selectedIndex)
+  // eslint-disable-next-line no-console
+  console.log('🕹️ - user-selected-segment', selectedIndex)
+  // Send a response to the HTTP request
+  res.send('Socket event emitted successfully')
 })
 
 server.listen(port, () => {
@@ -120,5 +131,12 @@ io.on('connection', (socket) => {
     socket.emit('screen-is-ready', args)
     // eslint-disable-next-line no-console
     console.log(`👌 - `, args)
+  })
+
+  socket.on('identify-screens', (args) => {
+    socket.broadcast.emit('identify-screens', args)
+    socket.emit('identify-screens', args)
+    // eslint-disable-next-line no-console
+    console.log(`⁉️ - `, args)
   })
 })

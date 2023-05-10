@@ -7,6 +7,7 @@ import {
   PlayArrowOutlined,
   ReplayOutlined,
   SettingsOutlined,
+  Fingerprint,
 } from '@mui/icons-material'
 
 import {
@@ -28,7 +29,7 @@ const StyledActionsContainer = styled.div`
   gap: 15px;
   margin-bottom: 20px;
 
-  > :last-child {
+  > :nth-last-child(2) {
     margin-left: auto;
   }
 `
@@ -44,15 +45,19 @@ const StyledContainer = styled.div`
 const StyledLoadingWrapper = styled.div`
   width: 100%;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   flex: 1;
+  gap: 25px;
 `
 
 export const AdminPageRaw = () => {
   const selectedProgram = useAdminStore((s) => s.selectedProgram)
   const loadedPrograms = useAdminStore((s) => s.loadedPrograms)
   const logsArray = useAdminStore((s) => s.logsArray)
+  const userIsLoggedIn = useAdminStore((s) => s.userIsLoggedIn)
+
   const setLogsArray = useAdminStore((s) => s.setLogsArray)
 
   const { socketService } = useSocketService()
@@ -107,6 +112,15 @@ export const AdminPageRaw = () => {
               <MainButton
                 variant={MainButtonVariants.PRIMARY}
                 width={'fit-content'}
+                onClick={socketService.emmitIdentifyScreens}
+                startIcon={<Fingerprint />}
+              >
+                Identify Screens
+              </MainButton>
+
+              <MainButton
+                variant={MainButtonVariants.PRIMARY}
+                width={'fit-content'}
                 onClick={socketService.emmitToggleShowControls}
                 startIcon={<SettingsOutlined />}
               >
@@ -125,10 +139,14 @@ export const AdminPageRaw = () => {
           />
         </StyledContainer>
       ) : loadedPrograms ? (
-        <code>select a program first...</code>
-      ) : (
+        <code>Select a program first...</code>
+      ) : userIsLoggedIn ? (
         <StyledLoadingWrapper>
           <LoadingAnimation />
+        </StyledLoadingWrapper>
+      ) : (
+        <StyledLoadingWrapper>
+          <span>Login to see online saved programs</span>
         </StyledLoadingWrapper>
       )}
     </AdminPageWrapper>

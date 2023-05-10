@@ -12,6 +12,7 @@ export enum EventNames {
   REQUEST_FULLSCREEN = 'request-fullscreen',
   USER_SELECTED_SEGMENT = 'user-selected-segment',
   SCREEN_IS_READY = 'screen-is-ready',
+  IDENTIFY_SCREENS = 'identify-screens',
 }
 
 export type EventLog = {

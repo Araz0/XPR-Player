@@ -60,6 +60,10 @@ export class SocketService {
     this.emmit(EventNames.USER_SELECTED_SEGMENT, index)
   }
 
+  public emmitIdentifyScreens = () => {
+    this.emmit(EventNames.IDENTIFY_SCREENS, 'admin identifing screens')
+  }
+
   public onAnything = (exicute: (log: EventLog) => void) => {
     this._socket.onAny((eventName: string, args) => {
       exicute({ event: eventName, timestamp: Date.now() })
@@ -120,5 +124,9 @@ export class SocketService {
 
   public onToggleShowControls = (exicute: () => void) => {
     this.onLisiten(EventNames.TOGGLE_SHOW_CONTROLS, exicute)
+  }
+
+  public onIdentifyScreens = (exicute: () => void) => {
+    this.onLisiten(EventNames.IDENTIFY_SCREENS, exicute, true)
   }
 }
