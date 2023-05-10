@@ -31,8 +31,9 @@ const StyledLoadingWrapper = styled.div`
 `
 export const ProgramsPageRaw = () => {
   const [showCreatePopup, setShowCreatePopup] = useState<boolean>(false)
-
   const loadedPrograms = useAdminStore((s) => s.loadedPrograms)
+  const userIsLoggedIn = useAdminStore((s) => s.userIsLoggedIn)
+
   const handleOnCreateNewClick = useCallback(() => {
     // navigate('/admin/create')
     setShowCreatePopup(true)
@@ -50,12 +51,16 @@ export const ProgramsPageRaw = () => {
         </MainButton>
         <LoadLocalProgramButton />
       </StyledActionsContainer>
-      {!loadedPrograms ? (
+      {loadedPrograms ? (
+        <ProgramsList programs={loadedPrograms} />
+      ) : !userIsLoggedIn ? (
+        <StyledLoadingWrapper>
+          <span>Login to see online saved programs</span>
+        </StyledLoadingWrapper>
+      ) : (
         <StyledLoadingWrapper>
           <LoadingAnimation />
         </StyledLoadingWrapper>
-      ) : (
-        <ProgramsList programs={loadedPrograms} />
       )}
       {showCreatePopup && (
         <Popup
