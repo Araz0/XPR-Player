@@ -19,6 +19,7 @@ export function useProgram() {
   const setProgram = useAdminStore((s) => s.setProgram)
   const setLoadedPrograms = useAdminStore((s) => s.setLoadedPrograms)
   const loadedPrograms = useAdminStore((s) => s.loadedPrograms)
+  const loggedInUser = useAdminStore((s) => s.loggedInUser)
 
   const navigate = useNavigate()
   const { insertProgram } = useSupabase()
@@ -126,11 +127,14 @@ export function useProgram() {
         segments: [],
         media: [],
       }
-      insertProgram(newProgram)
+      if (loggedInUser) {
+        insertProgram(newProgram)
+      }
+
       setProgram(newProgram)
       navigate(`/admin/programMap`)
     },
-    [navigate, setProgram, insertProgram]
+    [loggedInUser, setProgram, navigate, insertProgram]
   )
 
   const addNextSegmentById = useCallback(

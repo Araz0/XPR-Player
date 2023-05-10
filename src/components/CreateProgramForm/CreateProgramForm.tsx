@@ -89,7 +89,9 @@ export const CreateProgramFormRaw = () => {
   const descriptionRef = useRef<any>()
   const thumbnailRef = useRef<HTMLInputElement | null>(null)
 
-  const [thumbnailImg, setThumbnailImg] = useState<string>()
+  const [thumbnailImg, setThumbnailImg] = useState<string>(
+    '/media/thumbnailFallback.jpg'
+  )
   const [uploadingThumbnail, setUploadingThumbnail] = useState<boolean>(false)
 
   const { createNewProgram } = useProgram()
@@ -100,7 +102,12 @@ export const CreateProgramFormRaw = () => {
   const handleuploadThumbnail = useCallback(
     async (e: any) => {
       setUploadingThumbnail(true)
-      const data = await handleUploadProgramThubmnail(e)
+      let data
+      try {
+        data = await handleUploadProgramThubmnail(e)
+      } catch (error) {
+        data = '/media/thumbnailFallback.jpg'
+      }
       setUploadingThumbnail(false)
       if (data) setThumbnailImg(data)
     },
@@ -135,7 +142,7 @@ export const CreateProgramFormRaw = () => {
     createNewProgram(
       titleRef.current.value,
       descriptionRef.current.value,
-      thumbnailImg || '/media/thumbnailFallback.jpg',
+      thumbnailImg,
       screens || [{ title: 'Front' }, { title: 'Left' }, { title: 'Back' }]
     )
   }, [createNewProgram, thumbnailImg, screens])
