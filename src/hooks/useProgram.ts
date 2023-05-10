@@ -27,17 +27,24 @@ export function useProgram() {
     (jsonPath: string) => {
       loadJsonFile(jsonPath).then((prog) => {
         setProgram(prog as ProgramType)
-        const localDbProgramType = {
-          id: Date.now(),
-          internal_id: Date.now(),
-          program: prog as ProgramType,
-          user_id: 'anonymous',
+        const alreadyHasProgram = !!loadedPrograms?.filter(
+          (p) => p.program.id === prog.id
+        )[0]
+
+        if (!alreadyHasProgram) {
+          const localDbProgramType = {
+            id: Date.now(),
+            internal_id: Date.now(),
+            program: prog as ProgramType,
+            user_id: 'anonymous',
+          }
+          setLoadedPrograms(
+            loadedPrograms
+              ? [...loadedPrograms, localDbProgramType]
+              : [localDbProgramType]
+          )
         }
-        setLoadedPrograms(
-          loadedPrograms
-            ? [...loadedPrograms, localDbProgramType]
-            : [localDbProgramType]
-        )
+
         navigate(`/admin/programMap`)
       })
     },
