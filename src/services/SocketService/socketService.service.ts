@@ -10,6 +10,11 @@ export class SocketService {
     this._socket.disconnect()
   }
 
+  public resetHostAddressTo = (address: string) => {
+    this._socket.disconnect()
+    this._socket = io(`http://${address}:8000`)
+  }
+
   private emmit = (EventName: string, commandPackage: any) => {
     this._socket.emit(EventName, commandPackage)
   }

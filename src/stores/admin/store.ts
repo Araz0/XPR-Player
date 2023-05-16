@@ -26,6 +26,9 @@ export type AdminState = {
 
   selectedProgram: ProgramType | undefined
   setSelectedProgram: (selectedProgram: ProgramType | undefined) => void
+
+  socketHostIp: string
+  setSocketHostIp: (socketHostIp: string) => void
 }
 
 export const useAdminStore = create<AdminState>((set) => ({
@@ -56,4 +59,7 @@ export const useAdminStore = create<AdminState>((set) => ({
   selectedProgram: undefined,
   setSelectedProgram: (selectedProgram: ProgramType | undefined) =>
     set(() => ({ selectedProgram })),
+
+  socketHostIp: 'localhost:8000',
+  setSocketHostIp: (socketHostIp: string) => set(() => ({ socketHostIp })),
 }))
