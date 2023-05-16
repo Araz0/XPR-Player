@@ -5,6 +5,7 @@ import styled from 'styled-components'
 
 import {
   Check,
+  CheckCircle,
   DeleteOutline,
   DownloadOutlined,
   Edit,
@@ -128,7 +129,7 @@ export const ProgramMapPageRaw = () => {
             variant={MainButtonVariants.SECONDARY}
             onClick={() => handleSetAsSelectedProgram(program)}
             width={'fit-contnet'}
-            startIcon={<DeleteOutline fontSize="small" />}
+            startIcon={<CheckCircle fontSize="small" />}
           >
             Set as selected Program
           </MainButton>

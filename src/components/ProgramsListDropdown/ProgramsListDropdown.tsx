@@ -1,8 +1,9 @@
 import { memo, useCallback, useState } from 'react'
 
+import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 
-import { Check, KeyboardArrowDown } from '@mui/icons-material'
+import { Check, Edit, KeyboardArrowDown } from '@mui/icons-material'
 import {
   Menu,
   MenuItem,
@@ -11,9 +12,10 @@ import {
   TextField,
   Button,
 } from '@mui/material'
+import { MainButton, MainButtonVariants } from 'components/MainButton'
 
 import { useAdminStore } from 'stores'
-import { DbProgram } from 'types'
+import { DbProgram, ProgramType } from 'types'
 
 const StyledButton = styled(Button)`
   position: relative;
@@ -35,9 +37,19 @@ export type ProgramsListDropdownProps = {
 export const ProgramsListDropdownRaw = ({
   programs,
 }: ProgramsListDropdownProps) => {
+  const navigate = useNavigate()
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const setSelectedProgram = useAdminStore((s) => s.setSelectedProgram)
   const selectedProgram = useAdminStore((s) => s.selectedProgram)
+  const setProgram = useAdminStore((s) => s.setProgram)
+
+  const handleEditProgram = useCallback(
+    (program: ProgramType) => {
+      setProgram(program)
+      navigate('/admin/programMap')
+    },
+    [navigate, setProgram]
+  )
 
   const menuOpen = Boolean(anchorEl)
 
@@ -107,6 +119,16 @@ export const ProgramsListDropdownRaw = ({
           )
         })}
       </Menu>
+      {selectedProgram && (
+        <MainButton
+          variant={MainButtonVariants.PRIMARY}
+          onClick={() => handleEditProgram(selectedProgram)}
+          width={'fit-content'}
+          startIcon={<Edit />}
+        >
+          Edit
+        </MainButton>
+      )}
     </>
   )
 }
