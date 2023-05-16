@@ -5,11 +5,13 @@ import { useParams } from 'react-router-dom'
 import { Typography } from '@mui/material'
 
 import { CenterdContainer, Screen } from 'components'
-import { ScreenService, useSocketService } from 'services'
+import { ScreenService, SocketService } from 'services'
 
-export const ScreenPageRaw = () => {
+export type ScreenPageProps = {
+  socketService: SocketService
+}
+export const ScreenPageRaw = ({ socketService }: ScreenPageProps) => {
   const { screenId } = useParams()
-  const { socketService } = useSocketService()
 
   useEffect(() => {
     // change page title

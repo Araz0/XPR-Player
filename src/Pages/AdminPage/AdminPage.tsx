@@ -19,7 +19,7 @@ import {
   ProgramsListDropdown,
   ScreensList,
 } from 'components'
-import { useSocketService } from 'services'
+import { SocketService } from 'services'
 import { useAdminStore } from 'stores'
 import { downloadJson } from 'utils'
 
@@ -51,16 +51,16 @@ const StyledLoadingWrapper = styled.div`
   flex: 1;
   gap: 25px;
 `
-
-export const AdminPageRaw = () => {
+export type AdminPageProps = {
+  socketService: SocketService
+}
+export const AdminPageRaw = ({ socketService }: AdminPageProps) => {
   const selectedProgram = useAdminStore((s) => s.selectedProgram)
   const loadedPrograms = useAdminStore((s) => s.loadedPrograms)
   const logsArray = useAdminStore((s) => s.logsArray)
   const userIsLoggedIn = useAdminStore((s) => s.userIsLoggedIn)
 
   const setLogsArray = useAdminStore((s) => s.setLogsArray)
-
-  const { socketService } = useSocketService()
 
   const handleSendProgram = useCallback(() => {
     if (!selectedProgram) return

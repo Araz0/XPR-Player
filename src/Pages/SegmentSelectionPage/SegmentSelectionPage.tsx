@@ -3,16 +3,19 @@ import { memo, useCallback } from 'react'
 import styled from 'styled-components'
 
 import { CenterdContainer, MainButton, MainButtonVariants } from 'components'
-import { useSocketService } from 'services'
+import { SocketService } from 'services'
 
 const StyledButtonsContainer = styled.div`
   display: flex;
   gap: 50px;
 `
 
-export const SegmentSelectionPageRaw = () => {
-  const { socketService } = useSocketService()
-
+export type SelectionPagePageProps = {
+  socketService: SocketService
+}
+export const SegmentSelectionPageRaw = ({
+  socketService,
+}: SelectionPagePageProps) => {
   const handleClickedYes = useCallback(() => {
     socketService.emmitSelectedScreenIndex(1)
   }, [socketService])
