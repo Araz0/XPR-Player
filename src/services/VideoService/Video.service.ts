@@ -22,8 +22,21 @@ export class VideoService {
 
   public play = () => {
     if (!this._videoElement?.current) return
+
     this._videoElement?.current.play()
     console.log('player', this._id, 'started at', Date.now())
+  }
+  public playWithTimestamp = (timestamp: number) => {
+    if (!this._videoElement?.current) return
+
+    const timer = setInterval(() => {
+      if (Date.now() >= timestamp) {
+        if (!this._videoElement?.current) return
+        this._videoElement?.current.play()
+        console.log('player', this._id, 'started at', Date.now())
+        clearInterval(timer)
+      }
+    }, 1) // Check every millisecond
   }
 
   public pause = () => {

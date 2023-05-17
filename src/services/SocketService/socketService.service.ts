@@ -26,7 +26,7 @@ export class SocketService {
     this.emmit(EventNames.START_PROGRAM, 'admin requested program start')
   }
   public emmitStartProgramWithDelay = () => {
-    const exicuteTimestamp = Date.now() + 1000
+    const exicuteTimestamp = Date.now() + 2000
     this.emmit(EventNames.START_PROGRAM, exicuteTimestamp)
   }
 

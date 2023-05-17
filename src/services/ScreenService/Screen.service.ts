@@ -73,6 +73,10 @@ export class ScreenService {
   public play = () => {
     this.currentPlayer().play()
   }
+  public playWithTimestamp = (timestamp: number, exicute: () => void) => {
+    this.currentPlayer().playWithTimestamp(timestamp)
+    exicute()
+  }
 
   public pause = () => {
     this.currentPlayer().pause()
