@@ -94,7 +94,7 @@ export const AdminPageRaw = ({ socketService }: AdminPageProps) => {
 
               <MainButton
                 variant={MainButtonVariants.PRIMARY}
-                onClick={socketService.emmitStartProgram}
+                onClick={socketService.emmitStartProgramWithDelay}
                 width={'fit-content'}
                 startIcon={<PlayArrowOutlined />}
               >

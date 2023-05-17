@@ -1,0 +1,96 @@
+{
+  "id": 1680108101648,
+  "title": "program demo v2 edited",
+  "screensInfo": [
+    {
+      "title": "Front"
+    },
+    {
+      "title": "Left"
+    },
+    {
+      "title": "Back"
+    }
+  ],
+  "discription": "Program discription and something different",
+  "thumbnail": "/media/thumbnailFallback.jpg",
+  "segments": [
+    {
+      "id": 1677693602036,
+      "mediaId": 1677693618589,
+      "isIntro": true,
+      "nextSegmentIds": [
+        1677693648281,
+        1677775597109
+      ]
+    },
+    {
+      "id": 1677693648281,
+      "mediaId": 1677693659267,
+      "nextSegmentIds": []
+    },
+    {
+      "id": 1677775597109,
+      "mediaId": 1677775611105,
+      "nextSegmentIds": []
+    }
+  ],
+  "media": [
+    {
+      "id": 1677693618589,
+      "title": "teo intro",
+      "description": "No description",
+      "screens": [
+        {
+          "id": 1680183788967,
+          "title": "screen title",
+          "mediaSrc": "/programMedia/Audio Video Sync Test 60 FPS.mp4"
+        },
+        {
+          "id": 1684282045299,
+          "title": "screen title",
+          "mediaSrc": "/programMedia/Audio Video Sync Test 60 FPS.mp4"
+        },
+        {
+          "id": 1684282040869,
+          "title": "screen title",
+          "mediaSrc": "/programMedia/60fps_Tester.mp4"
+        }
+      ]
+    },
+    {
+      "id": 1677693659267,
+      "title": "something nice",
+      "description": "idk",
+      "screens": [
+        {
+          "id": 1680264358174,
+          "title": "screen title",
+          "mediaSrc": "/programMedia/Audio Video Sync Test 60 FPS.mp4"
+        },
+        {
+          "id": 1677693673731,
+          "title": "s1",
+          "mediaSrc": "/programMedia/station_6_proto_v001.mp4"
+        }
+      ]
+    },
+    {
+      "id": 1677775611105,
+      "title": "different path",
+      "description": "something new",
+      "screens": [
+        {
+          "id": 1677775628155,
+          "title": "screen title",
+          "mediaSrc": "/programMedia/Audio Video Sync Test 60 FPS.mp4"
+        },
+        {
+          "id": 1677775652492,
+          "title": "s2",
+          "mediaSrc": "/programMedia/60fps_Tester.mp4"
+        }
+      ]
+    }
+  ]
+}

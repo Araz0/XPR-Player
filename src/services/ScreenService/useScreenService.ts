@@ -17,10 +17,40 @@ export function useScreenService(
     screenPlayerService.playPause()
   }, [screenPlayerService])
 
-  const startProgram = useCallback(() => {
-    screenPlayerService.play()
-    setProgramStarted(true)
-  }, [setProgramStarted, screenPlayerService])
+  const checkTimestampInterval = useCallback(
+    (timestamp: number, exicute: () => void) => {
+      const timer = setInterval(() => {
+        // console.log(
+        //   '🚀 ~ file: useScreenService.ts:24 ~ timer ~ Date.now():',
+        //   Date.now()
+        // )
+        if (Date.now() >= timestamp) {
+          // console.log(
+          //   '🚀 ~ file: useScreenService.ts:24 ~ timer ~ Date.now() >= timestamp:',
+          //   Date.now(),
+          //   timestamp,
+          //   Date.now() === timestamp
+          // )
+          exicute()
+          clearInterval(timer)
+        }
+      }, 1) // Check every millisecond
+      return () => {
+        clearInterval(timer)
+      }
+    },
+    []
+  )
+
+  const startProgram = useCallback(
+    (startTimestamp: number) => {
+      checkTimestampInterval(startTimestamp, () => {
+        screenPlayerService.play()
+        setProgramStarted(true)
+      })
+    },
+    [checkTimestampInterval, screenPlayerService, setProgramStarted]
+  )
 
   const pauseProgram = useCallback(() => {
     screenPlayerService.pause()

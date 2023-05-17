@@ -25,6 +25,10 @@ export class SocketService {
   public emmitStartProgram = () => {
     this.emmit(EventNames.START_PROGRAM, 'admin requested program start')
   }
+  public emmitStartProgramWithDelay = () => {
+    const exicuteTimestamp = Date.now() + 1000
+    this.emmit(EventNames.START_PROGRAM, exicuteTimestamp)
+  }
 
   public emmitRequestFullscreen = () => {
     this.emmit(EventNames.REQUEST_FULLSCREEN, 'admin requested full screen')
@@ -93,8 +97,8 @@ export class SocketService {
     this.onLisiten(EventNames.SET_PROGRAM, exicute, true)
   }
 
-  public onStart = (exicute: () => void) => {
-    this.onLisiten(EventNames.START_PROGRAM, exicute)
+  public onStart = (exicute: (startTimestamp: number) => void) => {
+    this.onLisiten(EventNames.START_PROGRAM, exicute, true)
   }
 
   public onPause = (exicute: () => void) => {

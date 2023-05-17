@@ -23,6 +23,7 @@ export class VideoService {
   public play = () => {
     if (!this._videoElement?.current) return
     this._videoElement?.current.play()
+    console.log('player', this._id, 'started at', Date.now())
   }
 
   public pause = () => {
