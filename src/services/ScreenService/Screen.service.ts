@@ -173,10 +173,12 @@ export class ScreenService {
 
   private getNextSegment = () => {
     if (!this._currentSegment?.nextSegmentIds) return undefined // does not have next segment
-
+    const nextSegmentsCount = this._currentSegment?.nextSegmentIds.length
     return getSegmentById(
       this._program?.segments || [],
-      this._currentSegment?.nextSegmentIds[this._nextSelectedSegmentIndex]
+      this._currentSegment?.nextSegmentIds[
+        nextSegmentsCount > 1 ? this._nextSelectedSegmentIndex : 0
+      ]
     )
   }
 

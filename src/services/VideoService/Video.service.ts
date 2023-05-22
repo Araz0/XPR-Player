@@ -24,6 +24,7 @@ export class VideoService {
     if (!this._videoElement?.current) return
 
     this._videoElement?.current.play()
+    // eslint-disable-next-line no-console
     console.log('player', this._id, 'started at', Date.now())
   }
   public playWithTimestamp = (timestamp: number) => {
@@ -33,6 +34,7 @@ export class VideoService {
       if (Date.now() >= timestamp) {
         if (!this._videoElement?.current) return
         this._videoElement?.current.play()
+        // eslint-disable-next-line no-console
         console.log('player', this._id, 'started at', Date.now())
         clearInterval(timer)
       }
