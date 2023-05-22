@@ -10,6 +10,10 @@ export class SocketService {
     this._socket.disconnect()
   }
 
+  public getHostAdress = () => {
+    return `http://${this._socket.io.opts.hostname}:${this._socket.io.opts.port}`
+  }
+
   public resetHostAddressTo = (address: string) => {
     this._socket.disconnect()
     this._socket = io(`http://${address}:8000`)

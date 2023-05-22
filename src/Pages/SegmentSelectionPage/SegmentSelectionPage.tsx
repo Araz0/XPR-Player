@@ -16,13 +16,24 @@ export type SelectionPagePageProps = {
 export const SegmentSelectionPageRaw = ({
   socketService,
 }: SelectionPagePageProps) => {
+  const sendSelectedScreenIndex = useCallback(
+    async (index: number) => {
+      const hostLink = socketService.getHostAdress()
+      await fetch(`${hostLink}/api?selectedIndex=${index}`)
+      // await response.json()
+    },
+    [socketService]
+  )
+
   const handleClickedYes = useCallback(() => {
     socketService.emmitSelectedScreenIndex(1)
-  }, [socketService])
+    sendSelectedScreenIndex(1)
+  }, [sendSelectedScreenIndex, socketService])
 
   const handleClickedNo = useCallback(() => {
     socketService.emmitSelectedScreenIndex(0)
-  }, [socketService])
+    sendSelectedScreenIndex(0)
+  }, [sendSelectedScreenIndex, socketService])
 
   return (
     <CenterdContainer>
