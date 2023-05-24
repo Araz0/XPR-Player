@@ -1,31 +1,24 @@
-# Experience-Room Player
-## Links:
- - [More about the project](https://portfolio.fh-salzburg.ac.at/projects/2023-experience-room)
+# Experience-Room Player | XPR
+This project is ment to be installed and run on localhost. It uses supabase to give the option to save programs in an online database but it is not requird since it also allows to save the program localy as json with a button click.
 
-## Bookmark:
-### How-Tos
-- [Use Morgen for logging](https://dev.to/devland/how-to-use-morgan-in-your-nodejs-project-21im)
-## Plan
-This project should be able to:
-- have a video player.
-- able to fully control the video player.
-- ~~change the video source on demand with zero delay~~.
-- read the status of the video player at all times.
+## Links:
+ - More about the project [portfolio](https://portfolio.fh-salzburg.ac.at/projects/2023-experience-room)
+ - Public page [https://taosy.art](https://taosy.art)
 
 ### technologies
-- Server-Sent Events ~~or web sockets~~ to exchange data and events ~~between~~ from the server ~~and~~ to the client.
-  - Server-Sent Events is one-way stream and is only string.
-  - ~~web socket can send and receive in both directions and is binary.~~
-- video player with full control.
-- zustand and eventEmitter3 CAN be used to simplify communication of data updates.
+- SocketIO and Express api endpoint for the server.
+- ReactJS for the client frontend.
+- SocketIO between the Server and the React Client.
+- zustand for global state management in the frontent client.
+- Arduino Tech and Sketches for the hardware that comunicates via http with the express api endpoint on the server. 
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Production Requirements
+## Requirements
 
-1. Install `node.js`
-2. Install `serve` with this command: `npm i -g serve`
-   
+1. Install `node.js`.
+2. run `npm i` in the project folder.
+
 ## Available Scripts
 
 In the project directory, you can run:
@@ -35,13 +28,10 @@ In the project directory, you can run:
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
 
-### `npm test`
+### `npm run server`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+To start the server for the backend.
 
 ### `npm run build`
 
@@ -52,19 +42,3 @@ The build is minified and the filenames include the hashes.\
 Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
