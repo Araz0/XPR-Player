@@ -5,6 +5,7 @@ import {
   PlayerContainerType,
   ProgramType,
   SegmentType,
+  EventLog,
 } from 'types'
 import { getIntroSegment, getMediaById, getSegmentById } from 'utils'
 
@@ -213,12 +214,20 @@ export class ScreenService {
     }
   }
 
+  public onSetNextSegment = (exicute: (log: EventLog) => void) => {
+    const playersArray = [this._player1, this._player2]
+    playersArray.forEach((player) => {
+      if (!player.videoElement) return
+      player.videoElement.current?.addEventListener('ended', (e: any) => {
+        exicute({
+          event: `playing: ${this._currentSegment?.id || -1}`,
+          timestamp: Date.now(),
+        })
+      })
+    })
+  }
   private setListners = (player: VideoService) => {
     if (!player.videoElement?.current) return
-
-    // player.videoElement.current.addEventListener('ended', (e: any) => {
-    //   this.onPlayerEnded(player)
-    // })
 
     player.videoElement.current.addEventListener('timeupdate', (e: any) => {
       this.onPlayerUpdate(player)

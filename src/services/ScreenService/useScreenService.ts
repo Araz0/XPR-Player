@@ -155,8 +155,9 @@ export function useScreenService(
       videoRef2: VideoRefElementType
     ) => {
       screenPlayerService.setRefs(screenId, container, videoRef1, videoRef2)
+      screenPlayerService.onSetNextSegment(addLogToLogsArray)
     },
-    [screenPlayerService]
+    [screenPlayerService, addLogToLogsArray]
   )
 
   return {
